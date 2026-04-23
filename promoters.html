@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="./index.html">
+                <img
+                  src="./assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./index.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Dashboard.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./events.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Events.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Events</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./live-floor.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/LiveFloor.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Live Floor</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./packages.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Packages.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Packages</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./reservations.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Reservations.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Reservations</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item active">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./promoters.html"
+                >
+                  <div class="btn-wrapper me-2 active">
+                    <img
+                      class="primary"
+                      src="./assets/images/Promoters Select.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text active">Promoters</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./staffs.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Staffs.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Staffs</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./notifications.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Notifications.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Notifications</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = 'edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">General Manager</p>
+                </div>
+              </div>
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = 'login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="./assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span class="notification-badge" id="notification-badge"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content promoters dashboard-content">
+        <!-- Header -->
+        <div class="events-wrapper">
+          <div class="events-header">
+            <div class="title-wrapper events-header-content">
+              <h1 class="title">Promoters</h1>
+              <p class="subtitle">Manage Promoter Network and Performance</p>
+            </div>
+            <div class="d-flex align-items-center ms-auto">
+              <button class="btn btn-primary m-0" id="btnCreate">
+                <img
+                  class="create-icon"
+                  src="./assets/images/createIcon.png"
+                  alt=""
+                />
+                Add Promoter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="dashboard-table">
+          <div class="filter-bar m-0">
+            <div class="filter-group w-100">
+              <div class="filter-search">
+                <div class="search-bar-content">
+                  <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search promoters..."
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="member-card">
+          <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+          <div class="pkg-modal">
+            <h3 id="modalTitle">Create Promoter</h3>
+            <div class="form-row">
+              <div class="form-group form-group-flex">
+                <label>First Name</label>
+                <input type="text" id="fFirst" placeholder="e.g. Alex" />
+              </div>
+              <div class="form-group form-group-flex">
+                <label>Last Name</label>
+                <input type="text" id="fLast" placeholder="e.g. Rivera" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group form-group-flex">
+                <label>Handle</label>
+                <input type="text" id="fHandle" placeholder="e.g. ALEXVIP" />
+              </div>
+              <div class="form-group form-group-flex">
+                <label>Status</label>
+                <select
+                  id="fStatus"
+                  class="revenue-select w-100 fStatus-select"
+                >
+                  <option value="Upcoming">Upcoming</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group form-group-flex">
+                <label>Total Guests</label>
+                <input type="number" id="fGuests" placeholder="0" />
+              </div>
+              <div class="form-group form-group-flex">
+                <label>Revenue ($)</label>
+                <input type="number" id="fRevenue" placeholder="0.00" />
+              </div>
+              <div class="form-group form-group-flex">
+                <label>Commission (%)</label>
+                <input type="number" id="fCommission" placeholder="15" />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn-cancel" id="btnCancel">Cancel</button>
+              <button class="btn-save" id="btnSave">Save Promoter</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/js/scripts.js"></script>
+    <script>
+      const editIcon = `<img src="./assets/images/edit.png" alt="Edit">`;
+
+      const delIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+      const guestsIcon = `<img src="./assets/images/total-guests.png" alt="Total Guests">`;
+
+      const revenueIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+
+      const medalIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`;
+
+      let promoters = [
+        {
+          id: 1,
+          first: "Alex",
+          last: "Rivera",
+          handle: "ALEXVIP",
+          status: "Upcoming",
+          guests: 450,
+          revenue: 22500,
+          commission: 15,
+        },
+        {
+          id: 2,
+          first: "Jessica",
+          last: "Wong",
+          handle: "JESSNIGHTS",
+          status: "Upcoming",
+          guests: 450,
+          revenue: 22500,
+          commission: 15,
+        },
+        {
+          id: 3,
+          first: "Marcus",
+          last: "Johnson",
+          handle: "MARCUSLA",
+          status: "Upcoming",
+          guests: 450,
+          revenue: 22500,
+          commission: 15,
+        },
+      ];
+      let nextId = 4,
+        editingId = null;
+
+      function initials(p) {
+        return p.first[0].toUpperCase();
+      }
+
+      function statusClass(s) {
+        if (s === "Upcoming") return "status-arrived";
+        if (s === "Active") return "status-active";
+        return "status-inactive";
+      }
+
+      function getFiltered() {
+        const q = document.getElementById("searchInput").value.toLowerCase();
+        return promoters.filter((p) => {
+          const name = `${p.first} ${p.last}`.toLowerCase();
+          return !q || name.includes(q) || p.handle.toLowerCase().includes(q);
+        });
+      }
+
+      function render() {
+        const grid = document.getElementById("cardsGrid");
+        const list = getFiltered();
+        if (!list.length) {
+          grid.innerHTML = '<div class="empty-state">No promoters found.</div>';
+          return;
+        }
+        grid.innerHTML = list
+          .map(
+            (p, i) => `
+        <div class="pro-card" style="animation-delay:${i * 0.07}s">
+          <div class="card-top">
+            <div class="card-top-left">
+              <div class="avatar">${initials(p)}</div>
+              <div class="name-block">
+                <h2>${p.first} ${p.last}</h2>
+                <span class="status-badge status-dull">${p.handle}</span>
+              </div>
+            </div>
+            <div class="status-group">
+              <span class="status-badge ${statusClass(p.status)}">${p.status}</span>
+              <div class="actions-container d-none">
+                <button class="btn-action ms-auto" onclick="toggleActions(event, ${p.id})">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+                <div class="actions-dropdown" id="dropdown-${p.id}">
+                  <div class="action-item" onclick="openEdit(${p.id})">
+                    ${editIcon} Edit
+                  </div>
+                  <div class="action-item delete" onclick="deletePromoter(${p.id})">
+                    ${delIcon} Delete
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+ 
+          <hr class="card-divider mt-2"/>
+ 
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-label">${guestsIcon} Total Guests</div>
+              <div class="stat-value">${p.guests.toLocaleString()}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">${revenueIcon} Revenue</div>
+              <div class="stat-value">$${p.revenue.toLocaleString()}</div>
+            </div>
+          </div>
+ 
+          <div class="commission-bar">
+            <div class="comm-icon">${medalIcon}</div>
+            <span class="comm-label">Commission Rate</span>
+            <span class="comm-value">${p.commission} %</span>
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      function openModal(p = null) {
+        editingId = p ? p.id : null;
+        document.getElementById("modalTitle").textContent = p
+          ? "Edit"
+          : "Add Promoter";
+        document.getElementById("fFirst").value = p ? p.first : "";
+        document.getElementById("fLast").value = p ? p.last : "";
+        document.getElementById("fHandle").value = p ? p.handle : "";
+        document.getElementById("fStatus").value = p ? p.status : "Upcoming";
+        document.getElementById("fGuests").value = p ? p.guests : "";
+        document.getElementById("fRevenue").value = p ? p.revenue : "";
+        document.getElementById("fCommission").value = p ? p.commission : "";
+        document.getElementById("modalOverlay").classList.add("open");
+      }
+      function closeModal() {
+        document.getElementById("modalOverlay").classList.remove("open");
+        editingId = null;
+      }
+
+      document.getElementById("btnSave").addEventListener("click", () => {
+        const first = document.getElementById("fFirst").value.trim();
+        const last = document.getElementById("fLast").value.trim();
+        const handle = document
+          .getElementById("fHandle")
+          .value.trim()
+          .toUpperCase();
+        const status = document.getElementById("fStatus").value;
+        const guests = parseInt(document.getElementById("fGuests").value) || 0;
+        const revenue =
+          parseFloat(document.getElementById("fRevenue").value) || 0;
+        const commission =
+          parseFloat(document.getElementById("fCommission").value) || 0;
+        if (!first || !last) return;
+        if (editingId !== null) {
+          const p = promoters.find((x) => x.id === editingId);
+          if (p)
+            Object.assign(p, {
+              first,
+              last,
+              handle,
+              status,
+              guests,
+              revenue,
+              commission,
+            });
+        } else {
+          promoters.push({
+            id: nextId++,
+            first,
+            last,
+            handle,
+            status,
+            guests,
+            revenue,
+            commission,
+          });
+        }
+        closeModal();
+        render();
+      });
+
+      function openEdit(id) {
+        closeAllDropdowns();
+        openModal(promoters.find((p) => p.id === id));
+      }
+      function deletePromoter(id) {
+        closeAllDropdowns();
+        promoters = promoters.filter((p) => p.id !== id);
+        render();
+      }
+
+      // ── Action Dropdown Utility ──
+      function toggleActions(e, id) {
+        e.stopPropagation();
+        const dropdown = document.getElementById(`dropdown-${id}`);
+        const isOpen = dropdown.classList.contains("open");
+        closeAllDropdowns();
+        if (!isOpen) dropdown.classList.add("open");
+      }
+
+      function closeAllDropdowns() {
+        document.querySelectorAll(".actions-dropdown").forEach((d) => {
+          d.classList.remove("open");
+        });
+      }
+
+      window.addEventListener("click", () => closeAllDropdowns());
+
+      document
+        .getElementById("btnCreate")
+        .addEventListener("click", () => openModal());
+      document
+        .getElementById("btnCancel")
+        .addEventListener("click", closeModal);
+      document.getElementById("modalOverlay").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+      document.getElementById("searchInput").addEventListener("input", render);
+
+      render();
+    </script>
+  </body>
+</html>

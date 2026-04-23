@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/host.css" />
+    <link rel="stylesheet" href="../assets/css/promoter.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="../index.html">
+                <img
+                  src="../assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-dashboard.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/Dashboard.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-guest-list.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/guest-list.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Guest List</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item active">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-referral.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/referral-link-select.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text active">Referrals</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-earning.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/earning.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Earnings</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-contact.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/contact.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Contacts</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-campaign.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/campaign.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Campaigns</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <!-- Avatar & Info -->
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = '../edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">Promoter</p>
+                </div>
+              </div>
+
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = '../login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="../assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span
+                class="notification-badge"
+                id="notification-badge"
+                style="display: flex"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content host-dashboard">
+        <!-- Page Titles -->
+        <div class="title-wrapper">
+          <h1 class="title">Referrals</h1>
+          <p class="subtitle">Share your link to earn commissions.</p>
+        </div>
+
+        <!-- ══════════ COMPONENT ══════════ -->
+        <div class="referral-link-card">
+          <div class="referral-link-header">
+            <div>
+              <p class="referral-link-label">Your Unique Link</p>
+              <p class="referral-link-sub">
+                Anyone who signs up via this link is tagged to you.
+              </p>
+            </div>
+            <button class="referral-link-icon-btn" title="QR Code">
+              <img src="../assets/images/qr-Frame.png" alt="QR Code" />
+            </button>
+          </div>
+
+          <div class="referral-link-input-row">
+            <input
+              class="referral-link-url"
+              id="referral-url"
+              type="text"
+              value="nsync.co/alex-vip"
+              readonly
+            />
+            <button
+              class="referral-copy-btn"
+              id="copy-btn"
+              title="Copy link"
+              onclick="copyLink()"
+            >
+              <img src="../assets/images/copy-icon.png" alt="Copy link" />
+            </button>
+          </div>
+
+          <button class="referral-share-btn" onclick="shareLink()">
+            <!-- share icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            Share Link
+          </button>
+        </div>
+
+        <!-- Top Cards -->
+        <div class="title-wrapper">
+          <h3 class="section-title">Performance (This month)</h3>
+        </div>
+        <div class="card-group">
+          <div class="card">
+            <div class="toll-wrapper">
+              <div class="btn btn-wrapper p-0">
+                <img
+                  class="icon"
+                  src="../assets/images/total-clicks.png"
+                  alt=""
+                />
+              </div>
+              <div></div>
+            </div>
+            <div class="">
+              <h2 class="toll" id="total-guests-value">1248</h2>
+              <h3 class="mt-2 card-title">Total Clicks</h3>
+            </div>
+          </div>
+          <div class="card">
+            <div class="toll-wrapper">
+              <div class="btn btn-wrapper p-0">
+                <img
+                  class="icon"
+                  src="../assets/images/signup-new.png"
+                  alt=""
+                />
+              </div>
+              <div></div>
+            </div>
+            <div class="">
+              <h2 class="toll" id="total-guests-value">86</h2>
+              <h3 class="mt-2 card-title">New Signups</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card referral-card">
+          <div class="toll-wrapper referral-card-left">
+            <div class="">
+              <img
+                class="icon"
+                src="../assets/images/icon-incline.png"
+                alt="Conversion Rate"
+              />
+            </div>
+            <h2 class="toll mt-2" id="earnings-value">6.8%</h2>
+            <h3 class="card-title mt-2">Conversion Rate</h3>
+          </div>
+          <div class="card-icon-wrapper referral-card-right">
+            <p class="progress justify-content-end"><span>+$430</span></p>
+            <p class="progress">Est. Commission</p>
+          </div>
+        </div>
+
+        <!-- Recent Signups -->
+        <div class="recent-events-section">
+          <div class="section-header">
+            <h2 class="section-title">Recent Signups</h2>
+            <a href="#" class="see-all-link">View all</a>
+          </div>
+          <div class="event-list" id="recent-events-list">
+            <!-- Populated via JavaScript -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const recentEventsData = [
+          {
+            name: "Neon Night",
+            date: "2 hours ago",
+            earnings: "$2,400",
+            image: "../assets/images/upcomingEvents.png",
+          },
+          {
+            name: "Jazz Evening",
+            date: "4 hours ago",
+            earnings: "$1,850",
+            image: "../assets/images/upcomingEvents.png",
+          },
+          {
+            name: "Summer Bash",
+            date: "1 day ago",
+            earnings: "$5,200",
+            image: "../assets/images/upcomingEvents.png",
+          },
+        ];
+
+        // Render Recent Events
+        function renderRecentEvents() {
+          const eventList = document.getElementById("recent-events-list");
+          if (!eventList) return;
+
+          eventList.innerHTML = recentEventsData
+            .map(
+              (event) => `
+            <div class="event-item">
+              <div class="event-avatar">${event.name.substring(0, 2).toUpperCase()}</div>
+              <div class="event-info">
+                <div class="event-name">${event.name}</div>
+                <div class="event-date">${event.date}</div>
+              </div>
+              <div class="event-stats">
+                <div class="earning-amount ">+${event.earnings}</div>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+        }
+
+        renderRecentEvents();
+      });
+
+      function copyLink() {
+        const url = document.getElementById("referral-url").value;
+        const btn = document.getElementById("copy-btn");
+        navigator.clipboard.writeText(url).then(() => {
+          btn.classList.add("copied");
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/></svg>`;
+          setTimeout(() => {
+            btn.classList.remove("copied");
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>`;
+          }, 2000);
+        });
+      }
+
+      function shareLink() {
+        const url = document.getElementById("referral-url").value;
+        if (navigator.share) {
+          navigator.share({
+            title: "Join via my referral link",
+            url: "https://" + url,
+          });
+        } else {
+          copyLink(); // fallback: just copy
+        }
+      }
+    </script>
+  </body>
+</html>

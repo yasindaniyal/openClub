@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="./index.html">
+                <img
+                  src="./assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list active nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./index.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Dashboard Select.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text active">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./events.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Events.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Events</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="live-floor.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/LiveFloor.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Live Floor</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./packages.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Packages.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Packages</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./reservations.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Reservations.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Reservations</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./promoters.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Promoters.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Promoters</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./staffs.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Staffs.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Staffs</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./notifications.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Notifications.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Notifications</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = 'edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">General Manager</p>
+                </div>
+              </div>
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = 'login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="./assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span
+                class="notification-badge"
+                id="notification-badge"
+                style="display: flex"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <!-- Page Titles -->
+        <div class="title-wrapper">
+          <h1 class="title">Dashboard</h1>
+          <p class="subtitle">Overview of Your Venue's Performance.</p>
+        </div>
+
+        <!-- Top Cards -->
+        <div class="card-group">
+          <div class="card">
+            <div class="toll-wrapper">
+              <div>
+                <h3 class="card-title">Tonight's Revenue</h3>
+                <h2 class="toll">$15,400.00</h2>
+              </div>
+
+              <div class="btn btn-wrapper btn-card">
+                <img
+                  class="icon"
+                  src="./assets/images/Total Income.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="card-icon-wrapper">
+              <p class="progress"><span>+12% </span> vs Last Week</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="toll-wrapper">
+              <div>
+                <h3 class="card-title">Expected Guests</h3>
+                <h2 class="toll">600</h2>
+              </div>
+
+              <div class="btn btn-wrapper btn-card">
+                <img
+                  class="icon"
+                  src="./assets/images/expectedGuests.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="card-icon-wrapper">
+              <p class="progress"><span>+5% </span> vs Last Week</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="toll-wrapper">
+              <div>
+                <h3 class="card-title">Section Utilization</h3>
+                <h2 class="toll">85%</h2>
+              </div>
+
+              <div class="btn btn-wrapper btn-card">
+                <img
+                  class="icon"
+                  src="./assets/images/sectionUtilization.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="card-icon-wrapper">
+              <p class="progress"><span>-2% </span> vs Last Week</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="toll-wrapper">
+              <div>
+                <h3 class="card-title">Upcoming Events</h3>
+                <h2 class="toll">3</h2>
+              </div>
+
+              <div class="btn btn-wrapper btn-card">
+                <img
+                  class="icon"
+                  src="./assets/images/upcomingEvents.png"
+                  alt=""
+                />
+              </div>
+            </div>
+            <div class="card-icon-wrapper">
+              <p class="progress"><span>This week </span> vs Last Week</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Bottom Grid -->
+        <div class="dashboard-bottom-grid">
+          <!-- Revenue Overview (Left Column) -->
+          <div class="revenue-chart-wrapper">
+            <div class="revenue-section">
+              <div class="revenue-header">
+                <h2 class="revenue-title">Revenue Overview</h2>
+                <div class="revenue-filter">
+                  <select id="revenue-filter-select" class="revenue-select">
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                  </select>
+                </div>
+              </div>
+              <div class="revenue-chart-container">
+                <div id="revenue-chart" class="revenue-chart"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule / Alerts (Right Column) -->
+          <div class="schedule-section-wrapper">
+            <div class="schedule-section">
+              <div class="schedule-header">
+                <h2 class="schedule-title">Need Attention</h2>
+              </div>
+
+              <div class="schedule-cards">
+                <!-- Card 1: VIP Alert -->
+                <div class="schedule-card">
+                  <div class="schedule-card-header">
+                    <div class="schedule-card-icon vip">
+                      <img src="./assets/images/vip.png" alt="VIP" />
+                    </div>
+                    <div class="schedule-card-content">
+                      <h3 class="schedule-card-title">VIP 1 Unsold</h3>
+                      <p class="schedule-card-subtitle">
+                        Tomorrow's event 'Neon Nights' has VIP 1 Unsold.
+                      </p>
+                      <a href="#" class="schedule-card-link"
+                        >Adjust Price &rarr;</a
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2: Staff Alert -->
+                <div class="schedule-card">
+                  <div class="schedule-card-header">
+                    <div class="schedule-card-icon staff">
+                      <img src="./assets/images/lowStaffing.png" alt="Staff" />
+                    </div>
+                    <div class="schedule-card-content">
+                      <h3 class="schedule-card-title">Low Staffing</h3>
+                      <p class="schedule-card-subtitle">
+                        Only 2 bottle service staff scheduled for Saturday.
+                      </p>
+                      <a href="#" class="schedule-card-link"
+                        >Manage Schedule &rarr;</a
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 3: Inventory Alert -->
+                <div class="schedule-card">
+                  <div class="schedule-card-header">
+                    <div class="schedule-card-icon inventory">
+                      <img src="./assets/images/pending.png" alt="Inventory" />
+                    </div>
+                    <div class="schedule-card-content">
+                      <h3 class="schedule-card-title">Pending Reservations</h3>
+                      <p class="schedule-card-subtitle">
+                        3 new reservation requests need approval.
+                      </p>
+                      <a href="#" class="schedule-card-link">Review &rarr;</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Recent Reservations -->
+        <div class="recent-reservations">
+          <div class="recent-reservations-header">
+            <h2 class="recent-reservations-title">Recent Reservations</h2>
+          </div>
+          <div class="recent-reservations-content">
+            <div class="dashboard-table">
+              <div class="table-responsive">
+                <div class="dashboard-table-header">
+                  <div class="dashboard-table-header-cell">Guest</div>
+                  <div class="dashboard-table-header-cell">Section</div>
+                  <div class="dashboard-table-header-cell">Party Size</div>
+                  <div class="dashboard-table-header-cell">Min Spend</div>
+                  <div class="dashboard-table-header-cell">Status</div>
+                </div>
+                <div id="recent-reservations-list">
+                  <!-- Data will be loaded here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/js/scripts.js"></script>
+    <script src="./assets/js/dashboard.js"></script>
+  </body>
+</html>

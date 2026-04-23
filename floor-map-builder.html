@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="./index.html">
+                <img
+                  src="./assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./index.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Dashboard.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="events.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Events.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Events</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="live-floor.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/LiveFloor.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Live Floor</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./packages.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Packages.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Packages</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./reservations.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Reservations.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Reservations</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./promoters.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Promoters.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Promoters</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./staffs.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Staffs.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Staffs</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="./notifications.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="./assets/images/Notifications.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Notifications</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = 'edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">General Manager</p>
+                </div>
+              </div>
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = 'login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="./assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span class="notification-badge" id="notification-badge"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Floor -->
+
+      <section class="content live-floor dashboard-content">
+        <div class="events-wrapper">
+          <div class="events-header">
+            <div class="events-header-content">
+              <h1 class="live-floor-title">Floor Map Builder</h1>
+              <div class="floor-meta-wrap">
+                <p class="live-floor-subtitle">
+                  Design your venue layout and section capacities
+                </p>
+              </div>
+            </div>
+
+            <div class="floor-legend-wrapper gap-2">
+              <button
+                class="btn btn-primary m-0 build-map-btn reset-btn"
+                id="btnReset"
+              >
+                Reset
+              </button>
+              <button
+                class="btn btn-primary m-0 build-map-btn save-btn"
+                id="btnSave"
+              >
+                Save Layout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Builder -->
+        <div class="builder">
+          <!-- Left panel -->
+          <div class="panel-col">
+            <!-- Add Section -->
+            <div class="panel">
+              <div class="panel-title">Add Section</div>
+              <div class="type-grid">
+                <button class="type-btn" data-type="Table">
+                  <img src="./assets/images/createIcon.png" alt="Table" />
+                  Table
+                </button>
+                <button class="type-btn" data-type="Booth">
+                  <img src="./assets/images/createIcon.png" alt="Booth" />
+                  Booth
+                </button>
+                <button class="type-btn" data-type="VIP">
+                  <img src="./assets/images/createIcon.png" alt="VIP" />
+                  VIP
+                </button>
+                <button class="type-btn" data-type="Bar">
+                  <img src="./assets/images/createIcon.png" alt="Bar" />
+                  Bar
+                </button>
+                <button class="type-btn" data-type="Dance">
+                  <img src="./assets/images/live-floor-icon.png" alt="Dance" />
+                  Dance
+                </button>
+              </div>
+            </div>
+
+            <!-- Properties -->
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Properties</div>
+                <button class="del-btn" id="btnClear" title="Clear selection">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6" />
+                    <path d="M14 11v6" />
+                    <path d="M9 6V4h6v2" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="fName" placeholder="New Table" />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="fCategory">
+                  <option value="" disabled selected>Select category</option>
+                  <option value="available">Available</option>
+                  <option value="reserved">Reserved</option>
+                  <option value="occupied">Occupied</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Seats</label>
+                <input type="number" id="fSeating" placeholder="0" min="0" />
+              </div>
+              <div class="form-group">
+                <label>Booking Price ($)</label>
+                <input type="number" id="fPrice" placeholder="0" min="0" />
+              </div>
+            </div>
+
+            <button class="btn-add" id="btnAdd">Add</button>
+          </div>
+
+          <!-- Canvas -->
+          <div class="floor-map-card">
+            <div class="canvas-header d-none">
+              <div id="canvasCount"></div>
+            </div>
+            <div id="canvas" class="floor-map">
+              <div class="canvas-empty" id="emptyState">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="3" />
+                  <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
+                </svg>
+                <p>Your floor map is empty</p>
+                <p>Add sections using the panel →</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.builder -->
+
+        <div class="toast-msg" id="toast"></div>
+      </section>
+    </main>
+
+    <script src="./assets/js/scripts.js"></script>
+    <script>
+      (() => {
+        /* ── State ─────────────────────────────────────────────────── */
+        let items = []; // { id, name, type, status, seats, price, x, y }
+        let selectedId = null;
+        let idCounter = 1;
+        let selectedType = ""; // Table | Booth | VIP | Bar
+
+        /* ── DOM refs ──────────────────────────────────────────────── */
+        const canvas = document.getElementById("canvas");
+        const emptyState = document.getElementById("emptyState");
+        const fName = document.getElementById("fName");
+        const fCategory = document.getElementById("fCategory");
+        const fSeating = document.getElementById("fSeating");
+        const fPrice = document.getElementById("fPrice");
+        const countEl = document.getElementById("canvasCount");
+        const typeBtns = document.querySelectorAll(".type-btn");
+
+        /* ── Helpers ───────────────────────────────────────────────── */
+        function showToast(msg) {
+          const t = document.getElementById("toast");
+          t.textContent = msg;
+          t.classList.add("show");
+          clearTimeout(t._tid);
+          t._tid = setTimeout(() => t.classList.remove("show"), 2600);
+        }
+
+        function updateCount() {
+          const n = items.length;
+          countEl.textContent = n + (n === 1 ? " section" : " sections");
+          emptyState.style.display = n === 0 ? "flex" : "none";
+        }
+
+        function deselect() {
+          selectedId = null;
+          document
+            .querySelectorAll(".floor-box")
+            .forEach((el) => el.classList.remove("selected"));
+          clearForm();
+        }
+
+        function clearForm() {
+          fName.value = "";
+          fCategory.value = "";
+          fSeating.value = "";
+          fPrice.value = "";
+          typeBtns.forEach((b) => b.classList.remove("active"));
+          fName.placeholder = "New Section";
+          selectedType = "";
+        }
+
+        /* ── Create a floor item element ──────────────────────────── */
+        function createItemEl(item) {
+          const el = document.createElement("div");
+          // Add status class for the indicator dot and reserved state
+          const status = item.status || "available";
+          const catClass = (item.type || "Table").toLowerCase() + "-box";
+          el.className = `floor-box ${status} ${catClass}`;
+          el.dataset.id = item.id;
+          el.dataset.cat = item.cat;
+          el.dataset.status = status;
+
+          const statusText = status
+            ? status.charAt(0).toUpperCase() + status.slice(1)
+            : "Available";
+
+          el.style.left = item.x + "px";
+          el.style.top = item.y + "px";
+          if (item.w) el.style.width = item.w + "px";
+          if (item.h) el.style.height = item.h + "px";
+
+          el.innerHTML = `
+            <button class="item-del" title="Delete">×</button>
+            ${escHtml(item.name)}
+            <small>${statusText}</small>
+          `;
+
+          /* Click to select */
+          el.addEventListener("mousedown", (e) => {
+            if (e.target.classList.contains("item-del")) return;
+            selectItem(item.id);
+            startDrag(e, el, item);
+          });
+
+          return el;
+        }
+
+        /* Event Delegation for Delete Buttons */
+        canvas.addEventListener("click", (e) => {
+          if (e.target.classList.contains("item-del")) {
+            e.stopPropagation();
+            const box = e.target.closest(".floor-box");
+            if (box) {
+              const id = parseInt(box.dataset.id);
+              removeItem(id);
+            }
+          }
+        });
+
+        function escHtml(str) {
+          return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        /* Check if item overlaps with any other registered items */
+        function checkOverlap(targetId, nx, ny, nw, nh) {
+          // Get dimensions from the item objects
+          for (let i = 0; i < items.length; i++) {
+            const other = items[i];
+            if (other.id === targetId) continue;
+
+            const otherW = other.w || 100; // default width if not set
+            const otherH = other.h || 80; // default height if not set
+
+            const isOverlap = !(
+              nx + nw <= other.x ||
+              nx >= other.x + otherW ||
+              ny + nh <= other.y ||
+              ny >= other.y + otherH
+            );
+
+            if (isOverlap) return true;
+          }
+          return false;
+        }
+
+        /* ── Drag logic ────────────────────────────────────────────── */
+        function startDrag(e, el, item) {
+          e.preventDefault();
+          const startX = item.x;
+          const startY = item.y;
+          const rect = canvas.getBoundingClientRect();
+          const scrollEl = canvas.parentElement;
+          const offsetX = e.clientX - rect.left + scrollEl.scrollLeft - item.x;
+          const offsetY = e.clientY - rect.top + scrollEl.scrollTop - item.y;
+          let hasOverlap = false;
+
+          function onMove(ev) {
+            ev.preventDefault();
+            const canvasRect = canvas.getBoundingClientRect();
+            let nx =
+              ev.clientX - canvasRect.left + scrollEl.scrollLeft - offsetX;
+            let ny = ev.clientY - canvasRect.top + scrollEl.scrollTop - offsetY;
+
+            // Clamp inside canvas using content size
+            nx = Math.max(0, Math.min(nx, canvas.scrollWidth - el.offsetWidth));
+            ny = Math.max(
+              0,
+              Math.min(ny, canvas.scrollHeight - el.offsetHeight),
+            );
+
+            // Collision check
+            hasOverlap = checkOverlap(
+              item.id,
+              nx,
+              ny,
+              el.offsetWidth,
+              el.offsetHeight,
+            );
+            el.classList.toggle("invalid-drag", hasOverlap);
+
+            item.x = nx;
+            item.y = ny;
+            el.style.left = nx + "px";
+            el.style.top = ny + "px";
+          }
+
+          function onUp() {
+            document.removeEventListener("mousemove", onMove);
+            document.removeEventListener("mouseup", onUp);
+
+            if (hasOverlap) {
+              // Revert
+              item.x = startX;
+              item.y = startY;
+              el.style.left = startX + "px";
+              el.style.top = startY + "px";
+              el.classList.remove("invalid-drag");
+              showToast("Sections cannot overlap");
+            } else {
+              el.classList.remove("invalid-drag");
+            }
+          }
+
+          document.addEventListener("mousemove", onMove);
+          document.addEventListener("mouseup", onUp);
+        }
+
+        /* Touch drag */
+        function addTouchDrag(el, item) {
+          el.addEventListener(
+            "touchstart",
+            (e) => {
+              selectItem(item.id);
+              const startX = item.x;
+              const startY = item.y;
+              const touch = e.touches[0];
+              const rect = canvas.getBoundingClientRect();
+              const scrollEl = canvas.parentElement;
+              const offsetX =
+                touch.clientX - rect.left + scrollEl.scrollLeft - item.x;
+              const offsetY =
+                touch.clientY - rect.top + scrollEl.scrollTop - item.y;
+              let hasOverlap = false;
+
+              function onTouchMove(ev) {
+                ev.preventDefault();
+                const t = ev.touches[0];
+                const cr = canvas.getBoundingClientRect();
+                const scrollEl = canvas.parentElement;
+                let nx = t.clientX - cr.left + scrollEl.scrollLeft - offsetX;
+                let ny = t.clientY - cr.top + scrollEl.scrollTop - offsetY;
+
+                nx = Math.max(
+                  0,
+                  Math.min(nx, canvas.scrollWidth - el.offsetWidth),
+                );
+                ny = Math.max(
+                  0,
+                  Math.min(ny, canvas.scrollHeight - el.offsetHeight),
+                );
+
+                hasOverlap = checkOverlap(
+                  item.id,
+                  nx,
+                  ny,
+                  el.offsetWidth,
+                  el.offsetHeight,
+                );
+                el.classList.toggle("invalid-drag", hasOverlap);
+
+                item.x = nx;
+                item.y = ny;
+                el.style.left = nx + "px";
+                el.style.top = ny + "px";
+              }
+              function onTouchEnd() {
+                document.removeEventListener("touchmove", onTouchMove);
+                document.removeEventListener("touchend", onTouchEnd);
+
+                if (hasOverlap) {
+                  item.x = startX;
+                  item.y = startY;
+                  el.style.left = startX + "px";
+                  el.style.top = startY + "px";
+                  el.classList.remove("invalid-drag");
+                  showToast("Sections cannot overlap");
+                } else {
+                  el.classList.remove("invalid-drag");
+                }
+              }
+              document.addEventListener("touchmove", onTouchMove, {
+                passive: false,
+              });
+              document.addEventListener("touchend", onTouchEnd);
+            },
+            { passive: true },
+          );
+        }
+
+        /* ── Add item ──────────────────────────────────────────────── */
+        function addItem({ name, type, status, seats, price, x, y, w, h }) {
+          const item = {
+            id: idCounter++,
+            name: name || `${type} ${idCounter - 1}`,
+            cat: type, // cat drives the colour/icon on canvas
+            type,
+            status,
+            seats,
+            price,
+            x: x ?? (40 + Math.random() * 200) | 0,
+            y: y ?? (40 + Math.random() * 160) | 0,
+            w: w || null,
+            h: h || null,
+          };
+          items.push(item);
+
+          const el = createItemEl(item);
+          addTouchDrag(el, item);
+          canvas.appendChild(el);
+          updateCount();
+          return item;
+        }
+
+        /* ── Remove item ───────────────────────────────────────────── */
+        function removeItem(id) {
+          items = items.filter((i) => i.id !== id);
+          const el = canvas.querySelector(`[data-id="${id}"]`);
+          if (el) {
+            el.style.transform = "scale(0)";
+            el.style.opacity = "0";
+            el.style.transition = "transform .2s, opacity .2s";
+            setTimeout(() => el.remove(), 220);
+          }
+          if (selectedId === id) {
+            selectedId = null;
+            clearForm();
+          }
+          updateCount();
+          showToast("Section removed");
+        }
+
+        /* ── Select item ───────────────────────────────────────────── */
+        function selectItem(id) {
+          selectedId = id;
+          document.querySelectorAll(".floor-box").forEach((el) => {
+            el.classList.toggle("selected", +el.dataset.id === id);
+          });
+          const item = items.find((i) => i.id === id);
+          if (!item) return;
+          fName.value = item.name;
+          fCategory.value = item.status ?? "";
+          fSeating.value = item.seats ?? "";
+          fPrice.value = item.price ?? "";
+          selectedType = item.type;
+          typeBtns.forEach((b) =>
+            b.classList.toggle("active", b.dataset.type === item.type),
+          );
+        }
+
+        /* ── Type buttons ──────────────────────────────────────────── */
+        typeBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            typeBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedType = btn.dataset.type; // track type separately
+            fName.placeholder = `New ${btn.dataset.type}`;
+          });
+        });
+
+        /* ── Add button ────────────────────────────────────────────── */
+        document.getElementById("btnAdd").addEventListener("click", () => {
+          if (!selectedType) {
+            showToast("Please select a section type first.");
+            return;
+          }
+
+          if (selectedId) {
+            // Update existing
+            const item = items.find((i) => i.id === selectedId);
+            if (item) {
+              item.name = fName.value.trim() || fName.placeholder;
+              item.type = selectedType;
+              item.cat = selectedType; // keeps canvas colouring in sync
+              item.status = fCategory.value;
+              item.seats = fSeating.value;
+              item.price = fPrice.value;
+              const el = canvas.querySelector(`[data-id="${item.id}"]`);
+              if (el) {
+                el.dataset.cat = item.cat;
+                el.dataset.status = item.status;
+
+                // Update specific box and status classes
+                const catClass = (item.type || "Table").toLowerCase() + "-box";
+                el.className = `floor-box ${item.status || "available"} ${catClass}${selectedId === item.id ? " selected" : ""}`;
+
+                const statusText = item.status
+                  ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
+                  : "Available";
+
+                el.innerHTML = `
+                  <button class="item-del" title="Delete">×</button>
+                  ${escHtml(item.name)}
+                  <small>${statusText}</small>
+                `;
+              }
+              showToast(`✓ "${item.name}" updated`);
+              deselect();
+            }
+          } else {
+            // New item
+            const name = fName.value.trim() || fName.placeholder;
+            const status = fCategory.value; // available | reserved | occupied
+            addItem({
+              name,
+              type: selectedType,
+              status,
+              seats: fSeating.value,
+              price: fPrice.value,
+            });
+            showToast(`✓ "${name}" added to floor`);
+            clearForm();
+          }
+        });
+
+        /* ── Clear/deselect ────────────────────────────────────────── */
+        document.getElementById("btnClear").addEventListener("click", () => {
+          if (selectedId) {
+            removeItem(selectedId);
+          } else {
+            deselect();
+          }
+        });
+
+        /* Deselect on canvas background click */
+        canvas.addEventListener("mousedown", (e) => {
+          if (
+            e.target === canvas ||
+            e.target === emptyState ||
+            e.target.closest(".canvas-empty")
+          ) {
+            deselect();
+          }
+        });
+
+        /* ── Reset ─────────────────────────────────────────────────── */
+        document.getElementById("btnReset").addEventListener("click", () => {
+          if (items.length === 0) {
+            showToast("Canvas is already empty.");
+            return;
+          }
+          if (!confirm("Reset the entire floor map?")) return;
+          items = [];
+          canvas.querySelectorAll(".floor-box").forEach((el) => el.remove());
+          deselect();
+          updateCount();
+          showToast("Floor map reset");
+        });
+
+        /* ── Save ──────────────────────────────────────────────────── */
+        document.getElementById("btnSave").addEventListener("click", () => {
+          if (items.length === 0) {
+            showToast("Nothing to save yet.");
+            return;
+          }
+          const json = JSON.stringify(items, null, 2);
+          console.log("Floor layout saved:", json);
+          showToast(
+            `✓ Layout saved — ${items.length} section${items.length > 1 ? "s" : ""}`,
+          );
+        });
+
+        /* ── Seed with default sections ────────────────────────────── */
+        const seeds = [
+          /* Row 1: VIPs */
+          {
+            name: "VIP 1",
+            type: "VIP",
+            status: "reserved",
+            seats: 6,
+            price: 500,
+            x: 20,
+            y: 10,
+            w: 120,
+            h: 80,
+          },
+          {
+            name: "VIP 2",
+            type: "VIP",
+            status: "available",
+            seats: 6,
+            price: 500,
+            x: 150,
+            y: 10,
+            w: 120,
+            h: 80,
+          },
+          {
+            name: "VIP 3",
+            type: "VIP",
+            status: "occupied",
+            seats: 6,
+            price: 500,
+            x: 280,
+            y: 10,
+            w: 150,
+            h: 80,
+          },
+
+          /* Row 2: Booths */
+          {
+            name: "Booth 1",
+            type: "Booth",
+            status: "available",
+            seats: 4,
+            price: 200,
+            x: 20,
+            y: 110,
+            w: 80,
+            h: 80,
+          },
+          {
+            name: "Booth 2",
+            type: "Booth",
+            status: "reserved",
+            seats: 4,
+            price: 200,
+            x: 110,
+            y: 110,
+            w: 80,
+            h: 80,
+          },
+          {
+            name: "Booth 3",
+            type: "Booth",
+            status: "available",
+            seats: 4,
+            price: 200,
+            x: 200,
+            y: 110,
+            w: 80,
+            h: 80,
+          },
+
+          /* Row 2.5: Table */
+          {
+            name: "Table 1",
+            type: "Table",
+            status: "available",
+            seats: 2,
+            price: 50,
+            x: 20,
+            y: 205,
+            w: 70,
+            h: 70,
+          },
+
+          /* Row 3: Bar & Dance */
+          {
+            name: "Main Bar",
+            type: "Bar",
+            status: "available",
+            seats: 12,
+            price: 0,
+            x: 20,
+            y: 290,
+            w: 300,
+            h: 60,
+          },
+          {
+            name: "Dancefloor",
+            type: "Dance",
+            status: "available",
+            seats: 0,
+            price: 0,
+            x: 360,
+            y: 110,
+            w: 250,
+            h: 240,
+          },
+        ];
+        seeds.forEach((s) => addItem(s));
+
+        /* init */
+        updateCount();
+      })();
+    </script>
+  </body>
+</html>

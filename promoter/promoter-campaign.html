@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/host.css" />
+    <link rel="stylesheet" href="../assets/css/promoter.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="../index.html">
+                <img
+                  src="../assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-dashboard.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/Dashboard.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-guest-list.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/guest-list.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Guest List</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-referral.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/referral-link.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Referrals</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-earning.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/earning.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Earnings</p>
+                </a>
+              </li>
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-contact.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/contact.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Contacts</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item active">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="promoter-campaign.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/campaign-select.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text active">Campaigns</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <!-- Avatar & Info -->
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = '../edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">Promoter</p>
+                </div>
+              </div>
+
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = '../login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="../assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span
+                class="notification-badge"
+                id="notification-badge"
+                style="display: flex"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content host-dashboard">
+        <!-- Page Titles -->
+        <div class="title-wrapper">
+          <div>
+            <h1 class="title">New Campaign</h1>
+            <p class="subtitle">
+              Create a campaign to reward your guests and friends for helping
+              you grow your following.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── SELECTED AUDIENCE CARD ── -->
+        <div class="audience-card">
+          <div class="audience-icon">
+            <img src="../assets/images/total-guests.png" alt="" />
+          </div>
+          <div class="audience-info">
+            <div class="audience-label">Selected Audience</div>
+            <div class="audience-sub">Custom Selection</div>
+          </div>
+          <div class="audience-count">
+            <div class="audience-count-num" id="audience-num">24</div>
+            <div class="audience-count-label">contacts</div>
+          </div>
+        </div>
+
+        <!-- ── TARGET EVENT ── -->
+        <div class="field-group">
+          <div class="field-label">Target Event</div>
+          <select class="event-select" id="event-select">
+            <option value="Summer Kickoff - Jun 12">
+              Summer Kickoff – Jun 12
+            </option>
+            <option value="Neon Nights - Jun 15">Neon Nights – Jun 15</option>
+            <option value="VIP Exclusive - Jun 20">
+              VIP Exclusive – Jun 20
+            </option>
+            <option value="Memorial Day Bash - May 28">
+              Memorial Day Bash – May 28
+            </option>
+          </select>
+        </div>
+
+        <!-- ── MESSAGE ── -->
+        <div class="field-group">
+          <div class="message-label-row">
+            <div class="field-label" style="margin-bottom: 0">Message</div>
+            <button class="ai-suggest-btn" onclick="aiSuggest()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              AI Suggest
+            </button>
+          </div>
+          <div class="message-wrapper">
+            <textarea
+              class="message-textarea"
+              id="message-textarea"
+              placeholder="Type your message here..."
+            >
+Hey {name}! I'm hosting at {event} this weekend. It's been a while since you came out. Let me know if you want to get on my VIP list! 🎉</textarea
+            >
+            <div class="token-pills">
+              <button class="token-pill" onclick="insertToken('{name}')">
+                {name}
+              </button>
+              <button class="token-pill" onclick="insertToken('{event}')">
+                {event}
+              </button>
+              <button class="token-pill" onclick="insertToken('{link}')">
+                {link}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SEND BUTTON ── -->
+        <button class="send-btn" id="send-btn">
+          <img src="../assets/images/icon-invite.png" alt="" />
+          <span id="send-label">Send to 24 Contacts</span>
+        </button>
+      </section>
+    </main>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+      const sampleNames = ["Alex", "Sarah", "Jordan", "Mike", "Priya"];
+      const sampleLinks = ["ringside.vip/join"];
+
+      function getEventShort() {
+        const sel = document.getElementById("event-select");
+        return sel.value.split(" - ")[0].split(" – ")[0];
+      }
+
+      function insertToken(token) {
+        const ta = document.getElementById("message-textarea");
+        const s = ta.selectionStart;
+        const e = ta.selectionEnd;
+        ta.value = ta.value.slice(0, s) + token + ta.value.slice(e);
+        ta.selectionStart = ta.selectionEnd = s + token.length;
+        ta.focus();
+      }
+
+      const suggestions = [
+        "Hey {name}! Don't miss {event} - it's going to be  Hit me up for the VIP list!",
+        "Yo {name}! Hosting at {event} this week. Come through - link below {link}",
+        "{name}, VIP spots are filling up for {event}. Let me know ASAP if you're in!",
+      ];
+
+      let suggestIndex = 0;
+
+      function aiSuggest() {
+        document.getElementById("message-textarea").value =
+          suggestions[suggestIndex % suggestions.length];
+        suggestIndex++;
+      }
+    </script>
+  </body>
+</html>

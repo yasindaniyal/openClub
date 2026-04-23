@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Club</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/host.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+
+  <body>
+    <main class="open-club container-fluid p-0">
+      <div class="sidebar-wrapper">
+        <!-- Toggle Button (visible only below 992px) -->
+        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar-section">
+          <div class="sidebar d-flex flex-column h-100">
+            <div class="logo mb-4">
+              <a href="../index.html">
+                <img
+                  src="../assets/images/logo.png"
+                  class="img-fluid"
+                  alt="Ringside Logo"
+                />
+              </a>
+            </div>
+            <p class="sidebar-eyebrow">Menu</p>
+
+            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="host-dashboard.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/Dashboard.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Dashboard</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="host-guest-list.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/guest-list.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Guest List</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="host-reservations.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/host-reservations.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text">Reservations</p>
+                </a>
+              </li>
+
+              <li class="nav-list nav-item active">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="host-scanner.html"
+                >
+                  <div class="btn-wrapper me-2">
+                    <img
+                      class="primary"
+                      src="../assets/images/Scanner_select.png"
+                      alt=""
+                    />
+                  </div>
+                  <p class="m-0 link-text active">Scanner</p>
+                </a>
+              </li>
+            </ul>
+
+            <!-- User Profile Card -->
+            <div class="sidebar-user-card mt-auto">
+              <!-- Avatar & Info -->
+              <div
+                class="sidebar-user-profile"
+                onclick="window.location.href = '../edit-profile.html'"
+                style="cursor: pointer"
+              >
+                <div class="sidebar-user-avatar">YD</div>
+                <div class="sidebar-user-info">
+                  <p class="sidebar-user-name">Yasin Daniyal</p>
+                  <p class="sidebar-user-post">Host</p>
+                </div>
+              </div>
+
+              <!-- Logout -->
+              <button
+                class="sidebar-logout-btn"
+                onclick="window.location.href = '../login.html'"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+      <section class="dashboard">
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <div class="search-bar-content">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search reservations, guests, promoters..."
+            />
+          </div>
+          <div class="d-flex align-items-center gap-3 notification-wrapper">
+            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
+            <button
+              class="action-btn notification-btn"
+              id="notification-btn"
+              aria-label="Notifications"
+            >
+              <img
+                src="../assets/images/Notifications.png"
+                alt="Notifications"
+                class="action-icon"
+              />
+              <span
+                class="notification-badge"
+                id="notification-badge"
+                style="display: flex"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content host-reservations">
+        <!-- Page Titles -->
+        <div
+          class="title-wrapper d-flex justify-content-between align-items-center"
+        >
+          <div>
+            <h1 class="title">Ticket Scanner</h1>
+            <p class="subtitle">Position QR code within the frame.</p>
+          </div>
+        </div>
+
+        <!-- Scanner -->
+        <div class="scanner-card">
+          <div class="scanner-viewport" id="viewport">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="canvas"></canvas>
+            <div class="scan-line"></div>
+            <div class="scan-progress" id="scanProgress"></div>
+
+            <div class="qr-icon">
+              <img src="../assets/images/Scanner3.png" alt="QR Code" />
+              <!-- <div class="qr-cell tl"></div>
+              <div class="qr-cell tr"></div>
+              <div class="qr-cell bl"></div>
+              <div class="qr-cell br">
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+              </div> -->
+            </div>
+            <button class="btn-scan" id="btnScan">Tap to Scan</button>
+
+            <div class="result-overlay" id="resultOverlay">
+              <div class="result-icon" id="resultIcon"></div>
+              <div class="result-title" id="resultTitle"></div>
+              <div class="result-code" id="resultCode"></div>
+              <div class="result-msg" id="resultMsg"></div>
+              <button class="btn-scan-again" id="btnScanAgain">
+                Scan Again
+              </button>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <input
+              class="ticket-input"
+              id="ticketInput"
+              type="text"
+              placeholder="Enter ticket code manually..."
+            />
+            <button class="btn-scan" id="btnVerify">Verify</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../assets/js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <script>
+      // ─────────────────────────────────────────
+      // CONFIG
+      // ─────────────────────────────────────────
+      const TICKET_REGEX = /^TKT-[A-Z0-9]{6}$/; // adjust to your format
+      const API_ENDPOINT = "/api/verify-ticket"; // your real endpoint
+      const USE_MOCK = true; // flip to false when backend ready
+
+      // ─────────────────────────────────────────
+      // MOCK DATABASE (remove when backend ready)
+      // ─────────────────────────────────────────
+      const MOCK_DB = {
+        "TKT-ABC123": "valid",
+        "TKT-XYZ999": "used",
+        "TKT-EXP001": "expired",
+      };
+
+      async function callAPI(code) {
+        if (USE_MOCK) {
+          await new Promise((r) => setTimeout(r, 600));
+          return { status: MOCK_DB[code] || "not_found" };
+        }
+        const res = await fetch(
+          `${API_ENDPOINT}?code=${encodeURIComponent(code)}`,
+        );
+        return await res.json();
+      }
+
+      // ─────────────────────────────────────────
+      // RESULT STATES
+      // ─────────────────────────────────────────
+      const STATES = {
+        valid: {
+          icon: "✅",
+          title: "Valid Ticket",
+          msg: "Guest may enter.",
+          cls: "state-valid",
+        },
+        used: {
+          icon: "♻️",
+          title: "Already Checked In",
+          msg: "This ticket was already used.",
+          cls: "state-used",
+        },
+        expired: {
+          icon: "⏰",
+          title: "Ticket Expired",
+          msg: "This ticket is no longer valid.",
+          cls: "state-expired",
+        },
+        not_found: {
+          icon: "❌",
+          title: "Invalid Ticket",
+          msg: "Not found in system.",
+          cls: "state-invalid",
+        },
+        wrong_fmt: {
+          icon: "🚫",
+          title: "Not a Ticket QR",
+          msg: "This QR is not a venue ticket.",
+          cls: "state-wrong",
+        },
+        error: {
+          icon: "⚠️",
+          title: "Verification Error",
+          msg: "Could not verify. Try again.",
+          cls: "state-invalid",
+        },
+      };
+
+      // ─────────────────────────────────────────
+      // DOM REFS
+      // ─────────────────────────────────────────
+      const viewport = document.getElementById("viewport");
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const btnScan = document.getElementById("btnScan");
+      const btnScanAgain = document.getElementById("btnScanAgain");
+      const btnVerify = document.getElementById("btnVerify");
+      const ticketInput = document.getElementById("ticketInput");
+      const resultIcon = document.getElementById("resultIcon");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultCode = document.getElementById("resultCode");
+      const resultMsg = document.getElementById("resultMsg");
+
+      let stream = null;
+      let rafId = null;
+      let timeoutId = null;
+      let paused = false;
+      let scanning = false;
+      const SCAN_TIMEOUT = 30000;
+
+      // ─────────────────────────────────────────
+      // CAMERA
+      // ─────────────────────────────────────────
+      async function startCamera() {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+          });
+          video.srcObject = stream;
+          await video.play();
+          viewport.classList.add("scanning");
+          scanning = true;
+          paused = false;
+          rafId = requestAnimationFrame(scanFrame);
+
+          // Auto-stop timer
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            stopCamera();
+          }, SCAN_TIMEOUT);
+        } catch (err) {
+          alert(
+            "Camera access denied or unavailable.\nUse the manual input below.",
+          );
+        }
+      }
+
+      function stopCamera() {
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          stream = null;
+        }
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        video.srcObject = null;
+        scanning = false;
+        viewport.classList.remove("scanning");
+        clearTimeout(timeoutId);
+      }
+
+      // ─────────────────────────────────────────
+      // FRAME LOOP
+      // ─────────────────────────────────────────
+      function scanFrame() {
+        if (!scanning || paused) return;
+
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imgData.data, imgData.width, imgData.height, {
+            inversionAttempts: "dontInvert",
+          });
+
+          if (code) {
+            paused = true;
+            stopCamera(); // ✅ stop camera immediately
+            handleCode(code.data);
+            return;
+          }
+        }
+
+        rafId = requestAnimationFrame(scanFrame);
+      }
+
+      // ─────────────────────────────────────────
+      // VALIDATE + SHOW RESULT
+      // ─────────────────────────────────────────
+      async function handleCode(raw) {
+        const code = raw.trim().toUpperCase();
+
+        // Step 1: format check
+        if (!TICKET_REGEX.test(code)) {
+          showResult("wrong_fmt", raw);
+          return;
+        }
+
+        // Step 2: backend check
+        try {
+          const data = await callAPI(code);
+          showResult(data.status || "error", code);
+        } catch (e) {
+          showResult("error", code);
+        }
+      }
+
+      function showResult(status, code) {
+        const state = STATES[status] || STATES.error;
+
+        // clear old state classes
+        Object.values(STATES).forEach((s) => viewport.classList.remove(s.cls));
+
+        resultIcon.textContent = state.icon;
+        resultTitle.textContent = state.title;
+        resultCode.textContent = code;
+        resultMsg.textContent = state.msg;
+
+        viewport.classList.add("result", state.cls);
+      }
+
+      // ─────────────────────────────────────────
+      // RESET
+      // ─────────────────────────────────────────
+
+      function resetScanner() {
+        Object.values(STATES).forEach((s) => viewport.classList.remove(s.cls));
+        viewport.classList.remove("result");
+
+        startCamera(); // ✅ restart clean
+      }
+
+      // ─────────────────────────────────────────
+      // EVENTS
+      // ─────────────────────────────────────────
+      btnScan.addEventListener("click", startCamera);
+      btnScanAgain.addEventListener("click", resetScanner);
+
+      btnVerify.addEventListener("click", () => {
+        const val = ticketInput.value.trim();
+        if (!val) {
+          ticketInput.focus();
+          return;
+        }
+        paused = true;
+        handleCode(val);
+      });
+
+      ticketInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") btnVerify.click();
+      });
+    </script>
+  </body>
+</html>
