@@ -11,6 +11,47 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./assets/css/main.css" />
+    <style>
+      /* Builder Specific Styles */
+      .resize-handle {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: var(--color-accent);
+        right: -6px;
+        bottom: -6px;
+        cursor: nwse-resize;
+        border-radius: 50%;
+        display: none;
+        z-index: 10;
+        border: 2px solid white;
+      }
+      .floor-box.selected .resize-handle {
+        display: block;
+      }
+      .form-row {
+        display: flex;
+        gap: 10px;
+      }
+      .form-row .form-group {
+        flex: 1;
+      }
+      .floor-box.invalid-drag {
+        background-color: rgba(239, 68, 68, 0.4) !important;
+        border: 2px solid #ef4444 !important;
+      }
+      .floor-box {
+        min-width: fit-content;
+        min-height: fit-content;
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        overflow: visible !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -338,6 +379,16 @@
                 <label>Seats</label>
                 <input type="number" id="fSeating" placeholder="0" min="0" />
               </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Width</label>
+                  <input type="number" id="fWidth" placeholder="W" min="20" />
+                </div>
+                <div class="form-group">
+                  <label>Height</label>
+                  <input type="number" id="fHeight" placeholder="H" min="20" />
+                </div>
+              </div>
               <div class="form-group">
                 <label>Booking Price ($)</label>
                 <input type="number" id="fPrice" placeholder="0" min="0" />
@@ -390,9 +441,19 @@
         const fName = document.getElementById("fName");
         const fCategory = document.getElementById("fCategory");
         const fSeating = document.getElementById("fSeating");
+        const fWidth = document.getElementById("fWidth");
+        const fHeight = document.getElementById("fHeight");
         const fPrice = document.getElementById("fPrice");
         const countEl = document.getElementById("canvasCount");
         const typeBtns = document.querySelectorAll(".type-btn");
+
+        const DEFAULT_SIZES = {
+          Table: { w: 70, h: 70 },
+          Booth: { w: 90, h: 90 },
+          VIP: { w: 140, h: 80 },
+          Bar: { w: 300, h: 60 },
+          Dance: { w: 250, h: 220 },
+        };
 
         /* ── Helpers ───────────────────────────────────────────────── */
         function showToast(msg) {
@@ -421,6 +482,8 @@
           fName.value = "";
           fCategory.value = "";
           fSeating.value = "";
+          fWidth.value = "";
+          fHeight.value = "";
           fPrice.value = "";
           typeBtns.forEach((b) => b.classList.remove("active"));
           fName.placeholder = "New Section";
@@ -444,20 +507,32 @@
 
           el.style.left = item.x + "px";
           el.style.top = item.y + "px";
-          if (item.w) el.style.width = item.w + "px";
-          if (item.h) el.style.height = item.h + "px";
+          el.style.width = (item.w || 100) + "px";
+          el.style.height = (item.h || 80) + "px";
 
           el.innerHTML = `
             <button class="item-del" title="Delete">×</button>
+            <div class="resize-handle"></div>
             ${escHtml(item.name)}
             <small>${statusText}</small>
           `;
 
           /* Click to select */
           el.addEventListener("mousedown", (e) => {
-            if (e.target.classList.contains("item-del")) return;
+            if (
+              e.target.classList.contains("item-del") ||
+              e.target.classList.contains("resize-handle")
+            )
+              return;
             selectItem(item.id);
             startDrag(e, el, item);
+          });
+
+          /* Resize handler */
+          const handle = el.querySelector(".resize-handle");
+          handle.addEventListener("mousedown", (e) => {
+            e.stopPropagation();
+            startResize(e, el, item);
           });
 
           return el;
@@ -490,8 +565,8 @@
             const other = items[i];
             if (other.id === targetId) continue;
 
-            const otherW = other.w || 100; // default width if not set
-            const otherH = other.h || 80; // default height if not set
+            const otherW = other.w || (DEFAULT_SIZES[other.type]?.w ?? 100);
+            const otherH = other.h || (DEFAULT_SIZES[other.type]?.h ?? 80);
 
             const isOverlap = !(
               nx + nw <= other.x ||
@@ -559,6 +634,55 @@
               el.classList.remove("invalid-drag");
               showToast("Sections cannot overlap");
             } else {
+              el.classList.remove("invalid-drag");
+            }
+          }
+
+          document.addEventListener("mousemove", onMove);
+          document.addEventListener("mouseup", onUp);
+        }
+
+        /* Resize logic */
+        function startResize(e, el, item) {
+          e.preventDefault();
+          const startW = el.offsetWidth;
+          const startH = el.offsetHeight;
+          const startX = e.clientX;
+          const startY = e.clientY;
+          let hasOverlap = false;
+
+          function onMove(ev) {
+            ev.preventDefault();
+            let nw = startW + (ev.clientX - startX);
+            let nh = startH + (ev.clientY - startY);
+
+            // Apply size (CSS min-width/height will cap it)
+            el.style.width = nw + "px";
+            el.style.height = nh + "px";
+
+            // Read back actual size after CSS constraints
+            nw = el.offsetWidth;
+            nh = el.offsetHeight;
+
+            // Overlap check
+            hasOverlap = checkOverlap(item.id, item.x, item.y, nw, nh);
+            el.classList.toggle("invalid-drag", hasOverlap);
+          }
+
+          function onUp() {
+            document.removeEventListener("mousemove", onMove);
+            document.removeEventListener("mouseup", onUp);
+
+            if (hasOverlap) {
+              el.style.width = startW + "px";
+              el.style.height = startH + "px";
+              el.classList.remove("invalid-drag");
+              showToast("Cannot resize into another section");
+            } else {
+              item.w = el.offsetWidth;
+              item.h = el.offsetHeight;
+              fWidth.value = item.w;
+              fHeight.value = item.h;
               el.classList.remove("invalid-drag");
             }
           }
@@ -641,6 +765,7 @@
 
         /* ── Add item ──────────────────────────────────────────────── */
         function addItem({ name, type, status, seats, price, x, y, w, h }) {
+          const defaults = DEFAULT_SIZES[type] || { w: 100, h: 80 };
           const item = {
             id: idCounter++,
             name: name || `${type} ${idCounter - 1}`,
@@ -651,14 +776,19 @@
             price,
             x: x ?? (40 + Math.random() * 200) | 0,
             y: y ?? (40 + Math.random() * 160) | 0,
-            w: w || null,
-            h: h || null,
+            w: w || defaults.w,
+            h: h || defaults.h,
           };
           items.push(item);
 
           const el = createItemEl(item);
           addTouchDrag(el, item);
           canvas.appendChild(el);
+          
+          // Capture actual dimensions (respecting fit-content)
+          item.w = el.offsetWidth;
+          item.h = el.offsetHeight;
+          
           updateCount();
           return item;
         }
@@ -692,6 +822,8 @@
           fName.value = item.name;
           fCategory.value = item.status ?? "";
           fSeating.value = item.seats ?? "";
+          fWidth.value = item.w || "";
+          fHeight.value = item.h || "";
           fPrice.value = item.price ?? "";
           selectedType = item.type;
           typeBtns.forEach((b) =>
@@ -720,14 +852,35 @@
             // Update existing
             const item = items.find((i) => i.id === selectedId);
             if (item) {
-              item.name = fName.value.trim() || fName.placeholder;
-              item.type = selectedType;
-              item.cat = selectedType; // keeps canvas colouring in sync
-              item.status = fCategory.value;
-              item.seats = fSeating.value;
-              item.price = fPrice.value;
               const el = canvas.querySelector(`[data-id="${item.id}"]`);
               if (el) {
+                const oldW = el.style.width;
+                const oldH = el.style.height;
+                
+                // Temporarily apply to measure
+                el.style.width = (parseInt(fWidth.value) || item.w) + "px";
+                el.style.height = (parseInt(fHeight.value) || item.h) + "px";
+                
+                const actualW = el.offsetWidth;
+                const actualH = el.offsetHeight;
+
+                // Collision check for manual size change with actual dimensions
+                if (checkOverlap(item.id, item.x, item.y, actualW, actualH)) {
+                  el.style.width = oldW;
+                  el.style.height = oldH;
+                  showToast("New dimensions cause overlap!");
+                  return;
+                }
+
+                item.name = fName.value.trim() || fName.placeholder;
+                item.type = selectedType;
+                item.cat = selectedType; 
+                item.status = fCategory.value;
+                item.seats = fSeating.value;
+                item.w = actualW;
+                item.h = actualH;
+                item.price = fPrice.value;
+
                 el.dataset.cat = item.cat;
                 el.dataset.status = item.status;
 
@@ -741,6 +894,7 @@
 
                 el.innerHTML = `
                   <button class="item-del" title="Delete">×</button>
+                  <div class="resize-handle"></div>
                   ${escHtml(item.name)}
                   <small>${statusText}</small>
                 `;
@@ -757,6 +911,8 @@
               type: selectedType,
               status,
               seats: fSeating.value,
+              w: parseInt(fWidth.value) || null,
+              h: parseInt(fHeight.value) || null,
               price: fPrice.value,
             });
             showToast(`✓ "${name}" added to floor`);
