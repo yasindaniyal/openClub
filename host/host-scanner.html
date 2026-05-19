@@ -3,474 +3,1005 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Open Club</title>
+    <title>Scanner | OpenClub</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/host.css" />
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+      :root {
+        --color-accent: #a855f7;
+        --color-bg-card: #1a1a2e;
+        --color-bg-card-light: #252540;
+        --color-border: rgba(255, 255, 255, 0.1);
+        --color-text-muted: #888;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ─── Layout ──────────────────────────────────────────────── */
+      .scanner-full-wrapper {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ─── Header ──────────────────────────────────────────────── */
+      .scanner-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 2010;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+      }
+
+      .scanner-icon-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 16px;
+      }
+      .scanner-icon-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .scanner-icon-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* ─── Video Container ─────────────────────────────────────── */
+      .scanner-view-container {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        min-height: 0; /* critical for Safari flex shrink */
+      }
+
+      #video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* ─── Overlay / Frame ─────────────────────────────────────── */
+      .scanner-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .scan-frame {
+        width: 280px;
+        height: 280px;
+        border: 2px solid rgba(168, 85, 247, 0.5);
+        border-radius: 40px;
+        position: relative;
+        box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+      }
+
+      .scan-frame::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border: 4px solid var(--color-accent);
+        border-radius: 40px;
+        clip-path: polygon(
+          0 0,
+          30% 0,
+          30% 100%,
+          0 100%,
+          0 70%,
+          100% 70%,
+          100% 100%,
+          70% 100%,
+          70% 0,
+          100% 0,
+          100% 30%,
+          0 30%
+        );
+      }
+
+      .scan-line-animated {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--color-accent);
+        box-shadow: 0 0 20px var(--color-accent);
+        animation: scanMoveLoop 2s ease-in-out infinite;
+        border-radius: 2px;
+      }
+
+      @keyframes scanMoveLoop {
+        0%,
+        100% {
+          top: 5%;
+          opacity: 0.2;
+        }
+        50% {
+          top: 95%;
+          opacity: 1;
+        }
+      }
+
+      /* Paused state — freeze scan line when processing */
+      .scan-frame.paused .scan-line-animated {
+        animation-play-state: paused;
+      }
+
+      .scan-instruction {
+        color: white;
+        margin-top: 40px;
+        font-size: 16px;
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ─── Camera Loading / Error States ──────────────────────── */
+      #cameraStatus {
+        position: absolute;
+        bottom: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 13px;
+        text-align: center;
+        white-space: nowrap;
+        pointer-events: none;
+        display: none;
+      }
+      #cameraStatus.loading {
+        display: block;
+        background: rgba(168, 85, 247, 0.15);
+        border: 1px solid var(--color-accent);
+        color: var(--color-accent);
+      }
+      #cameraStatus.error {
+        display: block;
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid #ef4444;
+        color: #ef4444;
+      }
+
+      /* ─── Result Modal ────────────────────────────────────────── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 2100;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .result-card {
+        background: var(--color-bg-card);
+        width: 100%;
+        max-width: 500px;
+        border-radius: 30px;
+        padding: 30px;
+        border: 1px solid var(--color-border);
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .modal-overlay.open .result-card {
+        transform: translateY(0);
+      }
+
+      /* ─── Manual Modal ────────────────────────────────────────── */
+      .manual-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 2200;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .manual-overlay.open {
+        display: flex;
+      }
+
+      .manual-card {
+        background: var(--color-bg-card);
+        width: 100%;
+        max-width: 400px;
+        border-radius: 24px;
+        padding: 30px;
+        border: 1px solid var(--color-border);
+      }
+
+      /* ─── Status Badges ───────────────────────────────────────── */
+      .result-status-badge {
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .status-found {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid #10b981;
+      }
+      .status-early {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+        border: 1px solid #f59e0b;
+      }
+      .status-late {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid #ef4444;
+      }
+      .status-error {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid #ef4444;
+      }
+
+      /* ─── Detail Grid ─────────────────────────────────────────── */
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .guest-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .detail-item label {
+        display: block;
+        color: var(--color-text-muted);
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+      .detail-item p {
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .package-highlight {
+        color: var(--color-accent) !important;
+      }
+
+      /* ─── Action Buttons ──────────────────────────────────────── */
+      .result-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn-checkin {
+        background: var(--color-accent);
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 16px;
+        font-weight: 600;
+        font-size: 18px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        width: 100%;
+      }
+      .btn-checkin:hover {
+        opacity: 0.85;
+      }
+      .btn-checkin:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-secondary-action {
+        background: var(--color-bg-card-light);
+        color: white;
+        border: 1px solid var(--color-border);
+        padding: 14px;
+        border-radius: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        flex: 1;
+      }
+      .btn-secondary-action:hover {
+        opacity: 0.8;
+      }
+
+      .btn-manual-entry {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        pointer-events: auto;
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 16px;
+      }
+      .btn-manual-entry:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      /* ─── Form Input ──────────────────────────────────────────── */
+      .manual-card input[type="text"] {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--color-border);
+        color: white;
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .manual-card input[type="text"]:focus {
+        border-color: var(--color-accent);
+      }
+      .manual-card input[type="text"]::placeholder {
+        color: var(--color-text-muted);
+      }
+
+      /* ─── Toast ───────────────────────────────────────────────── */
+      #toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: #1e1e1e;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 9999;
+        border: 1px solid var(--color-border);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+        opacity: 0;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+      #toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+      #toast.success {
+        border-color: #10b981;
+        color: #10b981;
+      }
+      #toast.warning {
+        border-color: #f59e0b;
+        color: #f59e0b;
+      }
+      #toast.error-t {
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+    </style>
   </head>
 
-  <body>
-    <main class="open-club container-fluid p-0">
-      <div class="sidebar-wrapper">
-        <!-- Toggle Button (visible only below 992px) -->
-        <div class="sidebar-toggle d-lg-none m-2" id="sidebarToggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <!-- Sidebar -->
-        <nav id="sidebar" class="sidebar-section">
-          <div class="sidebar d-flex flex-column h-100">
-            <div class="logo mb-4">
-              <a href="../index.html">
-                <img
-                  src="../assets/images/logo.png"
-                  class="img-fluid"
-                  alt="Ringside Logo"
-                />
-              </a>
-            </div>
-            <p class="sidebar-eyebrow">Menu</p>
-
-            <ul class="sidebar-menu nav flex-column flex-grow-1 gap-2">
-              <li class="nav-list nav-item">
-                <a
-                  class="nav-link d-flex align-items-center"
-                  href="host-dashboard.html"
-                >
-                  <div class="btn-wrapper me-2">
-                    <img
-                      class="primary"
-                      src="../assets/images/Dashboard.png"
-                      alt=""
-                    />
-                  </div>
-                  <p class="m-0 link-text">Dashboard</p>
-                </a>
-              </li>
-
-              <li class="nav-list nav-item">
-                <a
-                  class="nav-link d-flex align-items-center"
-                  href="host-guest-list.html"
-                >
-                  <div class="btn-wrapper me-2">
-                    <img
-                      class="primary"
-                      src="../assets/images/guest-list.png"
-                      alt=""
-                    />
-                  </div>
-                  <p class="m-0 link-text">Guest List</p>
-                </a>
-              </li>
-
-              <li class="nav-list nav-item">
-                <a
-                  class="nav-link d-flex align-items-center"
-                  href="host-reservations.html"
-                >
-                  <div class="btn-wrapper me-2">
-                    <img
-                      class="primary"
-                      src="../assets/images/host-reservations.png"
-                      alt=""
-                    />
-                  </div>
-                  <p class="m-0 link-text">Reservations</p>
-                </a>
-              </li>
-
-              <li class="nav-list nav-item active">
-                <a
-                  class="nav-link d-flex align-items-center"
-                  href="host-scanner.html"
-                >
-                  <div class="btn-wrapper me-2">
-                    <img
-                      class="primary"
-                      src="../assets/images/Scanner_select.png"
-                      alt=""
-                    />
-                  </div>
-                  <p class="m-0 link-text active">Scanner</p>
-                </a>
-              </li>
-            </ul>
-
-            <!-- User Profile Card -->
-            <div class="sidebar-user-card mt-auto">
-              <!-- Avatar & Info -->
-              <div
-                class="sidebar-user-profile"
-                onclick="window.location.href = '../edit-profile.html'"
-                style="cursor: pointer"
-              >
-                <div class="sidebar-user-avatar">YD</div>
-                <div class="sidebar-user-info">
-                  <p class="sidebar-user-name">Yasin Daniyal</p>
-                  <p class="sidebar-user-post">Host</p>
-                </div>
-              </div>
-
-              <!-- Logout -->
-              <button
-                class="sidebar-logout-btn"
-                onclick="window.location.href = '../login.html'"
-                title="Logout"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </nav>
+  <body class="open-club">
+    <!-- ─── Scanner Wrapper ──────────────────────────────────────── -->
+    <div class="scanner-full-wrapper">
+      <div class="scanner-header">
+        <button
+          class="scanner-icon-btn"
+          id="btnClose"
+          aria-label="Close scanner"
+        >
+          ✕
+        </button>
+        <div class="text-white fw-bold">Scan Guest QR</div>
+        <button
+          class="scanner-icon-btn"
+          id="btnRetry"
+          aria-label="Retry camera"
+          title="Retry Camera"
+        >
+          ⟳
+        </button>
       </div>
 
-      <!-- Dashboard -->
-      <section class="dashboard">
-        <!-- Search Bar -->
-        <div class="search-bar-wrapper">
-          <div class="search-bar-content">
-            <input
-              type="text"
-              id="search"
-              placeholder="Search reservations, guests, promoters..."
-            />
+      <div class="scanner-view-container">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="canvas" hidden></canvas>
+
+        <div class="scanner-overlay">
+          <div class="scan-frame" id="scanFrame">
+            <div class="scan-line-animated"></div>
           </div>
-          <div class="d-flex align-items-center gap-3 notification-wrapper">
-            <a href="#" class="btn btn-live"> Live: Throwback Thursday </a>
-            <button
-              class="action-btn notification-btn"
-              id="notification-btn"
-              aria-label="Notifications"
+          <p class="scan-instruction" id="scanInstruction">
+            Scan guest QR code
+          </p>
+          <button class="btn-manual-entry" id="btnOpenManual">
+            Manual Entry
+          </button>
+        </div>
+
+        <div id="cameraStatus"></div>
+      </div>
+    </div>
+
+    <!-- ─── Result Modal ─────────────────────────────────────────── -->
+    <div
+      class="modal-overlay"
+      id="resultModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Reservation result"
+    >
+      <div class="result-card">
+        <div class="result-header">
+          <h2 class="m-0 h4 text-white" id="resultTitle">Reservation Found</h2>
+          <span class="result-status-badge" id="resStatus">Reserved</span>
+        </div>
+        <div class="guest-details-grid">
+          <div class="detail-item">
+            <label>Name</label>
+            <p id="resName">—</p>
+          </div>
+          <div class="detail-item">
+            <label>Section</label>
+            <p id="resSection">—</p>
+          </div>
+          <div class="detail-item">
+            <label>Package</label>
+            <p class="package-highlight" id="resPackage">—</p>
+          </div>
+          <div class="detail-item">
+            <label>Time</label>
+            <p id="resTime">—</p>
+          </div>
+          <div class="detail-item">
+            <label>Party Size</label>
+            <p id="resParty">—</p>
+          </div>
+        </div>
+
+        <div id="partialCheckInArea" class="mb-3">
+          <label class="text-muted small mb-2 d-block">Checking In:</label>
+          <div class="d-flex align-items-center gap-3">
+            <input
+              type="number"
+              id="checkInCount"
+              value="1"
+              min="1"
+              class="form-control bg-dark text-white border-secondary"
+              style="width: 80px"
+            />
+            <span class="text-muted small" id="partyRemaining"
+              >of 6 guests</span
             >
-              <img
-                src="../assets/images/Notifications.png"
-                alt="Notifications"
-                class="action-icon"
-              />
-              <span
-                class="notification-badge"
-                id="notification-badge"
-                style="display: flex"
-              ></span>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn-checkin" id="btnCheckIn">Check In</button>
+          <div class="d-flex gap-2">
+            <button class="btn-secondary-action" id="btnSeat">
+              Seat Guest
+            </button>
+            <button class="btn-secondary-action" id="btnViewDetails">
+              View Details
+            </button>
+            <button class="btn-secondary-action" id="btnScanAgain">
+              Scan Again
             </button>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <section class="content host-reservations">
-        <!-- Page Titles -->
-        <div
-          class="title-wrapper d-flex justify-content-between align-items-center"
-        >
-          <div>
-            <h1 class="title">Ticket Scanner</h1>
-            <p class="subtitle">Position QR code within the frame.</p>
-          </div>
+    <!-- ─── Manual Entry Modal ───────────────────────────────────── -->
+    <div
+      class="manual-overlay"
+      id="manualModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Manual check-in"
+    >
+      <div class="manual-card">
+        <h3 class="mb-3 text-white">Manual Check-In</h3>
+        <p class="mb-4" style="color: var(--color-text-muted); font-size: 14px">
+          Enter the guest's reservation code or phone number.
+        </p>
+        <div class="mb-4">
+          <input
+            type="text"
+            id="manualCode"
+            placeholder="e.g. RES-001 or +923001234567"
+            class="w-100"
+            autocomplete="off"
+            inputmode="text"
+          />
         </div>
-
-        <!-- Scanner -->
-        <div class="scanner-card">
-          <div class="scanner-viewport" id="viewport">
-            <span class="corner tl"></span>
-            <span class="corner tr"></span>
-            <span class="corner bl"></span>
-            <span class="corner br"></span>
-
-            <video id="video" autoplay playsinline muted></video>
-            <canvas id="canvas"></canvas>
-            <div class="scan-line"></div>
-            <div class="scan-progress" id="scanProgress"></div>
-
-            <div class="qr-icon">
-              <img src="../assets/images/Scanner3.png" alt="QR Code" />
-              <!-- <div class="qr-cell tl"></div>
-              <div class="qr-cell tr"></div>
-              <div class="qr-cell bl"></div>
-              <div class="qr-cell br">
-                <div class="qr-dot"></div>
-                <div class="qr-dot"></div>
-                <div class="qr-dot"></div>
-                <div class="qr-dot"></div>
-              </div> -->
-            </div>
-            <button class="btn-scan" id="btnScan">Tap to Scan</button>
-
-            <div class="result-overlay" id="resultOverlay">
-              <div class="result-icon" id="resultIcon"></div>
-              <div class="result-title" id="resultTitle"></div>
-              <div class="result-code" id="resultCode"></div>
-              <div class="result-msg" id="resultMsg"></div>
-              <button class="btn-scan-again" id="btnScanAgain">
-                Scan Again
-              </button>
-            </div>
-          </div>
-
-          <div class="input-row">
-            <input
-              class="ticket-input"
-              id="ticketInput"
-              type="text"
-              placeholder="Enter ticket code manually..."
-            />
-            <button class="btn-scan" id="btnVerify">Verify</button>
-          </div>
+        <div class="d-flex gap-3">
+          <button class="btn-secondary-action" id="btnCancelManual">
+            Cancel
+          </button>
+          <button class="btn-checkin flex-1 py-2 fs-6" id="btnSubmitManual">
+            Search
+          </button>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
 
-    <script src="../assets/js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <!-- ─── Toast ────────────────────────────────────────────────── -->
+    <div id="toast"></div>
+
     <script>
-      // ─────────────────────────────────────────
-      // CONFIG
-      // ─────────────────────────────────────────
-      const TICKET_REGEX = /^TKT-[A-Z0-9]{6}$/; // adjust to your format
-      const API_ENDPOINT = "/api/verify-ticket"; // your real endpoint
-      const USE_MOCK = true; // flip to false when backend ready
+      (() => {
+        "use strict";
 
-      // ─────────────────────────────────────────
-      // MOCK DATABASE (remove when backend ready)
-      // ─────────────────────────────────────────
-      const MOCK_DB = {
-        "TKT-ABC123": "valid",
-        "TKT-XYZ999": "used",
-        "TKT-EXP001": "expired",
-      };
+        // ─── Mock Reservation Database ──────────────────────────────
+        const MOCK_DB = {
+          "RES-001": {
+            name: "John Smith",
+            section: "B3",
+            package: "Gold",
+            time: "8:30 PM",
+            statusKey: "found",
+            partySize: 6,
+            arrivedCount: 3,
+          },
+          "RES-002": {
+            name: "Sofia Torres",
+            section: "A1",
+            package: "Silver",
+            time: "9:00 PM",
+            statusKey: "early",
+            partySize: 4,
+            arrivedCount: 0,
+          },
+          "RES-003": {
+            name: "Marcus Chen",
+            section: "C5",
+            package: "VIP",
+            time: "7:00 PM",
+            statusKey: "late",
+            partySize: 8,
+            arrivedCount: 0,
+          },
+          "RES-004": {
+            name: "David Wilson",
+            section: "A2",
+            package: "Platinum",
+            time: "9:30 PM",
+            statusKey: "arrived",
+            partySize: 6,
+            arrivedCount: 6,
+          },
+          "+923001234567": {
+            name: "Aisha Malik",
+            section: "D2",
+            package: "Gold",
+            time: "10:00 PM",
+            statusKey: "found",
+            partySize: 8,
+            arrivedCount: 0,
+          },
+        };
 
-      async function callAPI(code) {
-        if (USE_MOCK) {
-          await new Promise((r) => setTimeout(r, 600));
-          return { status: MOCK_DB[code] || "not_found" };
-        }
-        const res = await fetch(
-          `${API_ENDPOINT}?code=${encodeURIComponent(code)}`,
-        );
-        return await res.json();
-      }
+        const STATUS_META = {
+          found: { label: "Reserved", cls: "status-found" },
+          early: { label: "Early", cls: "status-early" },
+          late: { label: "Late", cls: "status-late" },
+          arrived: { label: "Arrived", cls: "status-found" },
+          error: { label: "Not Found", cls: "status-error" },
+        };
 
-      // ─────────────────────────────────────────
-      // RESULT STATES
-      // ─────────────────────────────────────────
-      const STATES = {
-        valid: {
-          icon: "✅",
-          title: "Valid Ticket",
-          msg: "Guest may enter.",
-          cls: "state-valid",
-        },
-        used: {
-          icon: "♻️",
-          title: "Already Checked In",
-          msg: "This ticket was already used.",
-          cls: "state-used",
-        },
-        expired: {
-          icon: "⏰",
-          title: "Ticket Expired",
-          msg: "This ticket is no longer valid.",
-          cls: "state-expired",
-        },
-        not_found: {
-          icon: "❌",
-          title: "Invalid Ticket",
-          msg: "Not found in system.",
-          cls: "state-invalid",
-        },
-        wrong_fmt: {
-          icon: "🚫",
-          title: "Not a Ticket QR",
-          msg: "This QR is not a venue ticket.",
-          cls: "state-wrong",
-        },
-        error: {
-          icon: "⚠️",
-          title: "Verification Error",
-          msg: "Could not verify. Try again.",
-          cls: "state-invalid",
-        },
-      };
+        // ─── DOM Refs ────────────────────────────────────────────────
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const resultModal = document.getElementById("resultModal");
+        const manualModal = document.getElementById("manualModal");
+        const cameraStatus = document.getElementById("cameraStatus");
+        const scanFrameEl = document.getElementById("scanFrame");
+        const btnRetry = document.getElementById("btnRetry");
+        const btnCheckIn = document.getElementById("btnCheckIn");
+        const btnSeat = document.getElementById("btnSeat");
 
-      // ─────────────────────────────────────────
-      // DOM REFS
-      // ─────────────────────────────────────────
-      const viewport = document.getElementById("viewport");
-      const video = document.getElementById("video");
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-      const btnScan = document.getElementById("btnScan");
-      const btnScanAgain = document.getElementById("btnScanAgain");
-      const btnVerify = document.getElementById("btnVerify");
-      const ticketInput = document.getElementById("ticketInput");
-      const resultIcon = document.getElementById("resultIcon");
-      const resultTitle = document.getElementById("resultTitle");
-      const resultCode = document.getElementById("resultCode");
-      const resultMsg = document.getElementById("resultMsg");
+        // ─── State ───────────────────────────────────────────────────
+        let cameraStream = null;
+        let rafId = null;
+        let capturing = false; // main-thread: only capture frames
+        let isProcessing = false; // lock while result modal is open
+        let workerBusy = false; // lock while worker is decoding
+        let qrWorker = null;
 
-      let stream = null;
-      let rafId = null;
-      let timeoutId = null;
-      let paused = false;
-      let scanning = false;
-      const SCAN_TIMEOUT = 30000;
+        // ─── Web Worker (inline blob) ────────────────────────────────
+        // jsQR runs entirely inside the worker — zero main-thread cost.
+        const WORKER_SRC = `
+        importScripts("https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js");
+        self.onmessage = function(e) {
+          const { data, width, height } = e.data;
+          const code = jsQR(data, width, height, { inversionAttempts: "dontInvert" });
+          self.postMessage({ result: code ? code.data : null });
+        };
+      `;
 
-      // ─────────────────────────────────────────
-      // CAMERA
-      // ─────────────────────────────────────────
-      async function startCamera() {
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" },
+        function createWorker() {
+          const blob = new Blob([WORKER_SRC], {
+            type: "application/javascript",
           });
-          video.srcObject = stream;
-          await video.play();
-          viewport.classList.add("scanning");
-          scanning = true;
-          paused = false;
-          rafId = requestAnimationFrame(scanFrame);
-
-          // Auto-stop timer
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            stopCamera();
-          }, SCAN_TIMEOUT);
-        } catch (err) {
-          alert(
-            "Camera access denied or unavailable.\nUse the manual input below.",
-          );
+          const worker = new Worker(URL.createObjectURL(blob));
+          worker.onmessage = onWorkerResult;
+          worker.onerror = (e) => console.error("QR Worker error:", e);
+          return worker;
         }
-      }
 
-      function stopCamera() {
-        if (stream) {
-          stream.getTracks().forEach((t) => t.stop());
-          stream = null;
+        function onWorkerResult({ data: { result } }) {
+          workerBusy = false;
+          if (!capturing || isProcessing) return; // stale result — ignore
+          if (result) handleScanResult(result);
         }
-        if (rafId) {
+
+        // ─── Toast ───────────────────────────────────────────────────
+        let toastTimer = null;
+        function showToast(msg, type = "success", duration = 3000) {
+          const el = document.getElementById("toast");
+          el.textContent = msg;
+          el.className = `show ${type === "error" ? "error-t" : type}`;
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            el.className = "";
+          }, duration);
+        }
+
+        // ─── Camera Status Banner ────────────────────────────────────
+        function setCameraStatus(state, msg = "") {
+          cameraStatus.className = state;
+          cameraStatus.textContent = msg;
+        }
+
+        // ─── Camera Start ────────────────────────────────────────────
+        async function startCamera() {
+          stopCamera();
+          setCameraStatus("loading", "Starting camera…");
+          btnRetry.disabled = true;
+
+          // Prefer back camera, fall back progressively
+          const configs = [
+            {
+              video: {
+                facingMode: "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
+              },
+            },
+            { video: { facingMode: "user" } },
+            { video: true },
+          ];
+
+          for (const cfg of configs) {
+            try {
+              cameraStream = await navigator.mediaDevices.getUserMedia(cfg);
+              video.srcObject = cameraStream;
+
+              // Wait for metadata — prevents blank frame on first paint
+              await new Promise((resolve, reject) => {
+                video.onloadedmetadata = resolve;
+                video.onerror = () => reject(new Error("video error"));
+                setTimeout(() => reject(new Error("metadata timeout")), 6000);
+              });
+
+              await video.play();
+
+              qrWorker = createWorker();
+              capturing = true;
+              setCameraStatus("");
+              rafId = requestAnimationFrame(captureLoop);
+              btnRetry.disabled = false;
+              return; // success — stop trying configs
+            } catch (err) {
+              console.warn("Camera attempt failed:", err.name, err.message);
+              stopCamera();
+            }
+          }
+
+          // All configs failed
+          btnRetry.disabled = false;
+          setCameraStatus("error", "Camera unavailable — use Manual Entry");
+          showToast("Camera could not start", "error");
+        }
+
+        // ─── Camera Stop ─────────────────────────────────────────────
+        function stopCamera() {
+          capturing = false;
           cancelAnimationFrame(rafId);
           rafId = null;
+
+          if (qrWorker) {
+            qrWorker.terminate();
+            qrWorker = null;
+          }
+          workerBusy = false;
+
+          if (cameraStream) {
+            cameraStream.getTracks().forEach((t) => t.stop());
+            cameraStream = null;
+          }
+          video.srcObject = null;
         }
-        video.srcObject = null;
-        scanning = false;
-        viewport.classList.remove("scanning");
-        clearTimeout(timeoutId);
-      }
 
-      // ─────────────────────────────────────────
-      // FRAME LOOP
-      // ─────────────────────────────────────────
-      function scanFrame() {
-        if (!scanning || paused) return;
+        // ─── Capture Loop (main thread — lightweight) ─────────────────
+        // Only does: readyState check + drawImage + getImageData transfer.
+        // jsQR runs in the worker — this loop is nearly free.
+        const CAPTURE_INTERVAL = 250; // ms between captures (~4 fps decode rate)
+        let lastCapture = 0;
 
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
+        function captureLoop(ts) {
+          if (!capturing) return;
+          rafId = requestAnimationFrame(captureLoop);
+
+          if (ts - lastCapture < CAPTURE_INTERVAL) return; // throttle
+          if (workerBusy || isProcessing) return; // worker or UI busy
+          if (
+            video.readyState !== video.HAVE_ENOUGH_DATA ||
+            video.videoWidth === 0
+          )
+            return;
+
+          lastCapture = ts;
+
+          // Resize canvas only when needed
+          if (canvas.width !== video.videoWidth)
+            canvas.width = video.videoWidth;
+          if (canvas.height !== video.videoHeight)
+            canvas.height = video.videoHeight;
+
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imgData.data, imgData.width, imgData.height, {
-            inversionAttempts: "dontInvert",
+          // Extract pixels and transfer to worker (zero-copy via Transferable)
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          workerBusy = true;
+          qrWorker.postMessage(
+            {
+              data: imageData.data,
+              width: imageData.width,
+              height: imageData.height,
+            },
+            [imageData.data.buffer], // transfer ownership — avoids clone cost
+          );
+        }
+
+        // ─── Reservation Lookup ──────────────────────────────────────
+        function lookupReservation(code) {
+          return MOCK_DB[code.trim()] || null;
+        }
+
+        // ─── Handle Scan Result ──────────────────────────────────────
+        function handleScanResult(raw) {
+          if (isProcessing) return;
+          isProcessing = true;
+          capturing = false;
+          scanFrameEl.classList.add("paused");
+
+          const reservation = lookupReservation(raw);
+          renderResult(reservation, raw);
+          openModal(resultModal);
+        }
+
+        // ─── Result Rendering ────────────────────────────────────────
+        function renderResult(reservation, rawCode) {
+          const statusKey = reservation?.statusKey || "error";
+          const meta = STATUS_META[statusKey] || STATUS_META.error;
+
+          const statusEl = document.getElementById("resStatus");
+          statusEl.textContent = meta.label;
+          statusEl.className = `result-status-badge ${meta.cls}`;
+
+          document.getElementById("resultTitle").textContent = reservation
+            ? "Reservation Found"
+            : "Not Found";
+          document.getElementById("resName").textContent =
+            reservation?.name || rawCode || "—";
+          document.getElementById("resSection").textContent =
+            reservation?.section || "—";
+          document.getElementById("resPackage").textContent =
+            reservation?.package || "—";
+          document.getElementById("resTime").textContent =
+            reservation?.time || "—";
+          document.getElementById("resParty").textContent =
+            reservation?.partySize
+              ? `${reservation.arrivedCount}/${reservation.partySize}`
+              : "—";
+
+          const isArrived = statusKey === "arrived";
+          const hasParty = reservation?.partySize > 0;
+
+          document.getElementById("partialCheckInArea").style.display =
+            reservation && !isArrived && hasParty ? "block" : "none";
+          if (reservation && hasParty) {
+            document.getElementById("checkInCount").value =
+              reservation.partySize - reservation.arrivedCount;
+            document.getElementById("checkInCount").max =
+              reservation.partySize - reservation.arrivedCount;
+            document.getElementById("partyRemaining").textContent =
+              `of ${reservation.partySize} guests`;
+          }
+
+          btnCheckIn.style.display = reservation && !isArrived ? "" : "none";
+          btnCheckIn.textContent = isArrived ? "Already Arrived" : "Check In";
+          btnSeat.style.display = reservation ? "" : "none";
+        }
+
+        // ─── Resume Scanning ─────────────────────────────────────────
+        function resumeScanning() {
+          isProcessing = false;
+          workerBusy = false;
+          scanFrameEl.classList.remove("paused");
+          capturing = true;
+          rafId = requestAnimationFrame(captureLoop);
+        }
+
+        // ─── Modal Helpers ───────────────────────────────────────────
+        function openModal(overlay) {
+          overlay.style.display = "flex";
+          requestAnimationFrame(() => overlay.classList.add("open"));
+        }
+
+        function closeModal(overlay, resume = false) {
+          overlay.classList.remove("open");
+          const card = overlay.querySelector(".result-card, .manual-card");
+          const done = () => {
+            overlay.style.display = "none";
+            if (resume) resumeScanning();
+          };
+          card
+            ? card.addEventListener("transitionend", done, { once: true })
+            : done();
+        }
+
+        // ─── Result Actions ──────────────────────────────────────────
+        btnCheckIn.addEventListener("click", () => {
+          const name = document.getElementById("resName").textContent;
+          const count =
+            parseInt(document.getElementById("checkInCount").value) || 1;
+          const total = parseInt(
+            document
+              .getElementById("partyRemaining")
+              .textContent.match(/\d+/)[0],
+          );
+
+          closeModal(resultModal, true);
+
+          if (count < total) {
+            showToast(
+              `✓ Checked in ${count} of ${total} guests for ${name}.`,
+              "warning",
+              5000,
+            );
+          } else {
+            showToast(
+              `✓ ${name} checked in. Status: Arrived. (Triggers: Section Active, Staff Notified, Floor Updated)`,
+              "success",
+              5000,
+            );
+          }
+        });
+
+        document
+          .getElementById("btnViewDetails")
+          .addEventListener("click", () => {
+            const name = document.getElementById("resName").textContent;
+            showToast(
+              `Viewing full details for ${name} (Coming Soon)`,
+              "warning",
+            );
           });
 
-          if (code) {
-            paused = true;
-            stopCamera(); // ✅ stop camera immediately
-            handleCode(code.data);
+        btnSeat.addEventListener("click", () => {
+          const section = document.getElementById("resSection").textContent;
+          closeModal(resultModal, true);
+          showToast(`Guest seated — Section ${section} occupied`, "warning");
+        });
+
+        document
+          .getElementById("btnScanAgain")
+          .addEventListener("click", () => {
+            closeModal(resultModal, true);
+          });
+
+        // ─── Manual Entry ────────────────────────────────────────────
+        document
+          .getElementById("btnOpenManual")
+          .addEventListener("click", () => {
+            document.getElementById("manualCode").value = "";
+            openModal(manualModal);
+          });
+
+        document
+          .getElementById("btnCancelManual")
+          .addEventListener("click", () => {
+            closeModal(manualModal, false);
+          });
+
+        document
+          .getElementById("btnSubmitManual")
+          .addEventListener("click", submitManual);
+        document
+          .getElementById("manualCode")
+          .addEventListener("keydown", (e) => {
+            if (e.key === "Enter") submitManual();
+          });
+
+        function submitManual() {
+          const val = document.getElementById("manualCode").value.trim();
+          if (!val) {
+            showToast("Please enter a code or phone number", "error");
             return;
           }
+          manualModal.classList.remove("open");
+          manualModal.style.display = "none";
+          handleScanResult(val);
         }
 
-        rafId = requestAnimationFrame(scanFrame);
-      }
+        // ─── Header Buttons ──────────────────────────────────────────
+        document.getElementById("btnClose").addEventListener("click", () => {
+          stopCamera();
+          window.location.href = "host-dashboard.html";
+        });
 
-      // ─────────────────────────────────────────
-      // VALIDATE + SHOW RESULT
-      // ─────────────────────────────────────────
-      async function handleCode(raw) {
-        const code = raw.trim().toUpperCase();
+        btnRetry.addEventListener("click", startCamera);
 
-        // Step 1: format check
-        if (!TICKET_REGEX.test(code)) {
-          showResult("wrong_fmt", raw);
-          return;
-        }
+        // ─── Page Visibility — auto pause / resume ───────────────────
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            capturing = false;
+          } else if (cameraStream && !isProcessing) {
+            capturing = true;
+            rafId = requestAnimationFrame(captureLoop);
+          }
+        });
 
-        // Step 2: backend check
-        try {
-          const data = await callAPI(code);
-          showResult(data.status || "error", code);
-        } catch (e) {
-          showResult("error", code);
-        }
-      }
-
-      function showResult(status, code) {
-        const state = STATES[status] || STATES.error;
-
-        // clear old state classes
-        Object.values(STATES).forEach((s) => viewport.classList.remove(s.cls));
-
-        resultIcon.textContent = state.icon;
-        resultTitle.textContent = state.title;
-        resultCode.textContent = code;
-        resultMsg.textContent = state.msg;
-
-        viewport.classList.add("result", state.cls);
-      }
-
-      // ─────────────────────────────────────────
-      // RESET
-      // ─────────────────────────────────────────
-
-      function resetScanner() {
-        Object.values(STATES).forEach((s) => viewport.classList.remove(s.cls));
-        viewport.classList.remove("result");
-
-        startCamera(); // ✅ restart clean
-      }
-
-      // ─────────────────────────────────────────
-      // EVENTS
-      // ─────────────────────────────────────────
-      btnScan.addEventListener("click", startCamera);
-      btnScanAgain.addEventListener("click", resetScanner);
-
-      btnVerify.addEventListener("click", () => {
-        const val = ticketInput.value.trim();
-        if (!val) {
-          ticketInput.focus();
-          return;
-        }
-        paused = true;
-        handleCode(val);
-      });
-
-      ticketInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") btnVerify.click();
-      });
+        // ─── Init ────────────────────────────────────────────────────
+        startCamera();
+      })();
     </script>
   </body>
 </html>

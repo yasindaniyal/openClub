@@ -1,0 +1,811 @@
+/* onboarding.css */
+.onboarding-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 0 20px;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expand container dynamically for visual layout builder, package lists, and assignments steps */
+.onboarding-container:has(#managerStep7.active),
+.onboarding-container:has(#managerStep8.active),
+.onboarding-container:has(#managerStep9.active) {
+    max-width: 1000px;
+}
+
+
+.onboarding-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.onboarding-step {
+    display: none;
+    animation: fadeInSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.onboarding-step.active {
+    display: block;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    color: var(--color-text);
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.step-subtitle {
+    font-size: 16px;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* Role Selection Styles */
+.role-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.role-card {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-card:hover {
+    border-color: var(--color-accent);
+    background: rgba(168, 85, 247, 0.05);
+    transform: translateX(5px);
+}
+
+.role-card.selected {
+    border-color: var(--color-accent);
+    background: rgba(168, 85, 247, 0.1);
+}
+
+.role-icon-box {
+    width: 56px;
+    height: 56px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.role-info h4 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text);
+}
+
+.role-info p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+/* Form Styles */
+.form-group-onboarding {
+    margin-bottom: 20px;
+}
+
+.form-group-onboarding label {
+    display: block;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+}
+
+.form-group-onboarding input {
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group-onboarding input:focus {
+    border-color: var(--color-accent);
+}
+
+/* Orientation Styles */
+.orientation-content {
+    text-align: center;
+}
+
+.orientation-image {
+    max-width: 300px;
+    width: 100%;
+    height: 200px;
+    background: var(--color-bg-card-light);
+    border-radius: 16px;
+    margin: 0 auto;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+}
+
+/* Venue Confirm */
+.venue-preview {
+    background: var(--color-bg-card-light);
+    border-radius: 24px;
+    padding: 40px 24px;
+    text-align: center;
+    margin-bottom: 32px;
+    border: 1px solid var(--color-accent);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.1);
+}
+
+.venue-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.venue-preview h3 {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: 28px;
+}
+
+.venue-preview p {
+    margin: 8px 0 0;
+    color: var(--color-text-muted);
+}
+
+.venue-role-badge {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 20px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--color-accent);
+    border-radius: 50px;
+    color: var(--color-accent);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Progress Bar */
+.onboarding-progress {
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--color-accent);
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* Profile Photo Upload */
+.profile-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.profile-preview-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--color-bg-card-light);
+    border: 2px dashed var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.profile-preview-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Landing Page Styles */
+.landing-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.landing-logo {
+    font-family: var(--font-heading);
+    font-size: 64px;
+    color: var(--color-text);
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.landing-tagline {
+    font-size: 20px;
+    color: var(--color-text-muted);
+    margin-bottom: 48px;
+    font-weight: 300;
+}
+
+/* Multi-select Crowd Type */
+.crowd-type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.crowd-type-option {
+    position: relative;
+}
+
+.crowd-type-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.crowd-type-label {
+    display: block;
+    padding: 12px;
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.crowd-type-option input:checked+.crowd-type-label {
+    border-color: var(--color-accent);
+    background: rgba(168, 85, 247, 0.1);
+    color: var(--color-text);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+/* Club List Styles */
+.club-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.club-card {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.club-card:hover {
+    border-color: var(--color-border-light);
+    transform: translateY(-2px);
+}
+
+.club-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.club-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--color-bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border: 1px solid var(--color-border);
+}
+
+.club-details h5 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--color-text);
+}
+
+.club-details p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.follow-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--color-accent);
+    background: transparent;
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.follow-btn.active {
+    background: var(--color-accent);
+    color: white;
+}
+
+/* Success Step */
+.success-icon {
+    font-size: 64px;
+    color: var(--color-green);
+    margin-bottom: 24px;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.onboarding-card::-webkit-scrollbar {
+    width: 4px;
+}
+
+.onboarding-card::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 10px;
+}
+
+/* Top-left Back Arrow */
+.back-arrow {
+    position: absolute;
+    top: 0px;
+    left: -25px;
+    width: 30px;
+    height: 30px;
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    padding: 0;
+}
+
+.back-arrow:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(168, 85, 247, 0.1);
+}
+
+.back-arrow svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==========================================
+   MANAGER ONBOARDING CUSTOM STYLES
+   ========================================== */
+
+/* Required Branding */
+.branding-upload-label {
+    transition: all 0.3s ease;
+}
+
+.branding-upload-label:hover {
+    border-color: var(--color-accent) !important;
+    background: rgba(168, 85, 247, 0.05) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+}
+
+/* Day row scrollbar styling */
+.hours-weekly-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.hours-weekly-container::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 10px;
+}
+
+/* Switch styling overrides */
+.form-check-input:checked {
+    background-color: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+}
+
+/* Service Pills */
+.service-pill-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.service-pill {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border) !important;
+    color: var(--color-text-muted) !important;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.service-pill-checkbox input[type="checkbox"]:checked+.service-pill {
+    border-color: var(--color-accent) !important;
+    background: rgba(168, 85, 247, 0.1) !important;
+    color: var(--color-text) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
+}
+
+/* Segment Controller */
+.segment-control label {
+    transition: all 0.3s ease;
+    color: var(--color-text-muted) !important;
+}
+
+.segment-control input[type="radio"]:checked+label {
+    background: var(--color-accent) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+/* Level Button Option */
+.level-btn-option {
+    border-width: 1px !important;
+    transition: all 0.3s ease;
+}
+
+.level-btn-option:hover {
+    border-color: var(--color-accent) !important;
+    background: rgba(168, 85, 247, 0.05) !important;
+    transform: translateY(-2px);
+}
+
+.level-btn-option.selected {
+    border-color: var(--color-accent) !important;
+    background: rgba(168, 85, 247, 0.1) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
+}
+
+/* Floor Builder Tabs */
+.floor-builder-tab {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.floor-builder-tab.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+}
+
+/* Canvas Placed Items */
+.placed-item {
+    position: absolute;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    cursor: move;
+    user-select: none;
+    transition: box-shadow 0.2s;
+    border: 1.5px solid transparent;
+}
+
+.placed-item:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.placed-item.section {
+    background: var(--color-accent);
+    color: white;
+}
+
+.placed-item.fixed-item {
+    background: #2a2a35;
+    border: 1.5px solid #444;
+    color: #ccc;
+}
+
+.placed-item .delete-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    background: #ff4a4a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.placed-item .delete-btn:hover {
+    background: #e03b3b;
+    transform: scale(1.1);
+}
+
+/* Packages and Editor Cards */
+.package-card {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.package-card:hover {
+    border-color: var(--color-border-light);
+    transform: translateY(-2px);
+}
+
+.package-card-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.package-badge {
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    border-radius: 30px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Assign pricing cards */
+.assignment-card {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.package-assign-pill {
+    cursor: pointer;
+    border-radius: 30px;
+    border: 1px solid var(--color-border);
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    transition: all 0.2s;
+    background: var(--color-bg-card);
+}
+
+.package-assign-pill:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+}
+
+.package-assign-pill.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.2);
+}
+
+/* Invite List row styling */
+.invite-row {
+    background: var(--color-bg-card-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Custom Input Fields */
+.onboarding-input-clean {
+    font-size: 14px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.onboarding-input-no-shadow {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Custom Input Addons styling */
+.onboarding-input-addon-start {
+    font-size: 14px !important;
+    border-radius: 12px 0 0 12px !important;
+}
+
+.onboarding-input-addon-end {
+    font-size: 14px !important;
+    border-radius: 0 12px 12px 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Scrollable Containers */
+.onboarding-hours-container {
+    max-height: 250px !important;
+    overflow-y: auto !important;
+    padding-right: 5px !important;
+}
+
+.onboarding-floors-container {
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding-right: 5px !important;
+}
+
+.onboarding-packages-container {
+    max-height: 380px !important;
+    overflow-y: auto !important;
+    padding-right: 5px !important;
+}
+
+.onboarding-assignments-container {
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    padding-right: 5px !important;
+}
+
+.onboarding-invites-container {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+    padding-right: 5px !important;
+}
+
+/* Layout & Structural Elements */
+.onboarding-step-wide {
+    max-width: 992px !important;
+    width: 100% !important;
+}
+
+.onboarding-tab-row-spacing {
+    padding-bottom: 5px !important;
+}
+
+.onboarding-builder-toolbox {
+    background: var(--color-bg-card-light) !important;
+}
+
+.onboarding-toolbox-item {
+    transition: all 0.2s ease !important;
+}
+
+.onboarding-canvas-wrapper {
+    height: 380px !important;
+    background-color: #0d0d12 !important;
+}
+
+.onboarding-builder-canvas {
+    background-image: radial-gradient(circle,
+            rgba(255, 255, 255, 0.06) 1px,
+            transparent 1px) !important;
+    background-size: 20px 20px !important;
+}
+
+/* Modals */
+.onboarding-modal-backdrop {
+    z-index: 2000 !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+.onboarding-modal-content {
+    max-width: 400px !important;
+    background-color: #12121a !important;
+}
+
+.onboarding-card-light-bg {
+    background: var(--color-bg-card-light) !important;
+}
+
+.onboarding-features-summary {
+    max-width: 440px !important;
+    background: var(--color-bg-card-light) !important;
+}
+
+.onboarding-emoji-lead {
+    line-height: 1 !important;
+}
+
+/* Hidden Preview State */
+.onboarding-preview-hidden {
+    display: none;
+}
+
+.onboarding-branding-preview {
+    display: none;
+    width: 100% !important;
+    max-height: 80px !important;
+    object-fit: contain !important;
+    margin-top: 10px !important;
+}
+
+/* Role hero icons */
+.onboarding-role-hero-img {
+    width: 120px !important;
+}
+
+/* Level Button Options overrides */
+.level-btn-option {
+    background: var(--color-bg-card-light) !important;
+    transition: all 0.3s ease !important;
+}

@@ -11,6 +11,76 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./assets/css/main.css" />
+    <style>
+      .role-selection-modal {
+        max-width: 450px !important;
+      }
+
+      .role-btn {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 16px;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        color: var(--color-text);
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+      }
+
+      .role-btn:hover {
+        border-color: var(--color-accent);
+        background: rgba(168, 85, 247, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .role-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--color-bg-card);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 1px solid var(--color-border);
+        transition: all 0.3s ease;
+      }
+
+      .role-btn:hover .role-icon {
+        border-color: var(--color-accent);
+        background: rgba(168, 85, 247, 0.1);
+      }
+
+      .role-icon img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
+      .role-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .role-name {
+        font-family: var(--font-heading);
+        font-size: 16px;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .role-desc {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        display: block;
+      }
+    </style>
   </head>
 
   <body>
@@ -36,7 +106,6 @@
                 id="username"
                 name="username"
                 placeholder="Your Email"
-                required
               />
             </div>
 
@@ -48,7 +117,6 @@
                 id="password"
                 name="password"
                 placeholder="Password"
-                required
               />
             </div>
 
@@ -76,8 +144,20 @@
               </div>
             </div>
 
-            <div class="btn-wrapper">
-              <a href="./index.html" class="login-button">Login</a>
+            <div class="btn-wrapper flex-column gap-3 mt-3">
+              <button
+                type="button"
+                id="loginBtn"
+                class="login-button w-100 m-0"
+              >
+                Login
+              </button>
+              <a
+                href="./onboarding.html"
+                class="login-button-secondary w-100 text-center"
+              >
+                Get Started
+              </a>
             </div>
           </form>
         </div>
@@ -293,56 +373,175 @@
       </div>
     </div>
 
+    <!-- Role Selection Modal -->
+    <div class="modal-overlay" id="roleModalOverlay">
+      <div class="pkg-modal role-selection-modal">
+        <div class="modal-header-custom mb-4 text-center">
+          <h3 class="m-0">Select Portal</h3>
+          <p class="login-subtitle mt-2">
+            Choose the dashboard you want to access
+          </p>
+        </div>
+
+        <div class="role-options d-flex flex-column gap-3">
+          <button
+            type="button"
+            class="role-btn"
+            onclick="navigateToDashboard('manager')"
+          >
+            <div class="role-icon">
+              <img src="./assets/images/Dashboard.png" alt="Manager" />
+            </div>
+            <div class="role-info text-start">
+              <span class="role-name">Manager Portal</span>
+              <span class="role-desc">Full access to venue management</span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="role-btn"
+            onclick="navigateToDashboard('promoter')"
+          >
+            <div class="role-icon">
+              <img src="./assets/images/Promoters.png" alt="Promoter" />
+            </div>
+            <div class="role-info text-start">
+              <span class="role-name">Promoter Portal</span>
+              <span class="role-desc">Access guest lists and earnings</span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="role-btn"
+            onclick="navigateToDashboard('host')"
+          >
+            <div class="role-icon">
+              <img src="./assets/images/LiveFloor.png" alt="Host" />
+            </div>
+            <div class="role-info text-start">
+              <span class="role-name">Host Portal</span>
+              <span class="role-desc">Manage floor and guest arrivals</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="modal-footer justify-content-center mt-4">
+          <button type="button" class="btn-cancel w-100" id="closeRoleModal">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- JS -->
     <script src="./assets/js/authentication.js"></script>
 
     <script>
+      const navigateToDashboard = (role) => {
+        const paths = {
+          manager: "./manager/manager-dashboard.html",
+          host: "./host/host-dashboard.html",
+          promoter: "./promoter/promoter-dashboard.html",
+        };
+        window.location.href = paths[role];
+      };
+
       document.addEventListener("DOMContentLoaded", () => {
         const elements = {
+          loginBtn: document.getElementById("loginBtn"),
+          loginForm: document.querySelector(".login-form"),
+          roleOverlay: document.getElementById("roleModalOverlay"),
+          closeRoleBtn: document.getElementById("closeRoleModal"),
           termsLink: document.getElementById("show-terms"),
-          overlay: document.getElementById("termsOverlay"),
-          modal: document.getElementById("termsModal"),
-          closeBtn: document.getElementById("close-terms-btn"),
-          agreeBtn: document.getElementById("agree-terms-btn"),
+          termsOverlay: document.getElementById("termsOverlay"),
+          termsModal: document.getElementById("termsModal"),
+          closeTermsBtn: document.getElementById("close-terms-btn"),
+          agreeTermsBtn: document.getElementById("agree-terms-btn"),
           checkbox: document.querySelector('input[name="terms"]'),
         };
 
-        const { termsLink, overlay, modal, closeBtn, agreeBtn, checkbox } =
-          elements;
+        const {
+          loginBtn,
+          loginForm,
+          roleOverlay,
+          closeRoleBtn,
+          termsLink,
+          termsOverlay,
+          termsModal,
+          closeTermsBtn,
+          agreeTermsBtn,
+          checkbox,
+        } = elements;
 
-        const toggleModal = (show) => {
+        // Toggle Generic Modal
+        const toggleModal = (overlay, modal, show) => {
           if (show) {
-            overlay.style.display = "block";
-            modal.style.display = "flex";
-
-            requestAnimationFrame(() => {
-              overlay.style.opacity = "1";
+            overlay.style.display = "flex";
+            overlay.style.opacity = "1";
+            if (modal) {
+              modal.style.display = "flex";
               modal.style.opacity = "1";
               modal.style.transform = "translate(-50%, -50%)";
-            });
+            } else {
+              // For role selection, overlay itself contains the flex modal content usually
+              // but here we used modal-overlay from main.css which handles display
+              overlay.classList.add("open");
+            }
           } else {
-            overlay.style.opacity = "0";
-            modal.style.opacity = "0";
-            modal.style.transform = "translate(-50%, -45%)";
-
-            setTimeout(() => {
-              overlay.style.display = "none";
-              modal.style.display = "none";
-            }, 300);
+            if (modal) {
+              overlay.style.opacity = "0";
+              modal.style.opacity = "0";
+              modal.style.transform = "translate(-50%, -45%)";
+              setTimeout(() => {
+                overlay.style.display = "none";
+                modal.style.display = "none";
+              }, 300);
+            } else {
+              overlay.classList.remove("open");
+            }
           }
         };
 
-        termsLink?.addEventListener("click", (e) => {
-          e.preventDefault();
-          toggleModal(true);
+        // Login Button Handler
+        loginBtn?.addEventListener("click", () => {
+          if (loginForm.checkValidity()) {
+            roleOverlay.classList.add("open");
+            roleOverlay.style.display = "flex";
+            setTimeout(() => {
+              roleOverlay.style.opacity = "1";
+            }, 10);
+          } else {
+            loginForm.reportValidity();
+          }
         });
 
-        closeBtn?.addEventListener("click", () => toggleModal(false));
-        overlay?.addEventListener("click", () => toggleModal(false));
+        // Close Role Modal
+        closeRoleBtn?.addEventListener("click", () => {
+          roleOverlay.style.opacity = "0";
+          setTimeout(() => {
+            roleOverlay.classList.remove("open");
+            roleOverlay.style.display = "none";
+          }, 300);
+        });
 
-        agreeBtn?.addEventListener("click", () => {
+        // Terms Modal Logic
+        termsLink?.addEventListener("click", (e) => {
+          e.preventDefault();
+          toggleModal(termsOverlay, termsModal, true);
+        });
+
+        closeTermsBtn?.addEventListener("click", () =>
+          toggleModal(termsOverlay, termsModal, false),
+        );
+        termsOverlay?.addEventListener("click", () =>
+          toggleModal(termsOverlay, termsModal, false),
+        );
+
+        agreeTermsBtn?.addEventListener("click", () => {
           if (checkbox) checkbox.checked = true;
-          toggleModal(false);
+          toggleModal(termsOverlay, termsModal, false);
         });
       });
     </script>

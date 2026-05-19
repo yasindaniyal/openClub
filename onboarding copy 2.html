@@ -1,0 +1,3842 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Onboarding | OpenClub</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-bg: #080810;
+        --color-bg-card: #0f0f1a;
+        --color-bg-card-light: #14141f;
+        --color-border: rgba(255, 255, 255, 0.08);
+        --color-border-hover: rgba(255, 255, 255, 0.18);
+        --color-primary: #6366f1;
+        --color-primary-glow: rgba(99, 102, 241, 0.35);
+        --color-primary-dim: rgba(99, 102, 241, 0.12);
+        --color-accent: #a78bfa;
+        --color-text: #f1f0ff;
+        --color-muted: rgba(255, 255, 255, 0.38);
+        --color-success: #34d399;
+        --radius-card: 20px;
+        --radius-input: 12px;
+        --radius-pill: 100px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body.open-club {
+        font-family: "DM Sans", sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+      }
+
+      /* Ambient background */
+      body.open-club::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 20% 10%,
+            rgba(99, 102, 241, 0.12) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 80% 80%,
+            rgba(167, 139, 250, 0.08) 0%,
+            transparent 70%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Grid overlay */
+      body.open-club::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ============================
+         PROGRESS BAR
+      ============================ */
+      .onboarding-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.06);
+        z-index: 1000;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 12px var(--color-primary-glow);
+        width: 0%;
+      }
+
+      /* ============================
+         STEP INDICATOR (floating top-right)
+      ============================ */
+      .step-indicator {
+        position: fixed;
+        top: 24px;
+        right: 28px;
+        z-index: 999;
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+        background: rgba(15, 15, 26, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--color-border);
+        padding: 6px 14px;
+        border-radius: 100px;
+        transition: opacity 0.3s;
+      }
+
+      /* ============================
+         LOGO (top-left)
+      ============================ */
+      .onboarding-logo {
+        position: fixed;
+        top: 20px;
+        left: 28px;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .onboarding-logo .logo-dot {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(
+          135deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        box-shadow: 0 0 16px var(--color-primary-glow);
+      }
+
+      .onboarding-logo span {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--color-text);
+        letter-spacing: 0.04em;
+      }
+
+      /* ============================
+         ONBOARDING CONTAINER & CARD
+      ============================ */
+      .onboarding-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 20px 40px;
+      }
+
+      .onboarding-card {
+        width: 100%;
+        max-width: 560px;
+        position: relative;
+      }
+
+      /* ============================
+         STEP TRANSITIONS
+      ============================ */
+      .onboarding-step {
+        display: none;
+        animation: stepIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .onboarding-step.active {
+        display: block;
+      }
+
+      @keyframes stepIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ============================
+         STEP HEADER
+      ============================ */
+      .step-title {
+        font-family: "Syne", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--color-text);
+        line-height: 1.25;
+        margin-bottom: 6px;
+        letter-spacing: -0.02em;
+      }
+
+      .step-subtitle {
+        font-size: 14px;
+        color: var(--color-muted);
+        margin-bottom: 28px;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+
+      /* ============================
+         BACK ARROW
+      ============================ */
+      .back-arrow {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid var(--color-border);
+        background: var(--color-bg-card-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: all 0.2s;
+        color: var(--color-muted);
+      }
+
+      .back-arrow:hover {
+        border-color: var(--color-border-hover);
+        color: var(--color-text);
+        background: rgba(99, 102, 241, 0.1);
+      }
+
+      .back-arrow svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* ============================
+         ROLE CARDS
+      ============================ */
+      .role-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .role-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 18px;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .role-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          var(--color-primary-dim),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .role-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+
+      .role-card:hover::before {
+        opacity: 1;
+      }
+
+      .role-card.selected {
+        border-color: var(--color-primary);
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.15),
+          rgba(99, 102, 241, 0.05)
+        );
+        box-shadow:
+          0 0 0 1px var(--color-primary),
+          0 8px 32px rgba(99, 102, 241, 0.2);
+      }
+
+      .role-card.selected::before {
+        opacity: 1;
+      }
+
+      .role-card.selected .role-radio {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+      .role-card.selected .role-radio::after {
+        opacity: 1;
+      }
+
+      .role-icon-box {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+
+      .role-icon img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        filter: brightness(0) invert(1) opacity(0.7);
+      }
+
+      .role-card.selected .role-icon img {
+        filter: brightness(0) invert(1);
+      }
+
+      .role-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .role-info h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-bottom: 2px;
+        letter-spacing: -0.01em;
+      }
+
+      .role-info p {
+        font-size: 12px;
+        color: var(--color-muted);
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      .role-radio {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid var(--color-border-hover);
+        flex-shrink: 0;
+        position: relative;
+        transition: all 0.2s;
+      }
+
+      .role-radio::after {
+        content: "";
+        position: absolute;
+        inset: 3px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      /* ============================
+         BUTTONS
+      ============================ */
+      .login-button {
+        height: 48px;
+        background: linear-gradient(135deg, var(--color-primary), #7c3aed);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-input);
+        font-family: "Syne", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: all 0.25s;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+      }
+
+      .login-button::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.12),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .login-button:hover:not(:disabled)::before {
+        opacity: 1;
+      }
+      .login-button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
+      }
+      .login-button:active:not(:disabled) {
+        transform: translateY(0);
+      }
+      .login-button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .login-button-secondary {
+        height: 48px;
+        background: transparent;
+        color: var(--color-muted);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-input);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s;
+        width: 100%;
+      }
+
+      .login-button-secondary:hover {
+        border-color: var(--color-border-hover);
+        color: var(--color-text);
+        background: var(--color-bg-card-light);
+      }
+
+      /* ============================
+         FORM INPUTS
+      ============================ */
+      .form-group-onboarding {
+        margin-bottom: 16px;
+      }
+
+      .form-group-onboarding label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--color-muted);
+        margin-bottom: 7px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .form-group-onboarding input,
+      .form-group-onboarding select,
+      .form-group-onboarding textarea {
+        width: 100%;
+        height: 46px;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-input);
+        color: var(--color-text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        padding: 0 14px;
+        transition: all 0.2s;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .form-group-onboarding textarea {
+        height: auto;
+        padding: 12px 14px;
+        resize: none;
+      }
+
+      .form-group-onboarding input::placeholder,
+      .form-group-onboarding textarea::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      .form-group-onboarding input:focus,
+      .form-group-onboarding select:focus,
+      .form-group-onboarding textarea:focus {
+        border-color: var(--color-primary);
+        background: rgba(99, 102, 241, 0.06);
+        box-shadow: 0 0 0 3px var(--color-primary-glow);
+      }
+
+      .form-group-onboarding select option {
+        background: var(--color-bg-card);
+        color: var(--color-text);
+      }
+
+      /* Instagram input group */
+      .input-group-text {
+        background: var(--color-bg-card-light) !important;
+        border-color: var(--color-border) !important;
+        color: var(--color-muted) !important;
+        font-size: 14px;
+        border-radius: var(--radius-input) 0 0 var(--radius-input) !important;
+      }
+
+      .input-group .form-control {
+        background: var(--color-bg-card-light) !important;
+        border-color: var(--color-border) !important;
+        color: var(--color-text) !important;
+        font-size: 14px;
+        padding: 0 14px;
+        border-radius: 0 var(--radius-input) var(--radius-input) 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+        height: 46px;
+      }
+
+      .input-group .form-control:focus {
+        border-color: var(--color-primary) !important;
+        background: rgba(99, 102, 241, 0.06) !important;
+      }
+
+      /* ============================
+         BRANDING UPLOAD
+      ============================ */
+      .branding-upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: var(--color-bg-card-light) !important;
+        border: 1.5px dashed var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        min-height: 110px;
+        cursor: pointer;
+        transition: all 0.25s;
+        text-align: center;
+        padding: 20px 12px !important;
+      }
+
+      .branding-upload-label:hover {
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        background: rgba(99, 102, 241, 0.05) !important;
+      }
+
+      .branding-upload-label .upload-icon {
+        font-size: 22px;
+        opacity: 0.5;
+      }
+
+      .branding-upload-label .upload-label-text {
+        font-size: 12px;
+        color: var(--color-muted);
+        font-weight: 500;
+      }
+
+      /* ============================
+         HOURS / DAYS TOGGLE
+      ============================ */
+      .hours-weekly-container {
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        overflow: hidden;
+        padding: 4px 0;
+      }
+
+      .day-hours-row {
+        padding: 10px 16px !important;
+        border-bottom: 1px solid var(--color-border) !important;
+        transition: background 0.15s;
+      }
+
+      .day-hours-row:last-child {
+        border-bottom: none !important;
+      }
+      .day-hours-row:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .form-check-label {
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .form-check-input.day-toggle {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+      }
+
+      .form-check-input.day-toggle:checked {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+
+      .time-input {
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid var(--color-border) !important;
+        font-size: 12px !important;
+        font-weight: 500;
+        padding: 0 8px !important;
+        color: var(--color-text) !important;
+        background: var(--color-bg-card) !important;
+        outline: none !important;
+        width: 80px;
+        transition: border-color 0.2s;
+      }
+
+      .time-input:focus {
+        border-color: var(--color-primary) !important;
+      }
+
+      .day-closed-text {
+        font-size: 11px;
+        color: var(--color-muted);
+      }
+
+      /* ============================
+         SERVICE PILLS
+      ============================ */
+      .service-pill-checkbox {
+        position: relative;
+      }
+      .service-toggle {
+        display: none;
+      }
+
+      .service-pill {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--color-muted);
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: block;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .service-pill:hover {
+        border-color: rgba(99, 102, 241, 0.3) !important;
+        color: var(--color-text);
+      }
+
+      .service-toggle:checked + .service-pill {
+        background: var(--color-primary-dim);
+        border-color: var(--color-primary) !important;
+        color: var(--color-text);
+        box-shadow: 0 0 0 1px var(--color-primary);
+      }
+
+      /* ============================
+         SEGMENT CONTROLS
+      ============================ */
+      .segment-control {
+        background: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-input) !important;
+        padding: 4px !important;
+        gap: 3px;
+        display: flex;
+      }
+
+      .segment-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--color-muted);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 7px 0;
+        line-height: 1;
+        flex: 1;
+        text-align: center;
+      }
+
+      .segment-radio:checked + .segment-label {
+        background: var(--color-primary);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+      }
+
+      /* ============================
+         LEVELS BUTTONS
+      ============================ */
+      .level-btn-option {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px !important;
+        background: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        cursor: pointer;
+        transition: all 0.22s;
+      }
+
+      .level-btn-option:hover {
+        border-color: rgba(99, 102, 241, 0.3) !important;
+        transform: translateY(-1px);
+      }
+
+      .level-btn-option.selected {
+        border-color: var(--color-primary) !important;
+        background: var(--color-primary-dim) !important;
+        box-shadow: 0 0 0 1px var(--color-primary);
+      }
+
+      .level-icon {
+        font-size: 22px;
+      }
+
+      /* ============================
+         FLOOR BUILDER
+      ============================ */
+      .floor-builder-tab {
+        padding: 7px 18px;
+        border-radius: 100px;
+        font-size: 13px;
+        font-weight: 500;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        color: var(--color-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .floor-builder-tab:hover {
+        color: var(--color-text);
+        border-color: var(--color-border-hover);
+      }
+
+      .floor-builder-tab.active {
+        background: var(--color-primary-dim);
+        border-color: var(--color-primary);
+        color: var(--color-text);
+        box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+      }
+
+      .builder-toolbox {
+        background: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        padding: 16px !important;
+      }
+
+      .toolbox-item {
+        border-radius: 10px !important;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 10px 14px;
+        border: 1.5px solid var(--color-primary) !important;
+        background: var(--color-primary-dim) !important;
+        color: var(--color-accent) !important;
+        margin-bottom: 8px;
+      }
+
+      .toolbox-item:hover {
+        background: rgba(99, 102, 241, 0.2) !important;
+        transform: translateY(-1px);
+      }
+
+      .grid-toolbox-fixed button {
+        font-size: 11px !important;
+        padding: 7px 10px !important;
+        border-radius: 8px !important;
+        border-color: var(--color-border) !important;
+        color: var(--color-muted) !important;
+        background: var(--color-bg-card) !important;
+        transition: all 0.2s;
+      }
+
+      .grid-toolbox-fixed button:hover {
+        border-color: rgba(99, 102, 241, 0.3) !important;
+        color: var(--color-text) !important;
+        background: rgba(99, 102, 241, 0.07) !important;
+      }
+
+      .builder-canvas-wrapper {
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        overflow: hidden;
+        height: 360px;
+        position: relative;
+        background: #07070f !important;
+      }
+
+      .builder-canvas {
+        background-image: radial-gradient(
+          circle,
+          rgba(99, 102, 241, 0.12) 1px,
+          transparent 1px
+        ) !important;
+        background-size: 24px 24px !important;
+      }
+
+      /* Canvas placed items */
+      .placed-item {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: grab;
+        user-select: none;
+        transition: box-shadow 0.15s;
+      }
+
+      .placed-item:active {
+        cursor: grabbing;
+      }
+
+      .placed-item.section {
+        background: rgba(99, 102, 241, 0.18);
+        border: 1.5px solid var(--color-primary);
+        color: var(--color-accent);
+        box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+      }
+
+      .placed-item.section:hover {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+      }
+
+      .placed-item.fixed-item {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .placed-item.fixed-item:hover {
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .delete-btn {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ef4444;
+        border: none;
+        color: #fff;
+        font-size: 11px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.15s;
+        z-index: 10;
+      }
+
+      .placed-item:hover .delete-btn {
+        opacity: 1;
+      }
+
+      /* ============================
+         SECTION SETTINGS MODAL
+      ============================ */
+      .section-edit-modal-wrapper {
+        z-index: 2000;
+        background: rgba(0, 0, 0, 0.7) !important;
+        backdrop-filter: blur(6px);
+      }
+
+      .section-edit-modal {
+        background: #13131e !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        max-width: 380px;
+        box-shadow:
+          0 24px 64px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(99, 102, 241, 0.1);
+      }
+
+      /* ============================
+         PACKAGES
+      ============================ */
+      .package-card {
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        padding: 18px;
+        transition: border-color 0.2s;
+      }
+
+      .package-card:hover {
+        border-color: rgba(99, 102, 241, 0.2);
+      }
+
+      .package-card-header {
+        margin-bottom: 14px;
+      }
+
+      .package-badge {
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: var(--color-primary-dim);
+        color: var(--color-accent);
+        padding: 4px 10px;
+        border-radius: 100px;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+      }
+
+      .package-card input {
+        width: 100%;
+        height: 38px;
+        background: var(--color-bg-card) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: 8px !important;
+        color: var(--color-text) !important;
+        font-size: 13px !important;
+        padding: 0 10px !important;
+        outline: none !important;
+        box-shadow: none !important;
+        transition: border-color 0.2s;
+      }
+
+      .package-card input:focus {
+        border-color: var(--color-primary) !important;
+      }
+
+      .package-card label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-muted);
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      /* ============================
+         ASSIGNMENTS
+      ============================ */
+      .assignment-card {
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        padding: 16px;
+        transition: border-color 0.2s;
+      }
+
+      .assignment-card:hover {
+        border-color: rgba(99, 102, 241, 0.2);
+      }
+
+      .package-assign-pill {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 7px 14px;
+        border-radius: 100px;
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        color: var(--color-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+      }
+
+      .package-assign-pill:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--color-text);
+      }
+
+      .package-assign-pill.active {
+        background: var(--color-primary-dim);
+        border-color: var(--color-primary);
+        color: var(--color-accent);
+      }
+
+      /* ============================
+         INVITE STEP
+      ============================ */
+      .invite-form-box {
+        background: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+        padding: 18px !important;
+      }
+
+      .invite-form-box select,
+      .invite-form-box input {
+        height: 40px;
+        background: var(--color-bg-card) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: 10px !important;
+        color: var(--color-text) !important;
+        font-size: 13px !important;
+        padding: 0 12px !important;
+        outline: none !important;
+        box-shadow: none !important;
+        width: 100%;
+      }
+
+      .invite-code-generator {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.08),
+          rgba(167, 139, 250, 0.04)
+        ) !important;
+        border: 1px dashed rgba(99, 102, 241, 0.3) !important;
+        border-radius: var(--radius-card) !important;
+        padding: 20px !important;
+      }
+
+      .invite-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 10px 14px;
+      }
+
+      /* ============================
+         CLUB LIST (PROMOTER)
+      ============================ */
+      .club-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .club-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        transition: border-color 0.2s;
+      }
+
+      .club-card:hover {
+        border-color: rgba(99, 102, 241, 0.2);
+      }
+
+      .club-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .club-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .club-details h5 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 2px;
+      }
+      .club-details p {
+        font-size: 12px;
+        color: var(--color-muted);
+        margin: 0;
+      }
+
+      .follow-btn {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 16px;
+        border-radius: 100px;
+        border: 1px solid var(--color-border);
+        background: transparent;
+        color: var(--color-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .follow-btn:hover,
+      .follow-btn.active {
+        background: var(--color-primary-dim);
+        border-color: var(--color-primary);
+        color: var(--color-accent);
+      }
+
+      /* ============================
+         PROFILE UPLOAD CIRCLE
+      ============================ */
+      .profile-upload {
+        display: flex;
+        justify-content: center;
+      }
+
+      .profile-preview-circle {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 2px dashed rgba(99, 102, 241, 0.35);
+        background: var(--color-bg-card-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.2s;
+      }
+
+      .profile-preview-circle:hover {
+        border-color: var(--color-primary);
+        background: var(--color-primary-dim);
+      }
+      .profile-preview-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* ============================
+         VENUE PREVIEW (HOST)
+      ============================ */
+      .venue-preview {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.1),
+          rgba(167, 139, 250, 0.05)
+        );
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        border-radius: var(--radius-card);
+        padding: 28px;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .venue-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+      }
+      .venue-preview h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .venue-preview p {
+        font-size: 13px;
+        color: var(--color-muted);
+        margin-bottom: 14px;
+      }
+
+      .venue-role-badge span {
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--color-primary-dim);
+        color: var(--color-accent);
+        padding: 5px 14px;
+        border-radius: 100px;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+      }
+
+      /* ============================
+         HOST ORIENTATION
+      ============================ */
+      .orientation-content {
+        padding: 10px 0;
+      }
+      .orientation-image {
+        margin-bottom: 20px;
+      }
+      .orientation-image img {
+        filter: brightness(0) invert(1) opacity(0.15);
+      }
+
+      /* ============================
+         SUCCESS SCREEN
+      ============================ */
+      .success-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: white;
+        margin: 0 auto 20px;
+        box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+        animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      @keyframes popIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .features-summary {
+        background: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-card) !important;
+      }
+
+      /* ============================
+         CROWD TYPE
+      ============================ */
+      .crowd-type-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .crowd-type-option {
+        display: inline-flex;
+      }
+      .crowd-type-option input {
+        display: none;
+      }
+
+      .crowd-type-label {
+        font-size: 13px;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 100px;
+        background: var(--color-bg-card-light);
+        border: 1px solid var(--color-border);
+        color: var(--color-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .crowd-type-label:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--color-text);
+      }
+      .crowd-type-option input:checked + .crowd-type-label {
+        background: var(--color-primary-dim);
+        border-color: var(--color-primary);
+        color: var(--color-accent);
+      }
+
+      /* ============================
+         SCROLLBAR
+      ============================ */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.3);
+        border-radius: 100px;
+      }
+
+      /* ============================
+         UTILITY
+      ============================ */
+      .fs-7 {
+        font-size: 13px !important;
+      }
+      .fs-8 {
+        font-size: 12px !important;
+      }
+      .fs-9 {
+        font-size: 10px !important;
+      }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .tracking-wide {
+        letter-spacing: 0.1em;
+      }
+      .tracking-wider {
+        letter-spacing: 0.15em;
+      }
+      .btn-wrapper {
+      }
+
+      /* Custom input form controls for Bootstrap overrides inside form-group-onboarding */
+      .form-group-onboarding .form-select {
+        height: 46px;
+        background-color: var(--color-bg-card-light) !important;
+        border: 1px solid var(--color-border) !important;
+        border-radius: var(--radius-input) !important;
+        color: var(--color-text) !important;
+        font-size: 14px;
+        padding: 0 14px;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      .form-group-onboarding .form-select:focus {
+        border-color: var(--color-primary) !important;
+        box-shadow: 0 0 0 3px var(--color-primary-glow) !important;
+      }
+
+      .form-control.bg-dark {
+        background-color: var(--color-bg-card-light) !important;
+        border-color: var(--color-border) !important;
+        color: var(--color-text) !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      .form-control.bg-dark:focus {
+        border-color: var(--color-primary) !important;
+        box-shadow: 0 0 0 3px var(--color-primary-glow) !important;
+      }
+
+      /* Toast notification */
+      .toast-notif {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #1a1a2e;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        color: var(--color-text);
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 9999;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        animation:
+          toastIn 0.3s ease,
+          toastOut 0.3s ease 2.7s forwards;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes toastOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      /* Divider */
+      .form-divider {
+        height: 1px;
+        background: var(--color-border);
+        margin: 20px 0;
+      }
+
+      /* Number input arrows hidden */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+    </style>
+  </head>
+  <body class="open-club">
+    <!-- Logo -->
+    <div class="onboarding-logo">
+      <div class="logo-dot">✦</div>
+      <span>OpenClub</span>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator" id="stepIndicator">Step 1</div>
+
+    <!-- Progress Bar -->
+    <div class="onboarding-progress" id="progressContainer">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="onboarding-container">
+      <div class="onboarding-card">
+        <!-- ==============================
+             STEP 1: ROLE SELECTION
+        =============================== -->
+        <div class="onboarding-step active" id="step1">
+          <h1 class="step-title">How will you use OpenClub?</h1>
+          <p class="step-subtitle">
+            Select your role to access the right dashboard
+          </p>
+
+          <div class="role-grid">
+            <div class="role-card" onclick="selectRole('manager')">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/Dashboard.png" alt="Manager" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Manager</h4>
+                <p>Full access to venue management & operations</p>
+              </div>
+              <div class="role-radio"></div>
+            </div>
+
+            <div class="role-card" onclick="selectRole('promoter')">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/Promoters.png" alt="Promoter" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Promoter</h4>
+                <p>Manage guest lists and track performance</p>
+              </div>
+              <div class="role-radio"></div>
+            </div>
+
+            <div class="role-card" onclick="selectRole('host')">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/LiveFloor.png" alt="Host" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Host / Door Staff</h4>
+                <p>Manage the floor and check-in guests</p>
+              </div>
+              <div class="role-radio"></div>
+            </div>
+          </div>
+
+          <div class="mt-4 d-flex flex-column gap-2">
+            <button
+              class="login-button w-100 m-0"
+              id="roleContinueBtn"
+              disabled
+              onclick="goToRoleFlow()"
+            >
+              Continue
+            </button>
+            <button
+              class="login-button-secondary"
+              onclick="window.location.href = './login.html'"
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+
+        <!-- ==============================
+             MANAGER FLOW
+        =============================== -->
+
+        <!-- Manager Step 2: Personal Info -->
+        <div class="onboarding-step" id="managerStep2">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep2', 'step1', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Personal Information</h1>
+          <p class="step-subtitle">Create your manager identity on OpenClub</p>
+          <form onsubmit="handleManagerAccount(event)">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    id="mgrFirstName"
+                    required
+                    placeholder="John"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    id="mgrLastName"
+                    required
+                    placeholder="Doe"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Email Address</label>
+              <input
+                type="email"
+                id="mgrEmail"
+                required
+                placeholder="john.doe@example.com"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                id="mgrPhone"
+                required
+                placeholder="+1 (555) 000-0000"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Password</label>
+              <input
+                type="password"
+                id="mgrPassword"
+                required
+                placeholder="••••••••"
+              />
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 3: Venue Info -->
+        <div class="onboarding-step" id="managerStep3">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep3', 'managerStep2', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Venue Information</h1>
+          <p class="step-subtitle">Build your venue profile on the platform</p>
+          <form onsubmit="handleManagerVenue(event)">
+            <div class="form-group-onboarding">
+              <label>Club / Venue Name</label>
+              <input
+                type="text"
+                id="venueName"
+                required
+                placeholder="e.g. Aura Nightclub"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Venue Type</label>
+              <select
+                id="venueType"
+                class="form-select bg-dark text-white border-secondary rounded-4 p-3"
+                required
+                style="outline: none; box-shadow: none; font-size: 14px"
+              >
+                <option value="" disabled selected>Select Venue Type</option>
+                <option value="Nightclub">Nightclub</option>
+                <option value="Lounge">Lounge</option>
+                <option value="Bar + Lounge">Bar + Lounge</option>
+                <option value="Event Venue">Event Venue</option>
+              </select>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Address</label>
+              <input
+                type="text"
+                id="venueAddress"
+                required
+                placeholder="123 Main St"
+              />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-5">
+                <div class="form-group-onboarding">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    id="venueCity"
+                    required
+                    placeholder="Houston"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group-onboarding">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    id="venueState"
+                    required
+                    placeholder="TX"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group-onboarding">
+                  <label>ZIP</label>
+                  <input
+                    type="text"
+                    id="venueZip"
+                    required
+                    placeholder="77002"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Business Phone</label>
+              <input
+                type="tel"
+                id="venuePhone"
+                required
+                placeholder="+1 (713) 555-0199"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Instagram Handle</label>
+              <div class="input-group">
+                <span
+                  class="input-group-text bg-dark text-secondary border-secondary border-end-0 rounded-start-4 px-3"
+                  style="font-size: 14px; border-radius: 12px 0 0 12px"
+                  >@</span
+                >
+                <input
+                  type="text"
+                  id="venueInstagram"
+                  class="form-control bg-dark text-white border-secondary p-3 border-start-0"
+                  placeholder="yourhandle"
+                  style="
+                    font-size: 14px;
+                    border-radius: 0 12px 12px 0;
+                    outline: none;
+                    box-shadow: none;
+                  "
+                />
+              </div>
+            </div>
+
+            <div class="form-group-onboarding mb-4">
+              <label class="d-block mb-3">Required Branding</label>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    class="branding-upload-label"
+                    onclick="document.getElementById('venueLogo').click()"
+                  >
+                    <span class="upload-icon" id="logoPlaceholder">📸</span>
+                    <span class="upload-label-text">Venue Logo (1:1)</span>
+                    <img
+                      id="logoPreview"
+                      style="
+                        display: none;
+                        width: 100%;
+                        max-height: 70px;
+                        object-fit: contain;
+                        margin-top: 8px;
+                      "
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    id="venueLogo"
+                    hidden
+                    accept="image/*"
+                    required
+                    onchange="
+                      previewImage(this, 'logoPreview', 'logoPlaceholder')
+                    "
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    class="branding-upload-label"
+                    onclick="document.getElementById('venueCover').click()"
+                  >
+                    <span class="upload-icon" id="coverPlaceholder">🖼️</span>
+                    <span class="upload-label-text">Cover Image (16:9)</span>
+                    <img
+                      id="coverPreview"
+                      style="
+                        display: none;
+                        width: 100%;
+                        max-height: 70px;
+                        object-fit: contain;
+                        margin-top: 8px;
+                      "
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    id="venueCover"
+                    hidden
+                    accept="image/*"
+                    required
+                    onchange="
+                      previewImage(this, 'coverPreview', 'coverPlaceholder')
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 4: Operating Details -->
+        <div class="onboarding-step" id="managerStep4">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep4', 'managerStep3', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Operating Details</h1>
+          <p class="step-subtitle">
+            Define how your venue operates night to night
+          </p>
+          <form onsubmit="handleManagerDetails(event)">
+            <div class="form-group-onboarding mb-4">
+              <label class="mb-3">Hours of Operation</label>
+              <div class="hours-weekly-container" id="hoursWeeklyContainer">
+                <!-- Days injected by JS -->
+              </div>
+            </div>
+
+            <div class="form-group-onboarding mb-4">
+              <label class="mb-2">Services & Amenities</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="service-pill-checkbox">
+                    <input
+                      type="checkbox"
+                      id="srvBottle"
+                      class="service-toggle"
+                    />
+                    <label for="srvBottle" class="service-pill"
+                      >🍾 Bottle Service</label
+                    >
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="service-pill-checkbox">
+                    <input
+                      type="checkbox"
+                      id="srvHookah"
+                      class="service-toggle"
+                    />
+                    <label for="srvHookah" class="service-pill"
+                      >💨 Hookah</label
+                    >
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="service-pill-checkbox">
+                    <input
+                      type="checkbox"
+                      id="srvFood"
+                      class="service-toggle"
+                    />
+                    <label for="srvFood" class="service-pill"
+                      >🍔 Food Served</label
+                    >
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="service-pill-checkbox">
+                    <input
+                      type="checkbox"
+                      id="srvValet"
+                      class="service-toggle"
+                    />
+                    <label for="srvValet" class="service-pill"
+                      >🚗 Valet Service</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-6">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-2">Walk-ins Allowed</label>
+                  <div
+                    class="segment-control d-flex bg-dark border border-secondary rounded-4 overflow-hidden p-1"
+                  >
+                    <input
+                      type="radio"
+                      name="walkins"
+                      id="walkinsYes"
+                      class="segment-radio"
+                      value="Yes"
+                      checked
+                      hidden
+                    />
+                    <label
+                      for="walkinsYes"
+                      class="segment-label flex-grow-1 text-center cursor-pointer m-0 text-white rounded-3"
+                      >Yes</label
+                    >
+                    <input
+                      type="radio"
+                      name="walkins"
+                      id="walkinsNo"
+                      class="segment-radio"
+                      value="No"
+                      hidden
+                    />
+                    <label
+                      for="walkinsNo"
+                      class="segment-label flex-grow-1 text-center cursor-pointer m-0 text-white rounded-3"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-2">Age Policy</label>
+                  <div
+                    class="segment-control d-flex bg-dark border border-secondary rounded-4 overflow-hidden p-1"
+                  >
+                    <input
+                      type="radio"
+                      name="agePolicy"
+                      id="age18"
+                      class="segment-radio"
+                      value="18+"
+                      hidden
+                    />
+                    <label
+                      for="age18"
+                      class="segment-label flex-grow-1 text-center cursor-pointer m-0 text-white rounded-3"
+                      >18+</label
+                    >
+                    <input
+                      type="radio"
+                      name="agePolicy"
+                      id="age21"
+                      class="segment-radio"
+                      value="21+"
+                      checked
+                      hidden
+                    />
+                    <label
+                      for="age21"
+                      class="segment-label flex-grow-1 text-center cursor-pointer m-0 text-white rounded-3"
+                      >21+</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Create Venue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 5: Define Floors -->
+        <div class="onboarding-step" id="managerStep5">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep5', 'managerStep4', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Map Your Floor</h1>
+          <p class="step-subtitle">How many levels does your venue have?</p>
+
+          <div
+            class="levels-options d-flex flex-column gap-2 mb-4"
+            id="levelsContainer"
+          >
+            <!-- Levels injected by JS -->
+          </div>
+
+          <div class="form-group-onboarding mb-4 d-none" id="customLevelsBox">
+            <label>Number of Levels</label>
+            <input
+              type="number"
+              id="customLevelsInput"
+              class="form-control bg-dark text-white border-secondary rounded-4 p-3"
+              min="1"
+              max="10"
+              placeholder="e.g. 4"
+              oninput="selectLevelsCount(this.value, null)"
+              style="font-size: 14px; outline: none; box-shadow: none"
+            />
+          </div>
+
+          <button
+            class="login-button w-100 m-0"
+            id="levelsContinueBtn"
+            disabled
+            onclick="
+              nextStep('managerStep5', 'managerStep6', 11);
+              initFloorNaming();
+            "
+          >
+            Continue
+          </button>
+        </div>
+
+        <!-- Manager Step 6: Name Floors -->
+        <div class="onboarding-step" id="managerStep6">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep6', 'managerStep5', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Name Your Floors</h1>
+          <p class="step-subtitle">
+            Identify each floor clearly (e.g. Main Floor, VIP Balcony, Rooftop)
+          </p>
+          <div
+            class="dynamic-floor-names d-flex flex-column gap-3 mb-4"
+            id="floorNamesContainer"
+            style="max-height: 320px; overflow-y: auto; padding-right: 5px"
+          ></div>
+          <button
+            class="login-button w-100 m-0"
+            onclick="
+              saveFloorNames();
+              nextStep('managerStep6', 'managerStep7', 11);
+              initLayoutBuilder();
+            "
+          >
+            Continue
+          </button>
+        </div>
+
+        <!-- Manager Step 7: Layout Builder -->
+        <div
+          class="onboarding-step"
+          id="managerStep7"
+          style="max-width: 900px; width: 100%"
+        >
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep7', 'managerStep6', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Layout Builder</h1>
+          <p class="step-subtitle">
+            Click elements to place them, then drag to position
+          </p>
+
+          <div
+            class="floor-builder-tab-row d-flex gap-2 overflow-x-auto mb-3"
+            id="builderFloorTabs"
+            style="padding-bottom: 5px"
+          ></div>
+
+          <div class="layout-builder-workspace row g-3 text-start">
+            <div class="col-md-4">
+              <div class="builder-toolbox d-flex flex-column gap-3 h-100">
+                <div>
+                  <p
+                    class="text-white mb-2"
+                    style="
+                      font-size: 10px;
+                      text-transform: uppercase;
+                      letter-spacing: 0.12em;
+                      font-weight: 700;
+                      color: var(--color-muted) !important;
+                    "
+                  >
+                    Reservable
+                  </p>
+                  <div class="toolbox-item" onclick="addCanvasItem('Section')">
+                    ➕ Reservable Section
+                  </div>
+                </div>
+                <div>
+                  <p
+                    class="text-white mb-2"
+                    style="
+                      font-size: 10px;
+                      text-transform: uppercase;
+                      letter-spacing: 0.12em;
+                      font-weight: 700;
+                      color: var(--color-muted) !important;
+                    "
+                  >
+                    Fixed Elements
+                  </p>
+                  <div class="grid-toolbox-fixed d-flex flex-wrap gap-2">
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Bar')"
+                    >
+                      ➕ Bar
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('DJ Booth')"
+                    >
+                      ➕ DJ Booth
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Bathroom')"
+                    >
+                      ➕ Bathroom
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Patio')"
+                    >
+                      ➕ Patio
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Entry')"
+                    >
+                      ➕ Entry
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Stage')"
+                    >
+                      ➕ Stage
+                    </button>
+                    <button
+                      class="btn btn-sm flex-grow-1"
+                      onclick="addCanvasItem('Walls')"
+                    >
+                      ➕ Wall
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="mt-auto"
+                  style="
+                    font-size: 11px;
+                    color: var(--color-muted);
+                    border-top: 1px solid var(--color-border);
+                    padding-top: 12px;
+                  "
+                >
+                  💡 Click to add elements to the canvas. Drag to position.
+                  Click a section to set name & capacity.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="builder-canvas-wrapper">
+                <div
+                  class="builder-canvas position-absolute w-100 h-100"
+                  id="floorBuilderCanvas"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Settings Modal -->
+          <div
+            class="section-edit-modal-wrapper d-none position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+            style="z-index: 2000; background: rgba(0, 0, 0, 0.8)"
+            id="sectionSettingsModal"
+          >
+            <div
+              class="section-edit-modal p-4 w-100 text-start"
+              style="max-width: 380px"
+            >
+              <h4 class="text-white mb-1 fs-5" id="modalSectionTitle">
+                Section Settings
+              </h4>
+              <p
+                style="
+                  font-size: 12px;
+                  color: var(--color-muted);
+                  margin-bottom: 18px;
+                "
+              >
+                Define physical section parameters
+              </p>
+              <div class="form-group-onboarding mb-3">
+                <label>Section Name</label>
+                <input
+                  type="text"
+                  id="modalSectionName"
+                  class="form-control bg-dark text-white border-secondary rounded-3 p-2"
+                  placeholder="e.g. Table A1"
+                  style="font-size: 14px; outline: none; box-shadow: none"
+                />
+              </div>
+              <div class="form-group-onboarding mb-3">
+                <label>Capacity (Max Guests)</label>
+                <input
+                  type="number"
+                  id="modalSectionCapacity"
+                  class="form-control bg-dark text-white border-secondary rounded-3 p-2"
+                  placeholder="e.g. 8"
+                  min="1"
+                  style="font-size: 14px; outline: none; box-shadow: none"
+                />
+              </div>
+              <div class="d-flex gap-2 justify-content-end mt-4">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-secondary rounded-3 px-3 text-white"
+                  style="font-size: 12px"
+                  onclick="closeSectionModal()"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="btn btn-sm btn-primary rounded-3 px-3"
+                  style="font-size: 12px"
+                  onclick="saveSectionModal()"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              onclick="saveLayoutAndContinue()"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 8: Packages -->
+        <div class="onboarding-step" id="managerStep8">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep8', 'managerStep7', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Section Packages</h1>
+          <p class="step-subtitle">
+            Define pricing packages for table reservations
+          </p>
+          <div
+            class="packages-list-container d-flex flex-column gap-3 mb-4 overflow-y-auto"
+            style="max-height: 380px; padding-right: 5px"
+            id="packagesList"
+          ></div>
+          <div class="d-flex justify-content-center mb-4">
+            <button
+              class="btn btn-sm rounded-pill px-4"
+              onclick="addCustomPackage()"
+              style="
+                font-size: 12px;
+                font-weight: 600;
+                border: 1px solid rgba(99, 102, 241, 0.35);
+                background: var(--color-primary-dim);
+                color: var(--color-accent);
+              "
+            >
+              ➕ Add Custom Package
+            </button>
+          </div>
+          <button
+            class="login-button w-100 m-0"
+            onclick="savePackagesAndContinue()"
+          >
+            Continue
+          </button>
+        </div>
+
+        <!-- Manager Step 9: Assign Packages -->
+        <div class="onboarding-step" id="managerStep9">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep9', 'managerStep8', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Assign Packages</h1>
+          <p class="step-subtitle">
+            Connect pricing packages to your physical sections
+          </p>
+          <div
+            class="assignments-container d-flex flex-column gap-3 mb-4 overflow-y-auto text-start"
+            style="max-height: 400px; padding-right: 5px"
+            id="assignmentsList"
+          ></div>
+          <button
+            class="login-button w-100 m-0"
+            onclick="saveAssignmentsAndContinue()"
+          >
+            Continue
+          </button>
+        </div>
+
+        <!-- Manager Step 10: Invite Team -->
+        <div class="onboarding-step" id="managerStep10">
+          <button
+            class="back-arrow"
+            onclick="prevStep('managerStep10', 'managerStep9', 11)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Invite Your Team</h1>
+          <p class="step-subtitle">
+            Add hosts, security, or co-managers to your venue
+          </p>
+
+          <div class="invite-form-box mb-4">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-4">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-1">Staff Role</label>
+                  <select id="inviteRole">
+                    <option value="Host">Host</option>
+                    <option value="Bottle Personnel">Bottle Personnel</option>
+                    <option value="Door Staff">Door Staff</option>
+                    <option value="Other Club Managers">
+                      Other Club Manager
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="invitePhone"
+                    placeholder="+1 (555) 000-0000"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <button
+                  class="login-button w-100 m-0"
+                  style="height: 40px; font-size: 12px"
+                  onclick="sendTeamInvite()"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="invite-code-generator mb-4 text-center">
+            <p
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--color-muted);
+                margin-bottom: 6px;
+              "
+            >
+              Team Access Code
+            </p>
+            <div class="d-flex align-items-center justify-content-center gap-3">
+              <span
+                id="generatedInviteCode"
+                class="font-monospace fw-bold tracking-wide"
+                style="
+                  font-size: 22px;
+                  color: var(--color-accent);
+                  letter-spacing: 0.12em;
+                "
+                >OPNC-9871-AURA</span
+              >
+              <button
+                class="btn btn-sm"
+                onclick="copyInviteCode()"
+                style="
+                  font-size: 11px;
+                  border: 1px solid rgba(99, 102, 241, 0.3);
+                  background: var(--color-primary-dim);
+                  color: var(--color-accent);
+                  border-radius: 8px;
+                  padding: 5px 12px;
+                "
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="sent-invites-section d-none text-start"
+            id="sentInvitesBox"
+          >
+            <p
+              style="
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--color-muted);
+                margin-bottom: 10px;
+              "
+            >
+              Sent Invites
+            </p>
+            <div
+              class="d-flex flex-column gap-2"
+              id="sentInvitesList"
+              style="max-height: 160px; overflow-y: auto; padding-right: 5px"
+            ></div>
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              onclick="nextStep('managerStep10', 'managerStep11', 11)"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 11: Complete -->
+        <div class="onboarding-step" id="managerStep11">
+          <div class="landing-content text-center">
+            <div class="success-icon">✓</div>
+            <h1 class="step-title">Your Venue is Live!</h1>
+            <p class="step-subtitle">
+              Congratulations — your venue is registered on OpenClub
+            </p>
+            <div
+              class="features-summary border border-secondary rounded-4 p-4 text-start d-flex flex-column gap-3 mb-4 mx-auto"
+              style="max-width: 440px"
+            >
+              <p
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  font-size: 13px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.08em;
+                  color: var(--color-muted);
+                  margin-bottom: 4px;
+                "
+              >
+                What you can do next
+              </p>
+              <div class="d-flex align-items-start gap-3">
+                <div style="font-size: 20px; line-height: 1">📅</div>
+                <div>
+                  <p
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: var(--color-text);
+                      margin-bottom: 2px;
+                    "
+                  >
+                    Accept Reservations
+                  </p>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: var(--color-muted);
+                      margin: 0;
+                    "
+                  >
+                    Direct customers to book sections with your assigned package
+                    codes
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div style="font-size: 20px; line-height: 1">🗺️</div>
+                <div>
+                  <p
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: var(--color-text);
+                      margin-bottom: 2px;
+                    "
+                  >
+                    Manage Your Floor Plan
+                  </p>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: var(--color-muted);
+                      margin: 0;
+                    "
+                  >
+                    Visual interactive floor plan tracking seated status and
+                    check-ins
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div style="font-size: 20px; line-height: 1">👥</div>
+                <div>
+                  <p
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: var(--color-text);
+                      margin-bottom: 2px;
+                    "
+                  >
+                    Coordinate Staff
+                  </p>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: var(--color-muted);
+                      margin: 0;
+                    "
+                  >
+                    Empower hosts, door checkers, and promoters with role-based
+                    access
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div style="font-size: 20px; line-height: 1">📣</div>
+                <div>
+                  <p
+                    style="
+                      font-size: 14px;
+                      font-weight: 600;
+                      color: var(--color-text);
+                      margin-bottom: 2px;
+                    "
+                  >
+                    Create Club Events
+                  </p>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: var(--color-muted);
+                      margin: 0;
+                    "
+                  >
+                    Publish upcoming events and track promoter statistics
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="login-button w-100 m-0"
+              onclick="
+                window.location.href = './manager/manager-dashboard.html'
+              "
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- ==============================
+             PROMOTER FLOW
+        =============================== -->
+        <div class="onboarding-step" id="promoterStep2">
+          <button
+            class="back-arrow"
+            onclick="prevStep('promoterStep2', 'step1', 5)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Create Your Promoter Account</h1>
+          <p class="step-subtitle">Tell us a bit about yourself</p>
+          <form onsubmit="handlePromoterAccount(event)">
+            <div class="form-group-onboarding">
+              <label>Full Name</label>
+              <input type="text" required placeholder="John Doe" />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Phone Number</label>
+                  <input type="tel" required placeholder="+1 (555) 000-0000" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Email</label>
+                  <input type="email" required placeholder="john@example.com" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Instagram Handle</label>
+              <input type="text" placeholder="@yourhandle" />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Crowd Type</label>
+              <div class="crowd-type-grid">
+                <label class="crowd-type-option"
+                  ><input type="checkbox" name="crowd" value="Hip Hop" /><span
+                    class="crowd-type-label"
+                    >Hip Hop</span
+                  ></label
+                >
+                <label class="crowd-type-option"
+                  ><input type="checkbox" name="crowd" value="College" /><span
+                    class="crowd-type-label"
+                    >College</span
+                  ></label
+                >
+                <label class="crowd-type-option"
+                  ><input type="checkbox" name="crowd" value="Latin" /><span
+                    class="crowd-type-label"
+                    >Latin</span
+                  ></label
+                >
+                <label class="crowd-type-option"
+                  ><input type="checkbox" name="crowd" value="EDM" /><span
+                    class="crowd-type-label"
+                    >EDM</span
+                  ></label
+                >
+                <label class="crowd-type-option"
+                  ><input
+                    type="checkbox"
+                    name="crowd"
+                    value="Mixed Crowd"
+                  /><span class="crowd-type-label">Mixed Crowd</span></label
+                >
+              </div>
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep3">
+          <button
+            class="back-arrow"
+            onclick="prevStep('promoterStep3', 'promoterStep2', 5)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Build Your Promoter Profile</h1>
+          <p class="step-subtitle">This is what clubs and guests will see</p>
+          <form onsubmit="handlePromoterProfile(event)">
+            <div class="profile-upload mb-4">
+              <div
+                class="profile-preview-circle"
+                onclick="document.getElementById('pPhoto').click()"
+              >
+                <span id="pPlaceholder">📸</span>
+                <img id="pPreview" style="display: none" />
+              </div>
+            </div>
+            <input
+              type="file"
+              id="pPhoto"
+              hidden
+              accept="image/*"
+              onchange="previewPromoterPhoto(this)"
+            />
+            <div class="form-group-onboarding">
+              <label>Promoter Name</label>
+              <input type="text" required placeholder="e.g. Antoine Presents" />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Short Bio</label>
+              <textarea
+                class="form-control bg-dark text-white border-secondary rounded-4 p-3"
+                rows="3"
+                placeholder="Bio..."
+              ></textarea>
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep4">
+          <button
+            class="back-arrow"
+            onclick="prevStep('promoterStep4', 'promoterStep3', 5)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Connect With Clubs</h1>
+          <p class="step-subtitle">
+            Follow venues in your city to stay in the loop
+          </p>
+          <div class="club-list">
+            <div class="club-card">
+              <div class="club-info">
+                <div class="club-avatar">👟</div>
+                <div class="club-details">
+                  <h5>Sneaks Nightclub</h5>
+                  <p>Houston, TX</p>
+                </div>
+              </div>
+              <button class="follow-btn" onclick="toggleFollow(this)">
+                Follow
+              </button>
+            </div>
+            <div class="club-card">
+              <div class="club-info">
+                <div class="club-avatar">🌊</div>
+                <div class="club-details">
+                  <h5>Sekai</h5>
+                  <p>Houston, TX</p>
+                </div>
+              </div>
+              <button class="follow-btn" onclick="toggleFollow(this)">
+                Follow
+              </button>
+            </div>
+            <div class="club-card">
+              <div class="club-info">
+                <div class="club-avatar">💎</div>
+                <div class="club-details">
+                  <h5>Clé</h5>
+                  <p>Houston, TX</p>
+                </div>
+              </div>
+              <button class="follow-btn" onclick="toggleFollow(this)">
+                Follow
+              </button>
+            </div>
+            <div class="club-card">
+              <div class="club-info">
+                <div class="club-avatar">🔥</div>
+                <div class="club-details">
+                  <h5>NOTO</h5>
+                  <p>Houston, TX</p>
+                </div>
+              </div>
+              <button class="follow-btn" onclick="toggleFollow(this)">
+                Follow
+              </button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              onclick="nextStep('promoterStep4', 'promoterStep5')"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep5">
+          <button
+            class="back-arrow"
+            onclick="prevStep('promoterStep5', 'promoterStep4', 5)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="landing-content text-center">
+            <div class="success-icon">✓</div>
+            <h1 class="step-title">You're Ready To Promote</h1>
+            <p class="step-subtitle">
+              Start growing your guest list and selling sections.
+            </p>
+            <button
+              class="login-button w-100 m-0 mt-5"
+              onclick="finishPromoter()"
+            >
+              Go To Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- ==============================
+             HOST FLOW
+        =============================== -->
+        <div class="onboarding-step" id="hostStep2">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep2', 'step1', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Join a Venue</h1>
+          <p class="step-subtitle">
+            Enter the activation code provided by your venue manager
+          </p>
+          <div class="form-group-onboarding">
+            <label>Activation Code or Invite Link</label>
+            <input
+              type="text"
+              id="activationCode"
+              placeholder="e.g. AURA-HOST-4832"
+            />
+          </div>
+          <div class="d-flex flex-column gap-2 mt-4">
+            <button class="login-button w-100 m-0" onclick="validateCode()">
+              Continue
+            </button>
+            <button
+              class="login-button-secondary"
+              onclick="alert('Access Request Sent')"
+            >
+              Request Access
+            </button>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep3">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep3', 'hostStep2', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Venue Found!</h1>
+          <p class="step-subtitle">
+            Please confirm the details below to proceed
+          </p>
+          <div class="venue-preview">
+            <div class="venue-icon">🏰</div>
+            <h3>Club Aura</h3>
+            <p>Houston, TX</p>
+            <div class="venue-role-badge"><span>Role: Host</span></div>
+          </div>
+          <button
+            class="login-button w-100 m-0"
+            onclick="nextStep('hostStep3', 'hostStep4')"
+          >
+            Confirm & Continue
+          </button>
+        </div>
+
+        <div class="onboarding-step" id="hostStep4">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep4', 'hostStep3', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Create Host Account</h1>
+          <p class="step-subtitle">Set up your professional profile</p>
+          <form onsubmit="handleHostAccount(event)">
+            <div class="profile-upload mb-4">
+              <div
+                class="profile-preview-circle"
+                onclick="document.getElementById('hPhoto').click()"
+              >
+                <span id="hPlaceholder">📸</span>
+                <img id="hPreview" style="display: none" />
+              </div>
+            </div>
+            <input
+              type="file"
+              id="hPhoto"
+              hidden
+              accept="image/*"
+              onchange="previewHostPhoto(this)"
+            />
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="form-group-onboarding">
+                  <label>First Name</label><input type="text" required />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group-onboarding">
+                  <label>Last Name</label><input type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Phone Number</label><input type="tel" required />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Email</label><input type="email" required />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Password</label><input type="password" required />
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Create Account
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="onboarding-step" id="hostStep5">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep5', 'hostStep4', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/LiveFloor.png"
+                style="width: 100px; opacity: 0.2"
+              />
+            </div>
+            <h1 class="step-title">Reservations</h1>
+            <p class="step-subtitle">
+              View Tonight's Reservations. See all bookings organized by time
+              and section.
+            </p>
+            <div class="mt-4">
+              <button
+                class="login-button w-100 m-0"
+                onclick="nextStep('hostStep5', 'hostStep6', 7)"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep6">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep6', 'hostStep5', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/Promoters.png"
+                style="width: 100px; opacity: 0.2"
+              />
+            </div>
+            <h1 class="step-title">Check-In</h1>
+            <p class="step-subtitle">
+              Check Guests In. Mark guests as arrived when they enter. This
+              notifies the floor.
+            </p>
+            <div class="mt-4">
+              <button
+                class="login-button w-100 m-0"
+                onclick="nextStep('hostStep6', 'hostStep7', 7)"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep7">
+          <button
+            class="back-arrow"
+            onclick="prevStep('hostStep7', 'hostStep6', 7)"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/Dashboard.png"
+                style="width: 100px; opacity: 0.2"
+              />
+            </div>
+            <h1 class="step-title">Floor Control</h1>
+            <p class="step-subtitle">
+              Manage the Floor. Track section status in real time: Available,
+              Reserved, Seated.
+            </p>
+            <div class="mt-4">
+              <button class="login-button w-100 m-0" onclick="finishHost()">
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ============================================================
+      // STATE
+      // ============================================================
+      let currentRole = "";
+      let currentStepIndex = 1;
+      let levelsCount = 1;
+      let floorNames = ["Main Floor"];
+      let activeFloorIndex = 0;
+      let floorLayouts = { "Main Floor": [] };
+      let sectionCounter = 1;
+      let sectionPackages = [
+        {
+          name: "Silver",
+          maxGuests: 6,
+          bookingFee: 100,
+          minSpend: 500,
+          bottleCount: 1,
+        },
+        {
+          name: "Gold",
+          maxGuests: 10,
+          bookingFee: 200,
+          minSpend: 1000,
+          bottleCount: 2,
+        },
+        {
+          name: "VIP",
+          maxGuests: 15,
+          bookingFee: 500,
+          minSpend: 2500,
+          bottleCount: 4,
+        },
+      ];
+      let sectionPackageAssignments = {};
+      let teamInvites = [];
+      let activeEditingItemIndex = -1;
+      let managerAccountData = {};
+      let managerVenueData = {};
+      let managerOperatingDetails = {};
+
+      // ============================================================
+      // DAYS CONFIG (dynamic)
+      // ============================================================
+      const DAYS = [
+        { key: "Mon", label: "Monday", defaultOpen: false },
+        { key: "Tue", label: "Tuesday", defaultOpen: false },
+        { key: "Wed", label: "Wednesday", defaultOpen: false },
+        { key: "Thu", label: "Thursday", defaultOpen: true },
+        { key: "Fri", label: "Friday", defaultOpen: true },
+        { key: "Sat", label: "Saturday", defaultOpen: true },
+        { key: "Sun", label: "Sunday", defaultOpen: false },
+      ];
+
+      const LEVEL_OPTIONS = [
+        {
+          count: 1,
+          icon: "🏢",
+          label: "1 Level",
+          desc: "Single main floor operations",
+        },
+        {
+          count: 2,
+          icon: "🏢🏢",
+          label: "2 Levels",
+          desc: "Main floor and VIP / balcony spaces",
+        },
+        {
+          count: 3,
+          icon: "🏢🏢🏢",
+          label: "3 Levels",
+          desc: "Multi-tiered event configurations",
+        },
+        {
+          count: null,
+          icon: "⚙️",
+          label: "Custom Count",
+          desc: "Configure your own levels quantity",
+        },
+      ];
+
+      // ============================================================
+      // DYNAMIC INIT
+      // ============================================================
+      function initDaysUI() {
+        const container = document.getElementById("hoursWeeklyContainer");
+        if (!container) return;
+        container.innerHTML = "";
+        DAYS.forEach((day) => {
+          const isOpen = day.defaultOpen;
+          const html = `
+            <div class="day-hours-row d-flex align-items-center justify-content-between" id="dayRow${day.key}">
+              <div class="form-check form-switch m-0">
+                <input class="form-check-input day-toggle" type="checkbox" id="toggle${day.key}" ${isOpen ? "checked" : ""} onchange="toggleDayHours('${day.key}')" />
+                <label class="form-check-label text-white ms-2" for="toggle${day.key}" style="font-size:13px;font-weight:500">${day.label}</label>
+              </div>
+              <div class="day-time-inputs ${isOpen ? "d-flex" : "d-none"} align-items-center gap-2" id="times${day.key}">
+                <input type="time" class="time-input" id="open${day.key}" value="22:00" />
+                <span style="font-size:11px;color:var(--color-muted)">to</span>
+                <input type="time" class="time-input" id="close${day.key}" value="02:00" />
+              </div>
+              <div class="day-closed-text ${isOpen ? "d-none" : ""}" id="closed${day.key}">Closed</div>
+            </div>`;
+          container.insertAdjacentHTML("beforeend", html);
+        });
+      }
+
+      function initLevelsUI() {
+        const container = document.getElementById("levelsContainer");
+        if (!container) return;
+        container.innerHTML = "";
+        LEVEL_OPTIONS.forEach((opt, idx) => {
+          const isCustom = opt.count === null;
+          const html = `
+            <div class="level-btn-option" onclick="${isCustom ? "showCustomLevels(this)" : `selectLevelsCount(${opt.count}, this)`}" id="levelOpt${idx}">
+              <div class="level-icon">${opt.icon}</div>
+              <div class="level-text text-start">
+                <h5 class="m-0 text-white" style="font-size:14px;font-family:'Syne',sans-serif;font-weight:600">${opt.label}</h5>
+                <p class="m-0 text-muted" style="font-size:12px">${opt.desc}</p>
+              </div>
+            </div>`;
+          container.insertAdjacentHTML("beforeend", html);
+        });
+      }
+
+      // Run on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        initDaysUI();
+        initLevelsUI();
+        updateProgress(1, 5);
+      });
+
+      // ============================================================
+      // PROGRESS & STEPS
+      // ============================================================
+      function updateProgress(stepIndex, total) {
+        const fill = document.getElementById("progressFill");
+        const indicator = document.getElementById("stepIndicator");
+        const pct = ((stepIndex - 1) / (total - 1)) * 100;
+        fill.style.width = pct + "%";
+        indicator.textContent = `Step ${stepIndex} of ${total}`;
+      }
+
+      function nextStep(currentId, nextId, roleTotal = 5) {
+        document.getElementById(currentId).classList.remove("active");
+        document.getElementById(nextId).classList.add("active");
+        const match = nextId.match(/(\d+)$/);
+        if (match) {
+          currentStepIndex = parseInt(match[0]);
+          updateProgress(currentStepIndex, roleTotal);
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function prevStep(currentId, prevId, roleTotal = 5) {
+        document.getElementById(currentId).classList.remove("active");
+        document.getElementById(prevId).classList.add("active");
+        const match = prevId.match(/(\d+)$/);
+        if (match) {
+          currentStepIndex = parseInt(match[0]);
+          updateProgress(currentStepIndex, roleTotal);
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // ============================================================
+      // ROLE SELECTION
+      // ============================================================
+      function selectRole(role) {
+        currentRole = role;
+        document
+          .querySelectorAll(".role-card")
+          .forEach((card) => card.classList.remove("selected"));
+        const idx = ["manager", "promoter", "host"].indexOf(role);
+        if (idx !== -1)
+          document
+            .querySelectorAll(".role-card")
+            [idx].classList.add("selected");
+        document.getElementById("roleContinueBtn").disabled = false;
+      }
+
+      function goToRoleFlow() {
+        if (currentRole === "promoter") nextStep("step1", "promoterStep2", 5);
+        else if (currentRole === "host") nextStep("step1", "hostStep2", 7);
+        else if (currentRole === "manager")
+          nextStep("step1", "managerStep2", 11);
+      }
+
+      // ============================================================
+      // MANAGER HANDLERS
+      // ============================================================
+      function handleManagerAccount(e) {
+        e.preventDefault();
+        managerAccountData = {
+          firstName: document.getElementById("mgrFirstName").value,
+          lastName: document.getElementById("mgrLastName").value,
+          email: document.getElementById("mgrEmail").value,
+          phone: document.getElementById("mgrPhone").value,
+        };
+        nextStep("managerStep2", "managerStep3", 11);
+      }
+
+      function handleManagerVenue(e) {
+        e.preventDefault();
+        managerVenueData = {
+          name: document.getElementById("venueName").value,
+          type: document.getElementById("venueType").value,
+          address: document.getElementById("venueAddress").value,
+          city: document.getElementById("venueCity").value,
+          state: document.getElementById("venueState").value,
+          zip: document.getElementById("venueZip").value,
+          phone: document.getElementById("venuePhone").value,
+          instagram: document.getElementById("venueInstagram").value,
+        };
+        nextStep("managerStep3", "managerStep4", 11);
+      }
+
+      function toggleDayHours(day) {
+        const toggle = document.getElementById("toggle" + day);
+        const timesDiv = document.getElementById("times" + day);
+        const closedText = document.getElementById("closed" + day);
+        if (toggle.checked) {
+          timesDiv.classList.remove("d-none");
+          timesDiv.classList.add("d-flex");
+          closedText.classList.add("d-none");
+        } else {
+          timesDiv.classList.remove("d-flex");
+          timesDiv.classList.add("d-none");
+          closedText.classList.remove("d-none");
+        }
+      }
+
+      function handleManagerDetails(e) {
+        e.preventDefault();
+        const hours = {};
+        DAYS.forEach((day) => {
+          const enabled = document.getElementById("toggle" + day.key).checked;
+          hours[day.key] = enabled
+            ? {
+                open: document.getElementById("open" + day.key).value,
+                close: document.getElementById("close" + day.key).value,
+              }
+            : "Closed";
+        });
+        managerOperatingDetails = {
+          hours,
+          services: {
+            bottle: document.getElementById("srvBottle").checked,
+            hookah: document.getElementById("srvHookah").checked,
+            food: document.getElementById("srvFood").checked,
+            valet: document.getElementById("srvValet").checked,
+          },
+          walkins: document.querySelector('input[name="walkins"]:checked')
+            .value,
+          agePolicy: document.querySelector('input[name="agePolicy"]:checked')
+            .value,
+        };
+        nextStep("managerStep4", "managerStep5", 11);
+      }
+
+      // ============================================================
+      // LEVELS
+      // ============================================================
+      function selectLevelsCount(count, element) {
+        levelsCount = parseInt(count);
+        if (element) {
+          document
+            .querySelectorAll(".level-btn-option")
+            .forEach((btn) => btn.classList.remove("selected"));
+          element.classList.add("selected");
+          document.getElementById("customLevelsBox").classList.add("d-none");
+        }
+        document.getElementById("levelsContinueBtn").disabled = false;
+      }
+
+      function showCustomLevels(element) {
+        document
+          .querySelectorAll(".level-btn-option")
+          .forEach((btn) => btn.classList.remove("selected"));
+        element.classList.add("selected");
+        document.getElementById("customLevelsBox").classList.remove("d-none");
+        document.getElementById("levelsContinueBtn").disabled = true;
+      }
+
+      // ============================================================
+      // FLOOR NAMING
+      // ============================================================
+      function initFloorNaming() {
+        const container = document.getElementById("floorNamesContainer");
+        container.innerHTML = "";
+        const defaults = ["Main Floor", "VIP Balcony", "Rooftop"];
+        for (let i = 0; i < levelsCount; i++) {
+          const name = defaults[i] || "Level " + (i + 1);
+          container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="form-group-onboarding m-0">
+              <label>Level ${i + 1} Name</label>
+              <input type="text" class="floor-name-input" value="${name}" required style="width:100%;height:46px;background:var(--color-bg-card-light);border:1px solid var(--color-border);border-radius:12px;color:var(--color-text);font-size:14px;padding:0 14px;outline:none;font-family:'DM Sans',sans-serif;" />
+            </div>`,
+          );
+        }
+      }
+
+      function saveFloorNames() {
+        floorNames = [];
+        floorLayouts = {};
+        document.querySelectorAll(".floor-name-input").forEach((input, i) => {
+          const name = input.value.trim() || "Level " + (i + 1);
+          floorNames.push(name);
+          floorLayouts[name] = [];
+        });
+        activeFloorIndex = 0;
+      }
+
+      // ============================================================
+      // LAYOUT BUILDER
+      // ============================================================
+      function initLayoutBuilder() {
+        renderBuilderFloorTabs();
+        renderCanvasItems();
+      }
+
+      function renderBuilderFloorTabs() {
+        const container = document.getElementById("builderFloorTabs");
+        container.innerHTML = "";
+        floorNames.forEach((name, index) => {
+          container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="floor-builder-tab ${index === activeFloorIndex ? "active" : ""}" onclick="selectBuilderFloor(${index})">${name}</div>`,
+          );
+        });
+      }
+
+      function selectBuilderFloor(index) {
+        activeFloorIndex = index;
+        renderBuilderFloorTabs();
+        renderCanvasItems();
+      }
+
+      function addCanvasItem(type) {
+        const floor = floorNames[activeFloorIndex];
+        if (!floorLayouts[floor]) floorLayouts[floor] = [];
+        const isSection = type === "Section";
+        const item = {
+          type,
+          name: isSection ? "Section " + sectionCounter++ : type,
+          capacity: isSection ? 8 : null,
+          top: 100 + Math.random() * 80,
+          left: 80 + Math.random() * 120,
+          width: isSection ? 90 : 80,
+          height: isSection ? 50 : 40,
+        };
+        floorLayouts[floor].push(item);
+        renderCanvasItems();
+        if (isSection) openSectionModal(floorLayouts[floor].length - 1);
+      }
+
+      function deleteCanvasItem(index, event) {
+        if (event) event.stopPropagation();
+        floorLayouts[floorNames[activeFloorIndex]].splice(index, 1);
+        renderCanvasItems();
+      }
+
+      function renderCanvasItems() {
+        const canvas = document.getElementById("floorBuilderCanvas");
+        canvas.querySelectorAll(".placed-item").forEach((el) => el.remove());
+        const items = floorLayouts[floorNames[activeFloorIndex]] || [];
+        items.forEach((item, index) => {
+          const isSection = item.type === "Section";
+          canvas.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="placed-item ${isSection ? "section" : "fixed-item"}" id="placed_${index}" style="top:${item.top}px;left:${item.left}px;width:${item.width}px;height:${item.height}px;">
+              <button class="delete-btn" onclick="deleteCanvasItem(${index}, event)">×</button>
+              <div style="font-size:11px;font-weight:700;font-family:'Syne',sans-serif">${item.name}</div>
+              ${isSection ? `<div style="font-size:9px;opacity:0.7;margin-top:2px">Cap: ${item.capacity}</div>` : ""}
+            </div>`,
+          );
+          const div = document.getElementById(`placed_${index}`);
+          setupDraggable(div, item);
+          if (isSection)
+            div.addEventListener("click", () => openSectionModal(index));
+        });
+      }
+
+      function setupDraggable(element, item) {
+        let pos1 = 0,
+          pos2 = 0,
+          pos3 = 0,
+          pos4 = 0;
+        element.onmousedown = function (e) {
+          e.preventDefault();
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = () => {
+            document.onmouseup = null;
+            document.onmousemove = null;
+          };
+          document.onmousemove = function (e) {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            const canvas = document.getElementById("floorBuilderCanvas");
+            let t = Math.max(
+              0,
+              Math.min(
+                element.offsetTop - pos2,
+                canvas.clientHeight - element.clientHeight,
+              ),
+            );
+            let l = Math.max(
+              0,
+              Math.min(
+                element.offsetLeft - pos1,
+                canvas.clientWidth - element.clientWidth,
+              ),
+            );
+            element.style.top = t + "px";
+            element.style.left = l + "px";
+            item.top = t;
+            item.left = l;
+          };
+        };
+      }
+
+      function openSectionModal(index) {
+        activeEditingItemIndex = index;
+        const item = floorLayouts[floorNames[activeFloorIndex]][index];
+        document.getElementById("modalSectionName").value = item.name;
+        document.getElementById("modalSectionCapacity").value = item.capacity;
+        document
+          .getElementById("sectionSettingsModal")
+          .classList.remove("d-none");
+      }
+
+      function closeSectionModal() {
+        document.getElementById("sectionSettingsModal").classList.add("d-none");
+        activeEditingItemIndex = -1;
+      }
+
+      function saveSectionModal() {
+        if (activeEditingItemIndex === -1) return;
+        const name = document.getElementById("modalSectionName").value.trim();
+        const capacity = parseInt(
+          document.getElementById("modalSectionCapacity").value,
+        );
+        if (!name || isNaN(capacity) || capacity < 1) {
+          showToast("⚠️ Enter a valid name and capacity");
+          return;
+        }
+        const item =
+          floorLayouts[floorNames[activeFloorIndex]][activeEditingItemIndex];
+        item.name = name;
+        item.capacity = capacity;
+        closeSectionModal();
+        renderCanvasItems();
+      }
+
+      function saveLayoutAndContinue() {
+        let total = 0;
+        floorNames.forEach((f) => {
+          (floorLayouts[f] || []).forEach((i) => {
+            if (i.type === "Section") total++;
+          });
+        });
+        if (
+          total === 0 &&
+          !confirm("No reservable sections defined. Continue anyway?")
+        )
+          return;
+        nextStep("managerStep7", "managerStep8", 11);
+        initPackagesList();
+      }
+
+      // ============================================================
+      // PACKAGES
+      // ============================================================
+      function initPackagesList() {
+        const container = document.getElementById("packagesList");
+        container.innerHTML = "";
+        sectionPackages.forEach((pkg, index) => {
+          container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="package-card" id="pkg_card_${index}">
+              <div class="package-card-header d-flex align-items-center justify-content-between">
+                <span class="package-badge">${pkg.name}</span>
+                <button class="btn btn-sm" onclick="deletePackage(${index})" style="font-size:11px;color:#ef4444;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:3px 10px">Remove</button>
+              </div>
+              <div class="row g-2 mt-1">
+                ${[
+                  ["Package Name", "text", pkg.name, "name"],
+                  ["Max Guests", "number", pkg.maxGuests, "maxGuests"],
+                  ["Booking Fee ($)", "number", pkg.bookingFee, "bookingFee"],
+                  ["Min Spend ($)", "number", pkg.minSpend, "minSpend"],
+                  [
+                    "Bottles Included",
+                    "number",
+                    pkg.bottleCount,
+                    "bottleCount",
+                  ],
+                ]
+                  .map(
+                    ([lbl, type, val, field], colIdx) => `
+                  <div class="${colIdx === 0 ? "col-md-4" : "col-md-2"}">
+                    <label>${lbl}</label>
+                    <input type="${type}" value="${val}" oninput="updatePackage(${index},'${field}',${type === "number" ? "parseInt(this.value)" : "this.value"})" />
+                  </div>`,
+                  )
+                  .join("")}
+              </div>
+            </div>`,
+          );
+        });
+      }
+
+      function deletePackage(index) {
+        sectionPackages.splice(index, 1);
+        initPackagesList();
+      }
+
+      function updatePackage(index, field, value) {
+        if (sectionPackages[index]) sectionPackages[index][field] = value;
+      }
+
+      function addCustomPackage() {
+        sectionPackages.push({
+          name: "Custom VIP",
+          maxGuests: 8,
+          bookingFee: 300,
+          minSpend: 1500,
+          bottleCount: 3,
+        });
+        initPackagesList();
+      }
+
+      function savePackagesAndContinue() {
+        if (!sectionPackages.length) {
+          showToast("⚠️ Create at least one package");
+          return;
+        }
+        nextStep("managerStep8", "managerStep9", 11);
+        initAssignments();
+      }
+
+      // ============================================================
+      // ASSIGNMENTS
+      // ============================================================
+      function initAssignments() {
+        const container = document.getElementById("assignmentsList");
+        container.innerHTML = "";
+        const sections = [];
+        floorNames.forEach((floor) => {
+          (floorLayouts[floor] || []).forEach((item) => {
+            if (item.type === "Section")
+              sections.push({
+                floor,
+                name: item.name,
+                capacity: item.capacity,
+              });
+          });
+        });
+
+        if (!sections.length) {
+          container.innerHTML = `<div class="text-center p-4" style="color:var(--color-muted);font-size:13px">No sections defined. Go back to Layout Builder to add sections.</div>`;
+          return;
+        }
+
+        sections.forEach((sec) => {
+          if (!sectionPackageAssignments[sec.name])
+            sectionPackageAssignments[sec.name] = sectionPackages.length
+              ? [sectionPackages[0].name]
+              : [];
+          const assignedSet = new Set(sectionPackageAssignments[sec.name]);
+          const pills = sectionPackages
+            .map(
+              (pkg) => `
+            <div class="package-assign-pill ${assignedSet.has(pkg.name) ? "active" : ""}" onclick="toggleAssignment('${sec.name}','${pkg.name}',this)">
+              ${pkg.name} <span style="opacity:0.6;font-size:10px">$${pkg.minSpend}</span>
+            </div>`,
+            )
+            .join("");
+
+          container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="assignment-card">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                  <p style="font-size:14px;font-weight:600;font-family:'Syne',sans-serif;margin:0">${sec.name}</p>
+                  <p style="font-size:11px;color:var(--color-muted);margin:2px 0 0">${sec.floor} · ${sec.capacity} guests max</p>
+                </div>
+              </div>
+              <div class="d-flex flex-wrap gap-2">${pills}</div>
+            </div>`,
+          );
+        });
+      }
+
+      function toggleAssignment(sectionName, packageName, element) {
+        if (!sectionPackageAssignments[sectionName])
+          sectionPackageAssignments[sectionName] = [];
+        const i = sectionPackageAssignments[sectionName].indexOf(packageName);
+        if (i === -1) {
+          sectionPackageAssignments[sectionName].push(packageName);
+          element.classList.add("active");
+        } else {
+          sectionPackageAssignments[sectionName].splice(i, 1);
+          element.classList.remove("active");
+        }
+      }
+
+      function saveAssignmentsAndContinue() {
+        nextStep("managerStep9", "managerStep10", 11);
+        const abbrev = (managerVenueData.name || "CLUB")
+          .substring(0, 4)
+          .toUpperCase();
+        document.getElementById("generatedInviteCode").innerText =
+          `OPNC-${Math.floor(1000 + Math.random() * 9000)}-${abbrev}`;
+      }
+
+      // ============================================================
+      // INVITES
+      // ============================================================
+      function sendTeamInvite() {
+        const role = document.getElementById("inviteRole").value;
+        const phone = document.getElementById("invitePhone").value.trim();
+        if (!phone) {
+          showToast("⚠️ Enter a phone number");
+          return;
+        }
+        teamInvites.push({ role, phone });
+        document.getElementById("invitePhone").value = "";
+        document.getElementById("sentInvitesBox").classList.remove("d-none");
+        document.getElementById("sentInvitesList").insertAdjacentHTML(
+          "beforeend",
+          `
+          <div class="invite-row">
+            <div>
+              <span style="font-size:13px;font-weight:600;color:var(--color-accent)">${role}</span>
+              <span style="font-size:12px;color:var(--color-muted);margin-left:8px">${phone}</span>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:var(--color-success)">Sent ✓</span>
+          </div>`,
+        );
+        showToast("✓ Invite sent to " + phone);
+      }
+
+      function copyInviteCode() {
+        const code = document.getElementById("generatedInviteCode").innerText;
+        navigator.clipboard
+          .writeText(code)
+          .then(() => showToast("✓ Code copied: " + code));
+      }
+
+      // ============================================================
+      // PROMOTER HANDLERS
+      // ============================================================
+      function handlePromoterAccount(e) {
+        e.preventDefault();
+        nextStep("promoterStep2", "promoterStep3", 5);
+      }
+      function handlePromoterProfile(e) {
+        e.preventDefault();
+        nextStep("promoterStep3", "promoterStep4", 5);
+      }
+      function finishPromoter() {
+        window.location.href = "./promoter/promoter-dashboard.html";
+      }
+      function previewPromoterPhoto(input) {
+        previewImage(input, "pPreview", "pPlaceholder");
+      }
+
+      // ============================================================
+      // HOST HANDLERS
+      // ============================================================
+      function validateCode() {
+        nextStep("hostStep2", "hostStep3", 7);
+      }
+      function handleHostAccount(e) {
+        e.preventDefault();
+        nextStep("hostStep4", "hostStep5", 7);
+      }
+      function finishHost() {
+        window.location.href = "./host/host-dashboard.html";
+      }
+      function previewHostPhoto(input) {
+        previewImage(input, "hPreview", "hPlaceholder");
+      }
+
+      // ============================================================
+      // SHARED UTILS
+      // ============================================================
+      function previewImage(input, previewId, placeholderId) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const preview = document.getElementById(previewId);
+            preview.src = e.target.result;
+            preview.style.display = "block";
+            document.getElementById(placeholderId).style.display = "none";
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      function toggleFollow(btn) {
+        btn.classList.toggle("active");
+        btn.innerText = btn.classList.contains("active")
+          ? "Following"
+          : "Follow";
+      }
+
+      function showToast(msg) {
+        document.querySelectorAll(".toast-notif").forEach((t) => t.remove());
+        const t = document.createElement("div");
+        t.className = "toast-notif";
+        t.innerHTML = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+      }
+
+      // Init
+      updateProgress(1, 5);
+    </script>
+  </body>
+</html>

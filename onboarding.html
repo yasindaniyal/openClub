@@ -1,0 +1,2502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Onboarding | OpenClub</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="./assets/css/onboarding.css" />
+    <style>
+      .bg-dark {
+        background-color: #252b3b !important;
+        border: none !important;
+      }
+      #venueInstagram::placeholder {
+        text-transform: capitalize;
+        color: #848484;
+      }
+    </style>
+  </head>
+
+  <body class="open-club">
+    <div class="onboarding-container">
+      <div class="onboarding-progress" id="progressContainer">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="onboarding-card">
+        <!-- ── Step 1: Role Selection ── -->
+        <div class="onboarding-step active" id="step1">
+          <h1 class="step-title">How will you use OpenClub?</h1>
+          <p class="step-subtitle">Select your role to access your dashboard</p>
+
+          <div class="role-grid">
+            <div class="role-card" data-role="manager">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/Dashboard.png" alt="Manager" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Manager</h4>
+                <p>Manager Portal — Full access to venue management</p>
+              </div>
+            </div>
+
+            <div class="role-card" data-role="promoter">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/Promoters.png" alt="Promoter" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Promoter</h4>
+                <p>Manage guest lists and track performance</p>
+              </div>
+            </div>
+
+            <div class="role-card" data-role="host">
+              <div class="role-icon-box">
+                <div class="role-icon">
+                  <img src="./assets/images/LiveFloor.png" alt="Host" />
+                </div>
+              </div>
+              <div class="role-info">
+                <h4>Host / Door Staff</h4>
+                <p>Manage the floor and check-in guests</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              id="roleContinueBtn"
+              disabled
+            >
+              Continue
+            </button>
+          </div>
+          <div class="mt-4">
+            <button
+              class="login-button-secondary w-100 m-0"
+              id="backToLoginBtn"
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════
+             MANAGER FLOW
+        ════════════════════════════ -->
+
+        <!-- Manager Step 2: Personal Information -->
+        <div class="onboarding-step" id="managerStep2">
+          <button
+            class="back-arrow"
+            data-from="managerStep2"
+            data-to="step1"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Personal Information</h1>
+          <p class="step-subtitle">Create your manager identity on OpenClub</p>
+          <form id="managerAccountForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    id="mgrFirstName"
+                    required
+                    placeholder="John"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    id="mgrLastName"
+                    required
+                    placeholder="Doe"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Email Address</label>
+              <input
+                type="email"
+                id="mgrEmail"
+                required
+                placeholder="john.doe@example.com"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                id="mgrPhone"
+                required
+                placeholder="+1 (555) 000-0000"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Password</label>
+              <input
+                type="password"
+                id="mgrPassword"
+                required
+                placeholder="••••••••"
+              />
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 3: Venue Information -->
+        <div class="onboarding-step" id="managerStep3">
+          <button
+            class="back-arrow"
+            data-from="managerStep3"
+            data-to="managerStep2"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Venue Information</h1>
+          <p class="step-subtitle">Create your venue profile and details</p>
+          <form id="managerVenueForm">
+            <div class="form-group-onboarding">
+              <label>Club / Venue Name</label>
+              <input
+                type="text"
+                id="venueName"
+                required
+                placeholder="e.g. Aura Nightclub"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Venue Type</label>
+              <select
+                id="venueType"
+                class="form-select bg-dark text-white border-secondary rounded-4 p-3 onboarding-input-clean"
+                required
+              >
+                <option value="" disabled selected>Select Venue Type</option>
+                <option value="Nightclub">Nightclub</option>
+                <option value="Lounge">Lounge</option>
+                <option value="Bar + Lounge">Bar + Lounge</option>
+                <option value="Event Venue">Event Venue</option>
+              </select>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Address</label>
+              <input
+                type="text"
+                id="venueAddress"
+                required
+                placeholder="123 Main St"
+              />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-5">
+                <div class="form-group-onboarding">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    id="venueCity"
+                    required
+                    placeholder="Houston"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group-onboarding">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    id="venueState"
+                    required
+                    placeholder="TX"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group-onboarding">
+                  <label>ZIP</label>
+                  <input
+                    type="text"
+                    id="venueZip"
+                    required
+                    placeholder="77002"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Business Phone Number</label>
+              <input
+                type="tel"
+                id="venuePhone"
+                required
+                placeholder="+1 (713) 555-0199"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Instagram Handle</label>
+              <div class="input-group">
+                <span
+                  class="input-group-text bg-dark text-secondary border-secondary border-end-0 rounded-start-4 px-3 onboarding-input-addon-start"
+                  >@</span
+                >
+                <input
+                  type="text"
+                  id="venueInstagram"
+                  class="form-control bg-dark text-white border-secondary p-3 border-start-0 onboarding-input-addon-end"
+                  placeholder="yourhandle"
+                />
+              </div>
+            </div>
+
+            <!-- Required Branding -->
+            <div class="form-group-onboarding mb-4">
+              <label class="d-block mb-3">Required Branding</label>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    class="branding-upload-label text-center border border-dashed rounded-4 p-4 d-block cursor-pointer onboarding-branding-upload"
+                    data-trigger="venueLogo"
+                  >
+                    <span
+                      id="logoPlaceholder"
+                      class="fs-4 d-block mb-1 text-secondary"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-camera"
+                      >
+                        <path
+                          d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"
+                        />
+                        <circle cx="12" cy="13" r="3" />
+                      </svg>
+                    </span>
+                    <span class="fs-7 d-block branding-label-text"
+                      >Venue Logo (1:1)</span
+                    >
+                    <img id="logoPreview" class="onboarding-branding-preview" />
+                  </label>
+                  <input
+                    type="file"
+                    id="venueLogo"
+                    hidden
+                    accept="image/*"
+                    required
+                    data-preview="logoPreview"
+                    data-placeholder="logoPlaceholder"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    class="branding-upload-label text-center border border-dashed rounded-4 p-4 d-block cursor-pointer onboarding-branding-upload"
+                    data-trigger="venueCover"
+                  >
+                    <span
+                      id="coverPlaceholder"
+                      class="fs-4 d-block mb-1 text-secondary"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-image"
+                      >
+                        <rect
+                          width="18"
+                          height="18"
+                          x="3"
+                          y="3"
+                          rx="2"
+                          ry="2"
+                        />
+                        <circle cx="9" cy="9" r="2" />
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                      </svg>
+                    </span>
+                    <span class="fs-7 d-block branding-label-text"
+                      >Cover Image (16:9)</span
+                    >
+                    <img
+                      id="coverPreview"
+                      class="onboarding-branding-preview"
+                    />
+                  </label>
+                  <input
+                    type="file"
+                    id="venueCover"
+                    hidden
+                    accept="image/*"
+                    required
+                    data-preview="coverPreview"
+                    data-placeholder="coverPlaceholder"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 4: Operating Details -->
+        <div class="onboarding-step" id="managerStep4">
+          <button
+            class="back-arrow"
+            data-from="managerStep4"
+            data-to="managerStep3"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Operating Details</h1>
+          <p class="step-subtitle">Define how your venue operates</p>
+          <form id="managerDetailsForm">
+            <!-- Hours of Operation -->
+            <div class="form-group-onboarding mb-4">
+              <label class="mb-2">Hours of Operation</label>
+              <div
+                class="hours-weekly-container d-flex flex-column gap-2 onboarding-hours-container"
+                id="hoursWeeklyContainer"
+              >
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Services & Amenities -->
+            <div class="form-group-onboarding mb-4">
+              <label class="mb-2">Services & Amenities</label>
+              <div class="row g-2" id="servicesGrid">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Entry Basics -->
+            <div class="row g-3 mb-4">
+              <div class="col-6">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-2">Walk-ins Allowed</label>
+                  <div
+                    class="segment-control d-flex bg-dark border border-secondary rounded-4 overflow-hidden p-1"
+                  >
+                    <input
+                      type="radio"
+                      name="walkins"
+                      id="walkinsYes"
+                      class="segment-radio"
+                      value="Yes"
+                      checked
+                      hidden
+                    />
+                    <label
+                      for="walkinsYes"
+                      class="segment-label flex-grow-1 text-center py-2 cursor-pointer m-0 text-white rounded-3 fs-7"
+                      >Yes</label
+                    >
+                    <input
+                      type="radio"
+                      name="walkins"
+                      id="walkinsNo"
+                      class="segment-radio"
+                      value="No"
+                      hidden
+                    />
+                    <label
+                      for="walkinsNo"
+                      class="segment-label flex-grow-1 text-center py-2 cursor-pointer m-0 text-white rounded-3 fs-7"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group-onboarding m-0">
+                  <label class="mb-2">Age Policy</label>
+                  <div
+                    class="segment-control d-flex bg-dark border border-secondary rounded-4 overflow-hidden p-1"
+                  >
+                    <input
+                      type="radio"
+                      name="agePolicy"
+                      id="age18"
+                      class="segment-radio"
+                      value="18+"
+                      hidden
+                    />
+                    <label
+                      for="age18"
+                      class="segment-label flex-grow-1 text-center py-2 cursor-pointer m-0 text-white rounded-3 fs-7"
+                      >18+</label
+                    >
+                    <input
+                      type="radio"
+                      name="agePolicy"
+                      id="age21"
+                      class="segment-radio"
+                      value="21+"
+                      checked
+                      hidden
+                    />
+                    <label
+                      for="age21"
+                      class="segment-label flex-grow-1 text-center py-2 cursor-pointer m-0 text-white rounded-3 fs-7"
+                      >21+</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Create Venue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Manager Step 5: Define Floors -->
+        <div class="onboarding-step" id="managerStep5">
+          <button
+            class="back-arrow"
+            data-from="managerStep5"
+            data-to="managerStep4"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Map Your Floor</h1>
+          <p class="step-subtitle">How many levels does your venue have?</p>
+
+          <div
+            class="levels-options d-flex flex-column gap-3 mb-4"
+            id="levelsOptions"
+          >
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="form-group-onboarding mb-4 d-none" id="customLevelsBox">
+            <label>Number of Levels</label>
+            <input
+              type="number"
+              id="customLevelsInput"
+              class="form-control bg-dark text-white border-secondary rounded-4 p-3 onboarding-input-clean"
+              min="1"
+              max="10"
+              placeholder="e.g. 4"
+            />
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              id="levelsContinueBtn"
+              disabled
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 6: Name Floors -->
+        <div class="onboarding-step" id="managerStep6">
+          <button
+            class="back-arrow"
+            data-from="managerStep6"
+            data-to="managerStep5"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Name Your Floors</h1>
+          <p class="step-subtitle">
+            Identify each floor layer clearly (e.g. Main Floor, VIP Balcony,
+            Rooftop)
+          </p>
+          <div
+            class="dynamic-floor-names d-flex flex-column gap-3 mb-4 onboarding-floors-container"
+            id="floorNamesContainer"
+          ></div>
+          <div class="mt-4">
+            <button class="login-button w-100 m-0" id="floorNamesContinueBtn">
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 7: Layout Builder -->
+        <div class="onboarding-step onboarding-step-wide" id="managerStep7">
+          <button
+            class="back-arrow"
+            data-from="managerStep7"
+            data-to="managerStep6"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Layout Builder</h1>
+          <p class="step-subtitle">
+            Click elements to place them, then drag to arrange your layout
+          </p>
+
+          <div
+            class="floor-builder-tab-row d-flex gap-2 overflow-x-auto mb-3 onboarding-tab-row-spacing"
+            id="builderFloorTabs"
+          ></div>
+
+          <div class="layout-builder-workspace row g-3 text-start">
+            <!-- Toolbox -->
+            <div class="col-md-4">
+              <div
+                class="builder-toolbox border border-secondary rounded-4 p-3 bg-dark-card d-flex flex-column gap-3 h-100 onboarding-builder-toolbox"
+              >
+                <div>
+                  <h6
+                    class="text-white mb-2 fs-8 text-uppercase tracking-wider"
+                  >
+                    Reservable Elements
+                  </h6>
+                  <div
+                    class="toolbox-item bg-primary text-white border border-primary rounded-3 p-2 text-center cursor-pointer mb-2 fs-7 fw-semibold onboarding-toolbox-item"
+                    data-add-item="Section"
+                  >
+                    ➕ Reservable Section (Blue)
+                  </div>
+                </div>
+                <div>
+                  <h6
+                    class="text-white mb-2 fs-8 text-uppercase tracking-wider"
+                  >
+                    Fixed Elements
+                  </h6>
+                  <div
+                    class="grid-toolbox-fixed d-flex flex-wrap gap-2"
+                    id="fixedToolboxItems"
+                  ></div>
+                </div>
+                <div
+                  class="mt-auto fs-8 text-muted border-top border-secondary pt-2"
+                >
+                  💡 Click elements above to add to floor canvas. Drag placed
+                  items to position them. Click a Section (Blue) to edit Name
+                  and Capacity.
+                </div>
+              </div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="col-md-8">
+              <div
+                class="builder-canvas-wrapper position-relative border border-secondary rounded-4 bg-dark overflow-hidden onboarding-canvas-wrapper"
+              >
+                <div
+                  class="builder-canvas position-absolute w-100 h-100 onboarding-builder-canvas"
+                  id="floorBuilderCanvas"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Edit Modal -->
+          <div
+            class="section-edit-modal-wrapper d-none position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center onboarding-modal-backdrop"
+            id="sectionSettingsModal"
+          >
+            <div
+              class="section-edit-modal bg-dark border border-secondary rounded-4 p-4 w-100 text-start onboarding-modal-content"
+            >
+              <h4 class="text-white mb-2 fs-5" id="modalSectionTitle">
+                Section Settings
+              </h4>
+              <p class="text-muted fs-8 mb-3">
+                Define the reservable physical section parameters
+              </p>
+              <div class="form-group-onboarding mb-3">
+                <label class="fs-8 mb-1">Section Name</label>
+                <input
+                  type="text"
+                  id="modalSectionName"
+                  class="form-control bg-dark text-white border-secondary rounded-3 p-2 onboarding-input-clean"
+                  placeholder="e.g. Table A1"
+                />
+              </div>
+              <div class="form-group-onboarding mb-3">
+                <label class="fs-8 mb-1">Capacity (Max Guests)</label>
+                <input
+                  type="number"
+                  id="modalSectionCapacity"
+                  class="form-control bg-dark text-white border-secondary rounded-3 p-2 onboarding-input-clean"
+                  placeholder="e.g. 8"
+                  min="1"
+                />
+              </div>
+              <div class="d-flex gap-2 justify-content-end mt-4">
+                <button
+                  class="btn btn-sm btn-outline-secondary border-secondary rounded-3 px-3 fs-8 text-white"
+                  id="modalCancelBtn"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="btn btn-sm btn-primary rounded-3 px-3 fs-8 text-white"
+                  id="modalSaveBtn"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button class="login-button w-100 m-0" id="layoutContinueBtn">
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 8: Section Packages -->
+        <div class="onboarding-step" id="managerStep8">
+          <button
+            class="back-arrow"
+            data-from="managerStep8"
+            data-to="managerStep7"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Create Section Packages</h1>
+          <p class="step-subtitle">
+            Define package offerings for table reservations (starter templates
+            preloaded)
+          </p>
+          <div
+            class="packages-list-container d-flex flex-column gap-3 mb-4 onboarding-packages-container"
+            id="packagesList"
+          ></div>
+          <div class="d-flex justify-content-center mb-4">
+            <button
+              class="btn btn-outline-primary btn-sm rounded-4 px-3 fs-8 fw-semibold"
+              id="addCustomPackageBtn"
+            >
+              ➕ Add Custom Package
+            </button>
+          </div>
+          <div class="mt-4">
+            <button class="login-button w-100 m-0" id="packagesContinueBtn">
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 9: Assign Packages -->
+        <div class="onboarding-step" id="managerStep9">
+          <button
+            class="back-arrow"
+            data-from="managerStep9"
+            data-to="managerStep8"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Assign Packages to Sections</h1>
+          <p class="step-subtitle">
+            Connect pricing packages to your physical sections
+          </p>
+          <div
+            class="assignments-container d-flex flex-column gap-3 mb-4 onboarding-assignments-container text-start"
+            id="assignmentsList"
+          ></div>
+          <div class="mt-4">
+            <button class="login-button w-100 m-0" id="assignmentsContinueBtn">
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 10: Invite Team -->
+        <div class="onboarding-step" id="managerStep10">
+          <button
+            class="back-arrow"
+            data-from="managerStep10"
+            data-to="managerStep9"
+            data-total="11"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Invite Your Team</h1>
+          <p class="step-subtitle">
+            Invite hosts, security, or managers to operate the venue
+          </p>
+
+          <div
+            class="invite-form-box border border-secondary rounded-4 p-3 mb-4 text-start onboarding-card-light-bg"
+          >
+            <div class="row g-2 align-items-end">
+              <div class="col-md-4">
+                <div class="form-group-onboarding m-0">
+                  <label class="fs-8 mb-1">Staff Role</label>
+                  <select
+                    id="inviteRole"
+                    class="form-select bg-dark text-white border-secondary rounded-3 p-2 fs-8 onboarding-input-no-shadow"
+                  >
+                    <option value="Host">Host</option>
+                    <option value="Bottle Personnel">Bottle Personnel</option>
+                    <option value="Door Staff">Door Staff</option>
+                    <option value="Other Club Managers">
+                      Other Club Manager
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group-onboarding m-0">
+                  <label class="fs-8 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="invitePhone"
+                    class="form-control bg-dark text-white border-secondary rounded-3 p-2 fs-8 onboarding-input-no-shadow"
+                    placeholder="+1 (555) 000-0000"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <button
+                  class="login-button w-100 m-0 py-2 fs-8 fw-semibold"
+                  id="sendInviteBtn"
+                >
+                  Send Invite
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="invite-code-generator border border-secondary border-dashed rounded-4 p-3 text-center mb-4 onboarding-card-light-bg"
+          >
+            <h6 class="text-white mb-1 fs-7">Invite Code / Access Link</h6>
+            <p class="text-muted fs-8 mb-2">
+              Share this code with your team for immediate portal activation
+            </p>
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <span
+                id="generatedInviteCode"
+                class="font-monospace text-primary fw-bold tracking-wide fs-5"
+                >OPNC-9871-AURA</span
+              >
+              <button
+                class="btn btn-outline-secondary btn-sm p-1 rounded px-2 fs-8 text-white border-secondary"
+                id="copyInviteCodeBtn"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="sent-invites-section d-none text-start"
+            id="sentInvitesBox"
+          >
+            <h6 class="text-white mb-2 fs-7">Sent Invites</h6>
+            <div
+              class="d-flex flex-column gap-2 onboarding-invites-container"
+              id="sentInvitesList"
+            ></div>
+          </div>
+
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              data-from="managerStep10"
+              data-to="managerStep11"
+              data-total="11"
+              id="teamContinueBtn"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Manager Step 11: Complete -->
+        <div class="onboarding-step" id="managerStep11">
+          <div class="landing-content text-center">
+            <div class="success-icon">✓</div>
+            <h1 class="step-title">Your Venue is Live!</h1>
+            <p class="step-subtitle">
+              Congratulations! Your venue is successfully registered on OpenClub
+            </p>
+
+            <div
+              class="features-summary border border-secondary rounded-4 p-4 text-start d-flex flex-column gap-3 mb-4 mx-auto onboarding-features-summary"
+            >
+              <h5 class="text-white mb-1 fs-6">What you can do next:</h5>
+              <div class="d-flex align-items-start gap-3">
+                <div class="fs-4 text-primary onboarding-emoji-lead">📅</div>
+                <div>
+                  <h6 class="m-0 text-white fs-7">Accept Reservations</h6>
+                  <p class="m-0 text-muted fs-8">
+                    Direct customers to book sections with your assigned package
+                    codes
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div class="fs-4 text-primary onboarding-emoji-lead">🗺️</div>
+                <div>
+                  <h6 class="m-0 text-white fs-7">Manage Your Floor Plan</h6>
+                  <p class="m-0 text-muted fs-8">
+                    Visual interactive floor plan tracking active seated status
+                    and check-ins
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div class="fs-4 text-primary onboarding-emoji-lead">👥</div>
+                <div>
+                  <h6 class="m-0 text-white fs-7">Coordinate Assigned Staff</h6>
+                  <p class="m-0 text-muted fs-8">
+                    Empower hosts, door checkers, and promoters with customized
+                    dashboard accesses
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start gap-3">
+                <div class="fs-4 text-primary onboarding-emoji-lead">📣</div>
+                <div>
+                  <h6 class="m-0 text-white fs-7">Create Club Events</h6>
+                  <p class="m-0 text-muted fs-8">
+                    Publish upcoming nightclub parties, lounges, and track
+                    promoter statistics
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="login-button w-100 m-0 mt-3"
+              id="managerDashboardBtn"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════
+             PROMOTER FLOW
+        ════════════════════════════ -->
+
+        <div class="onboarding-step" id="promoterStep2">
+          <button
+            class="back-arrow"
+            data-from="promoterStep2"
+            data-to="step1"
+            data-total="5"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Create Your Promoter Account</h1>
+          <p class="step-subtitle">Tell us a bit about yourself</p>
+          <form id="promoterAccountForm">
+            <div class="form-group-onboarding">
+              <label>Full Name</label>
+              <input type="text" required placeholder="John Doe" />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Phone Number</label>
+                  <input type="tel" required placeholder="+1 (555) 000-0000" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-onboarding">
+                  <label>Email</label>
+                  <input type="email" required placeholder="john@example.com" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Instagram Handle</label>
+              <input type="text" placeholder="@yourhandle" />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Crowd Type (Select all that apply)</label>
+              <div class="crowd-type-grid" id="crowdTypeGrid"></div>
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep3">
+          <button
+            class="back-arrow"
+            data-from="promoterStep3"
+            data-to="promoterStep2"
+            data-total="5"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Build Your Promoter Profile</h1>
+          <p class="step-subtitle">This is what clubs and guests will see</p>
+          <form id="promoterProfileForm">
+            <div class="profile-upload mb-4">
+              <div class="profile-preview-circle" data-trigger="pPhoto">
+                <span id="pPlaceholder" class="text-secondary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-user"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                <img id="pPreview" class="onboarding-preview-hidden" />
+              </div>
+              <input
+                type="file"
+                id="pPhoto"
+                hidden
+                accept="image/*"
+                data-preview="pPreview"
+                data-placeholder="pPlaceholder"
+              />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Promoter Name</label>
+              <input type="text" required placeholder="e.g. Antoine Presents" />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Short Bio</label>
+              <textarea
+                class="form-control bg-dark text-white border-secondary rounded-4 p-3"
+                rows="3"
+                placeholder="Bio..."
+              ></textarea>
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep4">
+          <button
+            class="back-arrow"
+            data-from="promoterStep4"
+            data-to="promoterStep3"
+            data-total="5"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Connect With Clubs</h1>
+          <p class="step-subtitle">Follow clubs in your city to stay updated</p>
+          <div class="club-list" id="clubList"></div>
+          <div class="mt-4">
+            <button
+              class="login-button w-100 m-0"
+              data-from="promoterStep4"
+              data-to="promoterStep5"
+              data-total="5"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="promoterStep5">
+          <button
+            class="back-arrow"
+            data-from="promoterStep5"
+            data-to="promoterStep4"
+            data-total="5"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="landing-content text-center">
+            <div class="success-icon">✓</div>
+            <h1 class="step-title">You're Ready To Promote</h1>
+            <p class="step-subtitle">
+              Start growing your guest list and selling sections.
+            </p>
+            <button
+              class="login-button w-100 m-0 mt-5"
+              id="promoterDashboardBtn"
+            >
+              Go To Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════
+             HOST FLOW
+        ════════════════════════════ -->
+
+        <div class="onboarding-step" id="hostStep2">
+          <button
+            class="back-arrow"
+            data-from="hostStep2"
+            data-to="step1"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Join a Venue</h1>
+          <p class="step-subtitle">
+            Enter the activation code or link provided by your club
+          </p>
+          <div class="form-group-onboarding">
+            <label>Activation Code OR Invite Link</label>
+            <input
+              type="text"
+              id="activationCode"
+              placeholder="e.g. AURA-HOST-4832"
+            />
+          </div>
+          <div class="d-flex flex-column gap-3 mt-4">
+            <button class="login-button w-100 m-0" id="validateCodeBtn">
+              Continue
+            </button>
+            <button class="login-button-secondary w-100" id="requestAccessBtn">
+              Request Access
+            </button>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep3">
+          <button
+            class="back-arrow"
+            data-from="hostStep3"
+            data-to="hostStep2"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Venue Found!</h1>
+          <p class="step-subtitle">Please confirm the details below</p>
+          <div class="venue-preview">
+            <div class="venue-icon">🏰</div>
+            <h3>Club Aura</h3>
+            <p>Houston, TX</p>
+            <div class="venue-role-badge"><span>Role: Host</span></div>
+          </div>
+          <div class="d-flex flex-column gap-3 mt-4">
+            <button
+              class="login-button w-100 m-0"
+              data-from="hostStep3"
+              data-to="hostStep4"
+              data-total="7"
+            >
+              Confirm & Continue
+            </button>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep4">
+          <button
+            class="back-arrow"
+            data-from="hostStep4"
+            data-to="hostStep3"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h1 class="step-title">Create Host Account</h1>
+          <p class="step-subtitle">Set up your professional profile</p>
+          <form id="hostAccountForm">
+            <div class="profile-upload mb-4">
+              <div class="profile-preview-circle" data-trigger="hPhoto">
+                <span id="hPlaceholder" class="text-secondary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-user"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                <img id="hPreview" class="onboarding-preview-hidden" />
+              </div>
+              <input
+                type="file"
+                id="hPhoto"
+                hidden
+                accept="image/*"
+                data-preview="hPreview"
+                data-placeholder="hPlaceholder"
+              />
+            </div>
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="form-group-onboarding">
+                  <label>First Name</label>
+                  <input type="text" required />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group-onboarding">
+                  <label>Last Name</label>
+                  <input type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-group-onboarding">
+              <label>Phone Number</label><input type="tel" required />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Email</label><input type="email" required />
+            </div>
+            <div class="form-group-onboarding">
+              <label>Password</label><input type="password" required />
+            </div>
+            <div class="btn-wrapper mt-4">
+              <button type="submit" class="login-button w-100 m-0">
+                Create Account
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Host orientation slides -->
+        <div class="onboarding-step" id="hostStep5">
+          <button
+            class="back-arrow"
+            data-from="hostStep5"
+            data-to="hostStep4"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/LiveFloor.png"
+                class="onboarding-role-hero-img"
+              />
+            </div>
+            <h1 class="step-title">Reservations</h1>
+            <p class="step-subtitle">
+              View Tonight's Reservations. See all bookings organized by time
+              and section.
+            </p>
+            <div class="mt-4">
+              <button
+                class="login-button w-100 m-0"
+                data-from="hostStep5"
+                data-to="hostStep6"
+                data-total="7"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep6">
+          <button
+            class="back-arrow"
+            data-from="hostStep6"
+            data-to="hostStep5"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/Promoters.png"
+                class="onboarding-role-hero-img"
+              />
+            </div>
+            <h1 class="step-title">Check-In</h1>
+            <p class="step-subtitle">
+              Check Guests In. Mark guests as arrived when they enter. This
+              notifies the floor.
+            </p>
+            <div class="mt-4">
+              <button
+                class="login-button w-100 m-0"
+                data-from="hostStep6"
+                data-to="hostStep7"
+                data-total="7"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-step" id="hostStep7">
+          <button
+            class="back-arrow"
+            data-from="hostStep7"
+            data-to="hostStep6"
+            data-total="7"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="orientation-content text-center">
+            <div class="orientation-image">
+              <img
+                src="./assets/images/Dashboard.png"
+                class="onboarding-role-hero-img"
+              />
+            </div>
+            <h1 class="step-title">Floor Control</h1>
+            <p class="step-subtitle">
+              Manage the Floor. Track section status in real time: Available,
+              Reserved, Seated.
+            </p>
+            <div class="mt-4">
+              <button class="login-button w-100 m-0" id="hostDashboardBtn">
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.onboarding-card -->
+    </div>
+    <!-- /.onboarding-container -->
+
+    <script>
+      (() => {
+        "use strict";
+
+        // ─────────────────────────────────────────────
+        // CONFIG / STATIC DATA
+        // ─────────────────────────────────────────────
+        const DAYS = [
+          { key: "Mon", label: "Monday", defaultOpen: false },
+          { key: "Tue", label: "Tuesday", defaultOpen: false },
+          { key: "Wed", label: "Wednesday", defaultOpen: false },
+          { key: "Thu", label: "Thursday", defaultOpen: true },
+          { key: "Fri", label: "Friday", defaultOpen: true },
+          { key: "Sat", label: "Saturday", defaultOpen: true },
+          { key: "Sun", label: "Sunday", defaultOpen: false },
+        ];
+
+        const SERVICES = [
+          { id: "srvBottle", emoji: "🍾", label: "Bottle Service" },
+          { id: "srvHookah", emoji: "💨", label: "Hookah" },
+          { id: "srvFood", emoji: "🍔", label: "Food Served" },
+          { id: "srvValet", emoji: "🚗", label: "Valet Service" },
+        ];
+
+        const LEVEL_OPTIONS = [
+          {
+            count: 1,
+            emoji: "🏢",
+            label: "1 Level",
+            desc: "Single main floor operations",
+          },
+          {
+            count: 2,
+            emoji: "🏢🏢",
+            label: "2 Levels",
+            desc: "Main floor and VIP/balcony spaces",
+          },
+          {
+            count: 3,
+            emoji: "🏢🏢🏢",
+            label: "3 Levels",
+            desc: "Multi-tiered event configurations",
+          },
+          {
+            count: 0,
+            emoji: "⚙️",
+            label: "Custom Count",
+            desc: "Configure your own levels quantity",
+          },
+        ];
+
+        const FIXED_ELEMENTS = [
+          "Bar",
+          "DJ Booth",
+          "Bathroom",
+          "Patio",
+          "Entry",
+          "Stage",
+          "Walls",
+        ];
+
+        const FLOOR_DEFAULT_NAMES = ["Main Floor", "VIP Balcony", "Rooftop"];
+
+        const CLUBS = [
+          { emoji: "👟", name: "Sneaks Nightclub", city: "Houston, TX" },
+          { emoji: "🌊", name: "Sekai", city: "Houston, TX" },
+          { emoji: "💎", name: "Clé", city: "Houston, TX" },
+          { emoji: "🔥", name: "NOTO", city: "Houston, TX" },
+        ];
+
+        const CROWD_TYPES = [
+          "Hip Hop",
+          "College",
+          "Latin",
+          "EDM",
+          "Mixed Crowd",
+        ];
+
+        const DEFAULT_PACKAGES = [
+          {
+            name: "Silver",
+            maxGuests: 6,
+            bookingFee: 100,
+            minSpend: 500,
+            bottleCount: 1,
+          },
+          {
+            name: "Gold",
+            maxGuests: 10,
+            bookingFee: 200,
+            minSpend: 1000,
+            bottleCount: 2,
+          },
+          {
+            name: "VIP",
+            maxGuests: 15,
+            bookingFee: 500,
+            minSpend: 2500,
+            bottleCount: 4,
+          },
+        ];
+
+        // ─────────────────────────────────────────────
+        // STATE
+        // ─────────────────────────────────────────────
+        const state = {
+          role: "",
+          managerAccount: {},
+          managerVenue: {},
+          managerOperating: {},
+          levelsCount: 1,
+          floorNames: ["Main Floor"],
+          activeFloorIndex: 0,
+          floorLayouts: { "Main Floor": [] },
+          sectionPackages: DEFAULT_PACKAGES.map((p) => ({ ...p })),
+          packageAssignments: {},
+          teamInvites: [],
+          sectionCounter: 1,
+          activeEditingItemIndex: -1,
+        };
+
+        // ─────────────────────────────────────────────
+        // PROGRESS
+        // ─────────────────────────────────────────────
+        function updateProgress(stepIndex, total) {
+          const pct = total > 1 ? ((stepIndex - 1) / (total - 1)) * 100 : 0;
+          document.getElementById("progressFill").style.width = pct + "%";
+        }
+
+        // ─────────────────────────────────────────────
+        // STEP NAVIGATION
+        // ─────────────────────────────────────────────
+        function showStep(toId, total) {
+          document
+            .querySelectorAll(".onboarding-step")
+            .forEach((s) => s.classList.remove("active"));
+          const el = document.getElementById(toId);
+          if (el) el.classList.add("active");
+          const match = toId.match(/(\d+)$/);
+          if (match) updateProgress(parseInt(match[0]), total);
+        }
+
+        // Delegate back-arrow clicks
+        document.addEventListener("click", (e) => {
+          const arrow = e.target.closest(".back-arrow[data-from]");
+          if (arrow) {
+            showStep(arrow.dataset.to, parseInt(arrow.dataset.total));
+          }
+
+          // Generic next-step buttons (data-from / data-to, not back-arrows)
+          const nextBtn = e.target.closest(
+            "[data-from][data-to]:not(.back-arrow)",
+          );
+          if (nextBtn) {
+            showStep(nextBtn.dataset.to, parseInt(nextBtn.dataset.total));
+          }
+        });
+
+        // ─────────────────────────────────────────────
+        // ROLE SELECTION
+        // ─────────────────────────────────────────────
+        document.querySelectorAll(".role-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            document
+              .querySelectorAll(".role-card")
+              .forEach((c) => c.classList.remove("selected"));
+            card.classList.add("selected");
+            state.role = card.dataset.role;
+            document.getElementById("roleContinueBtn").disabled = false;
+          });
+        });
+
+        document
+          .getElementById("roleContinueBtn")
+          .addEventListener("click", () => {
+            const map = {
+              manager: ["managerStep2", 11],
+              promoter: ["promoterStep2", 5],
+              host: ["hostStep2", 7],
+            };
+            const [stepId, total] = map[state.role] || [];
+            if (stepId) showStep(stepId, total);
+          });
+
+        document
+          .getElementById("backToLoginBtn")
+          .addEventListener("click", () => {
+            window.location.href = "./login.html";
+          });
+
+        // ─────────────────────────────────────────────
+        // IMAGE PREVIEW (universal)
+        // ─────────────────────────────────────────────
+        function previewImage(inputEl) {
+          const { preview, placeholder } = inputEl.dataset;
+          if (!inputEl.files?.[0]) return;
+          const reader = new FileReader();
+          reader.onload = ({ target }) => {
+            const img = document.getElementById(preview);
+            const ph = document.getElementById(placeholder);
+            if (img) {
+              img.src = target.result;
+              img.style.display = "block";
+            }
+            if (ph) ph.style.display = "none";
+          };
+          reader.readAsDataURL(inputEl.files[0]);
+        }
+
+        // Branding upload click triggers
+        document
+          .querySelectorAll(".branding-upload-label[data-trigger]")
+          .forEach((label) => {
+            label.addEventListener("click", () =>
+              document.getElementById(label.dataset.trigger).click(),
+            );
+          });
+
+        // Profile circle click triggers
+        document
+          .querySelectorAll(".profile-preview-circle[data-trigger]")
+          .forEach((circle) => {
+            circle.addEventListener("click", () =>
+              document.getElementById(circle.dataset.trigger).click(),
+            );
+          });
+
+        // File input change events
+        document
+          .querySelectorAll('input[type="file"][data-preview]')
+          .forEach((input) => {
+            input.addEventListener("change", () => previewImage(input));
+          });
+
+        // ─────────────────────────────────────────────
+        // MANAGER FORMS
+        // ─────────────────────────────────────────────
+        document
+          .getElementById("managerAccountForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            state.managerAccount = {
+              firstName: document.getElementById("mgrFirstName").value,
+              lastName: document.getElementById("mgrLastName").value,
+              email: document.getElementById("mgrEmail").value,
+              phone: document.getElementById("mgrPhone").value,
+            };
+            showStep("managerStep3", 11);
+          });
+
+        document
+          .getElementById("managerVenueForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            state.managerVenue = {
+              name: document.getElementById("venueName").value,
+              type: document.getElementById("venueType").value,
+              address: document.getElementById("venueAddress").value,
+              city: document.getElementById("venueCity").value,
+              state: document.getElementById("venueState").value,
+              zip: document.getElementById("venueZip").value,
+              phone: document.getElementById("venuePhone").value,
+              instagram: document.getElementById("venueInstagram").value,
+            };
+            showStep("managerStep4", 11);
+          });
+
+        // ─────────────────────────────────────────────
+        // HOURS OF OPERATION (dynamic render)
+        // ─────────────────────────────────────────────
+        function renderHoursOfOperation() {
+          const container = document.getElementById("hoursWeeklyContainer");
+          container.innerHTML = DAYS.map(
+            ({ key, label, defaultOpen }) => `
+          <div class="day-hours-row d-flex align-items-center justify-content-between border-bottom border-secondary py-2" id="dayRow${key}">
+            <div class="form-check form-switch m-0">
+              <input class="form-check-input day-toggle" type="checkbox" id="toggle${key}" data-day="${key}" ${defaultOpen ? "checked" : ""} />
+              <label class="form-check-label text-white ms-2" for="toggle${key}">${label}</label>
+            </div>
+            <div class="day-time-inputs ${defaultOpen ? "d-flex" : "d-none"} align-items-center gap-2" id="times${key}">
+              <input type="time" class="time-input bg-dark text-white border-secondary rounded p-1" id="open${key}" value="22:00" />
+              <span class="text-muted fs-8">to</span>
+              <input type="time" class="time-input bg-dark text-white border-secondary rounded p-1" id="close${key}" value="02:00" />
+            </div>
+            <div class="day-closed-text text-muted fs-8 ${defaultOpen ? "d-none" : ""}" id="closed${key}">Closed</div>
+          </div>
+        `,
+          ).join("");
+
+          document.querySelectorAll(".day-toggle").forEach((toggle) => {
+            toggle.addEventListener("change", () => {
+              const day = toggle.dataset.day;
+              document
+                .getElementById(`times${day}`)
+                .classList.toggle("d-none", !toggle.checked);
+              document
+                .getElementById(`times${day}`)
+                .classList.toggle("d-flex", toggle.checked);
+              document
+                .getElementById(`closed${day}`)
+                .classList.toggle("d-none", toggle.checked);
+            });
+          });
+        }
+
+        // ─────────────────────────────────────────────
+        // SERVICES (dynamic render)
+        // ─────────────────────────────────────────────
+        function renderServices() {
+          document.getElementById("servicesGrid").innerHTML = SERVICES.map(
+            (s) => `
+          <div class="col-6">
+            <div class="service-pill-checkbox">
+              <input type="checkbox" id="${s.id}" class="service-toggle" />
+              <label for="${s.id}" class="service-pill w-100 text-center py-2 border rounded-4 d-block cursor-pointer">
+                ${s.emoji} ${s.label}
+              </label>
+            </div>
+          </div>
+        `,
+          ).join("");
+        }
+
+        document
+          .getElementById("managerDetailsForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            const hours = {};
+            DAYS.forEach(({ key }) => {
+              const enabled = document.getElementById(`toggle${key}`).checked;
+              hours[key] = enabled
+                ? {
+                    open: document.getElementById(`open${key}`).value,
+                    close: document.getElementById(`close${key}`).value,
+                  }
+                : "Closed";
+            });
+            state.managerOperating = {
+              hours,
+              services: Object.fromEntries(
+                SERVICES.map((s) => [
+                  s.id,
+                  document.getElementById(s.id).checked,
+                ]),
+              ),
+              walkins: document.querySelector('input[name="walkins"]:checked')
+                .value,
+              agePolicy: document.querySelector(
+                'input[name="agePolicy"]:checked',
+              ).value,
+            };
+            showStep("managerStep5", 11);
+            renderLevelOptions();
+          });
+
+        // ─────────────────────────────────────────────
+        // LEVEL OPTIONS (dynamic render)
+        // ─────────────────────────────────────────────
+        function renderLevelOptions() {
+          const container = document.getElementById("levelsOptions");
+          container.innerHTML = LEVEL_OPTIONS.map(
+            (opt, i) => `
+          <div class="level-btn-option border border-secondary rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer" data-level-index="${i}">
+            <div class="level-icon fs-3">${opt.emoji}</div>
+            <div class="level-text text-start">
+              <h5 class="m-0 text-white fs-6">${opt.label}</h5>
+              <p class="m-0 text-muted fs-8">${opt.desc}</p>
+            </div>
+          </div>
+        `,
+          ).join("");
+
+          container.querySelectorAll(".level-btn-option").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              container
+                .querySelectorAll(".level-btn-option")
+                .forEach((b) => b.classList.remove("selected"));
+              btn.classList.add("selected");
+              const opt = LEVEL_OPTIONS[parseInt(btn.dataset.levelIndex)];
+              const customBox = document.getElementById("customLevelsBox");
+              if (opt.count === 0) {
+                customBox.classList.remove("d-none");
+                document.getElementById("levelsContinueBtn").disabled = true;
+              } else {
+                customBox.classList.add("d-none");
+                state.levelsCount = opt.count;
+                document.getElementById("levelsContinueBtn").disabled = false;
+              }
+            });
+          });
+
+          document
+            .getElementById("customLevelsInput")
+            .addEventListener("input", function () {
+              const val = parseInt(this.value);
+              if (val >= 1 && val <= 10) {
+                state.levelsCount = val;
+                document.getElementById("levelsContinueBtn").disabled = false;
+              } else {
+                document.getElementById("levelsContinueBtn").disabled = true;
+              }
+            });
+        }
+
+        document
+          .getElementById("levelsContinueBtn")
+          .addEventListener("click", () => {
+            showStep("managerStep6", 11);
+            renderFloorNameInputs();
+          });
+
+        // ─────────────────────────────────────────────
+        // FLOOR NAMING
+        // ─────────────────────────────────────────────
+        function renderFloorNameInputs() {
+          const container = document.getElementById("floorNamesContainer");
+          container.innerHTML = Array.from(
+            { length: state.levelsCount },
+            (_, i) => `
+          <div class="form-group-onboarding m-0">
+            <label>Level ${i + 1} Name</label>
+            <input type="text" class="floor-name-input form-control bg-dark text-white border-secondary rounded-4 p-3 onboarding-input-clean"
+              value="${FLOOR_DEFAULT_NAMES[i] || `Level ${i + 1}`}" required />
+          </div>
+        `,
+          ).join("");
+        }
+
+        function saveFloorNames() {
+          state.floorNames = [];
+          state.floorLayouts = {};
+          document.querySelectorAll(".floor-name-input").forEach((input, i) => {
+            const name = input.value.trim() || `Level ${i + 1}`;
+            state.floorNames.push(name);
+            state.floorLayouts[name] = [];
+          });
+          state.activeFloorIndex = 0;
+        }
+
+        document
+          .getElementById("floorNamesContinueBtn")
+          .addEventListener("click", () => {
+            saveFloorNames();
+            showStep("managerStep7", 11);
+            initLayoutBuilder();
+          });
+
+        // ─────────────────────────────────────────────
+        // LAYOUT BUILDER
+        // ─────────────────────────────────────────────
+        function initLayoutBuilder() {
+          // Render fixed toolbox items
+          document.getElementById("fixedToolboxItems").innerHTML =
+            FIXED_ELEMENTS.map(
+              (type) => `
+          <button class="btn btn-outline-secondary btn-sm flex-grow-1 fs-8 text-white border-secondary rounded-3" data-add-item="${type}">
+            ➕ ${type}
+          </button>
+        `,
+            ).join("");
+
+          renderBuilderFloorTabs();
+          renderCanvasItems();
+        }
+
+        function renderBuilderFloorTabs() {
+          document.getElementById("builderFloorTabs").innerHTML =
+            state.floorNames
+              .map(
+                (name, i) => `
+          <div class="floor-builder-tab ${i === state.activeFloorIndex ? "active" : ""}" data-floor-index="${i}">${name}</div>
+        `,
+              )
+              .join("");
+        }
+
+        document
+          .getElementById("builderFloorTabs")
+          .addEventListener("click", (e) => {
+            const tab = e.target.closest(".floor-builder-tab");
+            if (tab) {
+              state.activeFloorIndex = parseInt(tab.dataset.floorIndex);
+              renderBuilderFloorTabs();
+              renderCanvasItems();
+            }
+          });
+
+        // Toolbox: add items (delegated from entire step)
+        document
+          .getElementById("managerStep7")
+          .addEventListener("click", (e) => {
+            const addBtn = e.target.closest("[data-add-item]");
+            if (addBtn) addCanvasItem(addBtn.dataset.addItem);
+          });
+
+        function addCanvasItem(type) {
+          const floorName = state.floorNames[state.activeFloorIndex];
+          if (!state.floorLayouts[floorName])
+            state.floorLayouts[floorName] = [];
+          const isSection = type === "Section";
+          const item = {
+            type,
+            name: isSection ? `Section ${state.sectionCounter++}` : type,
+            capacity: isSection ? 8 : null,
+            top: 150,
+            left: 150,
+            width: isSection ? 90 : 80,
+            height: isSection ? 50 : 40,
+          };
+          state.floorLayouts[floorName].push(item);
+          renderCanvasItems();
+          if (isSection)
+            openSectionModal(state.floorLayouts[floorName].length - 1);
+        }
+
+        function deleteCanvasItem(index) {
+          state.floorLayouts[state.floorNames[state.activeFloorIndex]].splice(
+            index,
+            1,
+          );
+          renderCanvasItems();
+        }
+
+        function renderCanvasItems() {
+          const canvas = document.getElementById("floorBuilderCanvas");
+          canvas.querySelectorAll(".placed-item").forEach((el) => el.remove());
+
+          const items =
+            state.floorLayouts[state.floorNames[state.activeFloorIndex]] || [];
+          items.forEach((item, index) => {
+            const isSection = item.type === "Section";
+            const div = document.createElement("div");
+            div.className = isSection
+              ? "placed-item section"
+              : "placed-item fixed-item";
+            div.id = `placed_${index}`;
+            div.style.cssText = `top:${item.top}px;left:${item.left}px;width:${item.width}px;height:${item.height}px`;
+            div.innerHTML = `
+            <button class="delete-btn" data-delete-index="${index}">×</button>
+            <div class="fw-bold">${item.name}</div>
+            ${isSection ? `<div class="fs-9 opacity-75">Cap: ${item.capacity}</div>` : ""}
+          `;
+            canvas.appendChild(div);
+            setupDraggable(div, item);
+            if (isSection)
+              div.addEventListener("click", () => openSectionModal(index));
+          });
+        }
+
+        canvas_deleteHandler: document
+          .getElementById("floorBuilderCanvas")
+          .addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-delete-index]");
+            if (btn) {
+              e.stopPropagation();
+              deleteCanvasItem(parseInt(btn.dataset.deleteIndex));
+            }
+          });
+
+        function setupDraggable(element, item) {
+          let startX, startY, origTop, origLeft;
+          element.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            startX = e.clientX;
+            startY = e.clientY;
+            origTop = item.top;
+            origLeft = item.left;
+            const onMove = (e) => {
+              const canvas = document.getElementById("floorBuilderCanvas");
+              const newTop = Math.max(
+                0,
+                Math.min(
+                  canvas.clientHeight - element.clientHeight,
+                  origTop + (e.clientY - startY),
+                ),
+              );
+              const newLeft = Math.max(
+                0,
+                Math.min(
+                  canvas.clientWidth - element.clientWidth,
+                  origLeft + (e.clientX - startX),
+                ),
+              );
+              element.style.top = newTop + "px";
+              element.style.left = newLeft + "px";
+              item.top = newTop;
+              item.left = newLeft;
+            };
+            const onUp = () => {
+              document.removeEventListener("mousemove", onMove);
+              document.removeEventListener("mouseup", onUp);
+            };
+            document.addEventListener("mousemove", onMove);
+            document.addEventListener("mouseup", onUp);
+          });
+        }
+
+        // Section Modal
+        function openSectionModal(index) {
+          state.activeEditingItemIndex = index;
+          const item =
+            state.floorLayouts[state.floorNames[state.activeFloorIndex]][index];
+          document.getElementById("modalSectionName").value = item.name;
+          document.getElementById("modalSectionCapacity").value = item.capacity;
+          document
+            .getElementById("sectionSettingsModal")
+            .classList.remove("d-none");
+        }
+
+        function closeSectionModal() {
+          document
+            .getElementById("sectionSettingsModal")
+            .classList.add("d-none");
+          state.activeEditingItemIndex = -1;
+        }
+
+        document
+          .getElementById("modalCancelBtn")
+          .addEventListener("click", closeSectionModal);
+
+        document
+          .getElementById("modalSaveBtn")
+          .addEventListener("click", () => {
+            if (state.activeEditingItemIndex === -1) return;
+            const name = document
+              .getElementById("modalSectionName")
+              .value.trim();
+            const capacity = parseInt(
+              document.getElementById("modalSectionCapacity").value,
+            );
+            if (!name || isNaN(capacity) || capacity < 1) {
+              alert("Please specify a valid name and capacity.");
+              return;
+            }
+            const item =
+              state.floorLayouts[state.floorNames[state.activeFloorIndex]][
+                state.activeEditingItemIndex
+              ];
+            item.name = name;
+            item.capacity = capacity;
+            closeSectionModal();
+            renderCanvasItems();
+          });
+
+        document
+          .getElementById("layoutContinueBtn")
+          .addEventListener("click", () => {
+            const totalSections = state.floorNames.reduce(
+              (sum, floor) =>
+                sum +
+                (state.floorLayouts[floor] || []).filter(
+                  (i) => i.type === "Section",
+                ).length,
+              0,
+            );
+            if (totalSections === 0) {
+              if (
+                !confirm(
+                  "You haven't defined any reservable Sections. Continue anyway?",
+                )
+              )
+                return;
+            }
+            showStep("managerStep8", 11);
+            renderPackagesList();
+          });
+
+        // ─────────────────────────────────────────────
+        // PACKAGES
+        // ─────────────────────────────────────────────
+        function renderPackagesList() {
+          document.getElementById("packagesList").innerHTML =
+            state.sectionPackages
+              .map(
+                (pkg, i) => `
+          <div class="package-card text-start position-relative" id="pkg_card_${i}">
+            <div class="package-card-header d-flex align-items-center justify-content-between">
+              <span class="package-badge">${pkg.name} Template</span>
+              <button class="btn btn-sm btn-outline-danger p-1 py-0 fs-8 border-0" data-delete-pkg="${i}">Remove</button>
+            </div>
+            <div class="row g-2">
+              ${[
+                ["Package Name", "name", "text", pkg.name],
+                ["Max Guests", "maxGuests", "number", pkg.maxGuests],
+                ["Booking Fee ($)", "bookingFee", "number", pkg.bookingFee],
+                ["Min Spend ($)", "minSpend", "number", pkg.minSpend],
+                ["Bottles Included", "bottleCount", "number", pkg.bottleCount],
+              ]
+                .map(
+                  ([label, field, type, val], j) => `
+                <div class="${j === 0 ? "col-md-4" : "col-md-2"}">
+                  <div class="form-group-onboarding m-0">
+                    <label class="fs-8 mb-1">${label}</label>
+                    <input type="${type}" class="form-control bg-dark text-white border-secondary rounded-3 p-2 fs-8 onboarding-input-no-shadow"
+                      value="${val}" data-pkg-index="${i}" data-pkg-field="${field}" />
+                  </div>
+                </div>
+              `,
+                )
+                .join("")}
+            </div>
+          </div>
+        `,
+              )
+              .join("");
+        }
+
+        document
+          .getElementById("packagesList")
+          .addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-delete-pkg]");
+            if (btn) {
+              state.sectionPackages.splice(parseInt(btn.dataset.deletePkg), 1);
+              renderPackagesList();
+            }
+          });
+
+        document
+          .getElementById("packagesList")
+          .addEventListener("input", (e) => {
+            const input = e.target.closest("[data-pkg-index]");
+            if (!input) return;
+            const { pkgIndex, pkgField } = input.dataset;
+            const value =
+              input.type === "number" ? parseInt(input.value) : input.value;
+            state.sectionPackages[parseInt(pkgIndex)][pkgField] = value;
+
+            // Keep badge label in sync with name changes
+            if (pkgField === "name") {
+              const badge = document.querySelector(
+                `#pkg_card_${pkgIndex} .package-badge`,
+              );
+              if (badge) badge.textContent = `${value} Template`;
+            }
+          });
+
+        document
+          .getElementById("addCustomPackageBtn")
+          .addEventListener("click", () => {
+            state.sectionPackages.push({
+              name: "VIP Custom",
+              maxGuests: 8,
+              bookingFee: 300,
+              minSpend: 1500,
+              bottleCount: 3,
+            });
+            renderPackagesList();
+          });
+
+        document
+          .getElementById("packagesContinueBtn")
+          .addEventListener("click", () => {
+            if (!state.sectionPackages.length) {
+              alert(
+                "Please create at least one package option for your sections.",
+              );
+              return;
+            }
+            showStep("managerStep9", 11);
+            renderAssignments();
+          });
+
+        // ─────────────────────────────────────────────
+        // ASSIGNMENTS
+        // ─────────────────────────────────────────────
+        function getAllSections() {
+          return state.floorNames.flatMap((floor) =>
+            (state.floorLayouts[floor] || [])
+              .filter((item) => item.type === "Section")
+              .map((item) => ({
+                floor,
+                name: item.name,
+                capacity: item.capacity,
+              })),
+          );
+        }
+
+        function renderAssignments() {
+          const sections = getAllSections();
+          const container = document.getElementById("assignmentsList");
+
+          if (!sections.length) {
+            container.innerHTML = `<div class="text-center text-muted p-4 fs-7">No Sections defined in your Floor layouts. Go back to Step 4C to map sections.</div>`;
+            return;
+          }
+
+          sections.forEach((sec) => {
+            if (!state.packageAssignments[sec.name]) {
+              state.packageAssignments[sec.name] = state.sectionPackages.length
+                ? [state.sectionPackages[0].name]
+                : [];
+            }
+          });
+
+          container.innerHTML = sections
+            .map((sec) => {
+              const assignedSet = new Set(state.packageAssignments[sec.name]);
+              const pills = state.sectionPackages
+                .map(
+                  (pkg) => `
+            <div class="package-assign-pill ${assignedSet.has(pkg.name) ? "active" : ""}"
+              data-section="${sec.name}" data-package="${pkg.name}">
+              ${pkg.name} ($${pkg.minSpend})
+            </div>
+          `,
+                )
+                .join("");
+              return `
+            <div class="assignment-card text-start">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div>
+                  <h6 class="text-white m-0 fs-7">${sec.name}</h6>
+                  <p class="text-muted m-0 fs-8">${sec.floor} • Capacity: ${sec.capacity} guests</p>
+                </div>
+              </div>
+              <div class="d-flex flex-wrap gap-2">${pills}</div>
+            </div>
+          `;
+            })
+            .join("");
+        }
+
+        document
+          .getElementById("assignmentsList")
+          .addEventListener("click", (e) => {
+            const pill = e.target.closest(".package-assign-pill[data-section]");
+            if (!pill) return;
+            const { section, package: pkg } = pill.dataset;
+            if (!state.packageAssignments[section])
+              state.packageAssignments[section] = [];
+            const idx = state.packageAssignments[section].indexOf(pkg);
+            if (idx === -1) {
+              state.packageAssignments[section].push(pkg);
+              pill.classList.add("active");
+            } else {
+              state.packageAssignments[section].splice(idx, 1);
+              pill.classList.remove("active");
+            }
+          });
+
+        document
+          .getElementById("assignmentsContinueBtn")
+          .addEventListener("click", () => {
+            showStep("managerStep10", 11);
+            const abbrev = (state.managerVenue.name || "CLUB")
+              .substring(0, 4)
+              .toUpperCase();
+            document.getElementById("generatedInviteCode").textContent =
+              `OPNC-${Math.floor(1000 + Math.random() * 9000)}-${abbrev}`;
+          });
+
+        // ─────────────────────────────────────────────
+        // INVITES
+        // ─────────────────────────────────────────────
+        document
+          .getElementById("sendInviteBtn")
+          .addEventListener("click", () => {
+            const role = document.getElementById("inviteRole").value;
+            const phone = document.getElementById("invitePhone").value.trim();
+            if (!phone) {
+              alert("Please enter a valid phone number.");
+              return;
+            }
+            state.teamInvites.push({ role, phone });
+            document.getElementById("invitePhone").value = "";
+            const box = document.getElementById("sentInvitesBox");
+            const list = document.getElementById("sentInvitesList");
+            box.classList.remove("d-none");
+            const row = document.createElement("div");
+            row.className = "invite-row fs-8 text-white mt-2";
+            row.innerHTML = `
+          <div><span class="fw-semibold text-primary">${role}</span><span class="text-muted ms-2">${phone}</span></div>
+          <span class="text-success fw-bold">Sent ✓</span>
+        `;
+            list.appendChild(row);
+          });
+
+        document
+          .getElementById("copyInviteCodeBtn")
+          .addEventListener("click", () => {
+            const code = document.getElementById(
+              "generatedInviteCode",
+            ).textContent;
+            navigator.clipboard
+              .writeText(code)
+              .then(() => alert(`Invite code copied: ${code}`))
+              .catch((err) => alert(`Failed to copy: ${err}`));
+          });
+
+        document
+          .getElementById("teamContinueBtn")
+          .addEventListener("click", () => showStep("managerStep11", 11));
+        document
+          .getElementById("managerDashboardBtn")
+          .addEventListener("click", () => {
+            window.location.href = "./manager/manager-dashboard.html";
+          });
+
+        // ─────────────────────────────────────────────
+        // PROMOTER FLOW
+        // ─────────────────────────────────────────────
+        function renderCrowdTypes() {
+          document.getElementById("crowdTypeGrid").innerHTML = CROWD_TYPES.map(
+            (type) => `
+          <label class="crowd-type-option">
+            <input type="checkbox" name="crowd" value="${type}" />
+            <span class="crowd-type-label">${type}</span>
+          </label>
+        `,
+          ).join("");
+        }
+
+        function renderClubList() {
+          document.getElementById("clubList").innerHTML = CLUBS.map(
+            (club) => `
+          <div class="club-card">
+            <div class="club-info">
+              <div class="club-avatar">${club.emoji}</div>
+              <div class="club-details">
+                <h5>${club.name}</h5>
+                <p>${club.city}</p>
+              </div>
+            </div>
+            <button class="follow-btn">Follow</button>
+          </div>
+        `,
+          ).join("");
+        }
+
+        document.getElementById("clubList").addEventListener("click", (e) => {
+          const btn = e.target.closest(".follow-btn");
+          if (btn) {
+            btn.classList.toggle("active");
+            btn.textContent = btn.classList.contains("active")
+              ? "Following"
+              : "Follow";
+          }
+        });
+
+        document
+          .getElementById("promoterAccountForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            showStep("promoterStep3", 5);
+          });
+
+        document
+          .getElementById("promoterProfileForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            showStep("promoterStep4", 5);
+          });
+
+        document
+          .getElementById("promoterDashboardBtn")
+          .addEventListener("click", () => {
+            window.location.href = "./promoter/promoter-dashboard.html";
+          });
+
+        // ─────────────────────────────────────────────
+        // HOST FLOW
+        // ─────────────────────────────────────────────
+        document
+          .getElementById("validateCodeBtn")
+          .addEventListener("click", () => showStep("hostStep3", 7));
+        document
+          .getElementById("requestAccessBtn")
+          .addEventListener("click", () => alert("Access Request Sent"));
+
+        document
+          .getElementById("hostAccountForm")
+          .addEventListener("submit", (e) => {
+            e.preventDefault();
+            showStep("hostStep5", 7);
+          });
+
+        document
+          .getElementById("hostDashboardBtn")
+          .addEventListener("click", () => {
+            window.location.href = "./host/host-dashboard.html";
+          });
+
+        // ─────────────────────────────────────────────
+        // INIT
+        // ─────────────────────────────────────────────
+        function init() {
+          updateProgress(1, 5);
+          renderHoursOfOperation();
+          renderServices();
+          renderCrowdTypes();
+          renderClubList();
+
+          // Developer helper: directly load a specific step via '?step=stepName' or '#stepName' (e.g. onboarding.html?step=managerStep3)
+          const urlParams = new URLSearchParams(window.location.search);
+          const stepParam =
+            urlParams.get("step") || window.location.hash.substring(1);
+          if (stepParam) {
+            let total = 11;
+            if (stepParam.startsWith("promoter")) total = 5;
+            else if (stepParam.startsWith("host")) total = 7;
+            showStep(stepParam, total);
+          }
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
